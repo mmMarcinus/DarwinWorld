@@ -1,5 +1,6 @@
 package agh.ics.darwinworld.SimulationModel;
 
+import agh.ics.darwinworld.AnimalModel.Animal;
 import agh.ics.darwinworld.Util.Vector2d;
 import agh.ics.darwinworld.WorldModel.WorldMap;
 

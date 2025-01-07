@@ -2,6 +2,7 @@ package agh.ics.darwinworld.AnimalModel;
 
 import agh.ics.darwinworld.Enums.MapDirection;
 import agh.ics.darwinworld.Util.Vector2d;
+import agh.ics.darwinworld.WorldModel.WorldMap;
 
 public class Animal {
     private MapDirection orientation;
@@ -13,7 +14,6 @@ public class Animal {
         this.position = initialPosition;
     }
 
-    @Override
     public Vector2d getPosition() {
         return this.position;
     }
@@ -34,21 +34,5 @@ public class Animal {
     public void move(MapDirection direction, WorldMap map){
         Vector2d newposition;
 
-        switch (direction){
-            case RIGHT -> this.orientation = this.orientation.next();
-            case LEFT -> this.orientation = this.orientation.previous();
-            case FORWARD -> {
-                newposition = this.position.add(this.orientation.toUnitVector());
-                if (map.canMoveTo(newposition)){
-                    this.position = newposition;
-                }
-            }
-            case BACKWARDS -> {
-                newposition = this.position.subtract(this.orientation.toUnitVector());
-                if (map.canMoveTo(newposition)){
-                    this.position = newposition;
-                }
-            }
-        }
     }
 }
