@@ -3,12 +3,13 @@ package agh.ics.darwinworld.AnimalModel;
 import agh.ics.darwinworld.Enums.MapDirection;
 import agh.ics.darwinworld.SimulationModel.Simulation;
 import agh.ics.darwinworld.Util.Vector2d;
+import agh.ics.darwinworld.WorldModel.WorldElement;
 import agh.ics.darwinworld.WorldModel.WorldMap;
 
 import java.util.HashSet;
 import java.util.Random;
 
-public class Animal {
+public class Animal implements WorldElement {
     private MapDirection direction;
     private Vector2d position;
     private String genome;

@@ -19,6 +19,7 @@ public class Simulation implements Runnable {
         this.positions = positions;
         this.worldMap = worldMap;
         this.animals = new ArrayList<Animal>();
+
         int i = 0;
         for (Vector2d position : positions) {
             Animal addedAnimal = new Animal(position, genomes.get(i), startEnergyLevel);
