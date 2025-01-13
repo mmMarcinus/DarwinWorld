@@ -64,6 +64,7 @@ public class Animal {
         if (map.canMoveTo(newposition)){
             this.position = newposition;
         }
+
     }
 
     //consume

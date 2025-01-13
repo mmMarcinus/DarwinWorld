@@ -1,11 +1,13 @@
 package agh.ics.darwinworld.SimulationModel;
 
+import agh.ics.darwinworld.AnimalModel.Animal;
 import agh.ics.darwinworld.Util.Vector2d;
 import agh.ics.darwinworld.WorldModel.WorldMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Simulation {
+public class Simulation implements Runnable {
     private List<Vector2d> positions;
     public static List<Animal> animals;
     public static WorldMap worldMap;
@@ -16,8 +18,6 @@ public class Simulation {
     public Simulation(List<Vector2d> positions, WorldMap worldMap, List<String> genomes, int startEnergyLevel) {
         this.positions = positions;
         this.worldMap = worldMap;
-<<<<<<< Updated upstream
-=======
         this.animals = new ArrayList<Animal>();
         int i = 0;
         for (Vector2d position : positions) {
@@ -32,6 +32,5 @@ public class Simulation {
 
     public void run(){
         //tutaj animale będą się ruszać po kolei
->>>>>>> Stashed changes
     }
 }
