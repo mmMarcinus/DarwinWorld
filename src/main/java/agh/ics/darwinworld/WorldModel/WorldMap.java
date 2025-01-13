@@ -3,6 +3,7 @@ package agh.ics.darwinworld.WorldModel;
 import agh.ics.darwinworld.AnimalModel.Animal;
 import agh.ics.darwinworld.Util.Vector2d;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +15,12 @@ public class WorldMap {
     private int jungleBottom;
 
     private Map<Vector2d,Animal> animals = new HashMap<Vector2d, Animal>();
+    private Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
+    private ArrayList<MapChangeListener> observers = new ArrayList<MapChangeListener>();
 
     WorldMap(int width, int height) {
         this.width = width;
         this.height = height;
-
         this.jungleTop = (int) ( height /2 + height * 0.1);
         this.jungleBottom = (int) (height/2 - height * 0.1);
     }
@@ -27,8 +29,15 @@ public class WorldMap {
         Vector2d position = animal.getPosition();
         if (!animals.containsKey(position)) {
             animals.put(position, animal);
-            //notifyObservers("Ustawiono nowe zwierze na pozycji " + position.toString());
+
+            notifyObservers();
         }//else throw new IncorrectPositionException(position); tutaj będa te rzeczy potem
+    }
+
+    private void notifyObservers(){
+        for (MapChangeListener observer : observers) {
+            observer.mapChanged(this);
+        }
     }
 
     public boolean isOccupied(Vector2d position) {
@@ -46,6 +55,4 @@ public class WorldMap {
     public int getHeight() { return height; }
     public int getJungleTop() { return jungleTop; }
     public int getJungleBottom() { return jungleBottom; }
-
-
 }

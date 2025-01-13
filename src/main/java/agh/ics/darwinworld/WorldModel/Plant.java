@@ -14,7 +14,7 @@ public class Plant implements WorldElement{
 
     @Override
     public String toString(){
-        return "Plant";
+        return "Plant, " + energyLevel + " of energy";
     }
 
     public int getEnergyLevel() {
