@@ -9,17 +9,22 @@ import java.util.List;
 
 public class Simulation implements Runnable {
     private List<Vector2d> positions;
-    private List<Animal> animals;
-    private WorldMap worldMap;
+    public static List<Animal> animals;
+    public static WorldMap worldMap;
+    private List<String> genomes;
+    private int startEnergyLevel;
 
-    public Simulation(List<Vector2d> positions, WorldMap worldMap) {
+
+    public Simulation(List<Vector2d> positions, WorldMap worldMap, List<String> genomes, int startEnergyLevel) {
         this.positions = positions;
         this.worldMap = worldMap;
         this.animals = new ArrayList<Animal>();
+        int i = 0;
         for (Vector2d position : positions) {
-            Animal addedAnimal = new Animal(position);
+            Animal addedAnimal = new Animal(position, genomes.get(i), startEnergyLevel);
             animals.add(addedAnimal);
             worldMap.place(addedAnimal);
+            i++;
         }
     }
 
