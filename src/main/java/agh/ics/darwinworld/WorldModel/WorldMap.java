@@ -1,6 +1,7 @@
 package agh.ics.darwinworld.WorldModel;
 
 import agh.ics.darwinworld.AnimalModel.Animal;
+import agh.ics.darwinworld.Enums.MapDirection;
 import agh.ics.darwinworld.Util.Vector2d;
 
 import java.util.ArrayList;
@@ -32,6 +33,19 @@ public class WorldMap {
 
             notifyObservers();
         }//else throw new IncorrectPositionException(position); tutaj będa te rzeczy potem
+    }
+
+    public void deleteAnimal(Animal animal){
+
+    }
+
+    public void move(Animal animal, MapDirection direction){
+        Vector2d oldPosition = animal.getPosition();
+        //animal.move(direction,this); trzeba wybrać czy tutaj
+        Vector2d position = animal.getPosition();
+
+        animals.remove(oldPosition);
+        animals.put(position, animal);
     }
 
     private void notifyObservers(){
