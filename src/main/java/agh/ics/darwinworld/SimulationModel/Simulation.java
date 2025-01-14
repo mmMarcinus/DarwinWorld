@@ -10,15 +10,13 @@ import java.util.*;
 
 public class Simulation implements Runnable {
     private final int startAnimalsNumber;
-    public List<Animal> animals;
-    public WorldMap worldMap;
-    public List<Plant> plants;
+    private List<Animal> animals;
+    private WorldMap worldMap;
+    private List<Plant> plants;
     private final int genomesLength;
-    public final int startEnergyLevel;
+    private final int startEnergyLevel;
     private int reproduceEnergyRequired;
     private int energyFromPlant;
-    private final int startPlantNumber;
-    private final int dayPlantNumber;
     private final int startPlantNumber;
     private final int dayPlantNumber;
     private final int energyTakenEachDay;
@@ -33,6 +31,7 @@ public class Simulation implements Runnable {
 
         this.startAnimalsNumber = startAnimalsNumber;
         this.animals = new ArrayList<>();
+        this.plants = new ArrayList<>();
         this.startPlantNumber = startPlantNumber;
         this.dayPlantNumber = dayPlantNumber;
         this.worldMap = new WorldMap(width, height);
@@ -57,7 +56,7 @@ public class Simulation implements Runnable {
             String genome = "";
             for (int k = 0; k < genomesLength; k++) {
                 int gene = rand.nextInt(8);
-                genome += (char) gene;
+                genome +=  Integer.toString(gene);
             }
             do{
                 int x = rand.nextInt(0, width) ;
@@ -65,7 +64,6 @@ public class Simulation implements Runnable {
                 position = new Vector2d(x,y);
             }while(animalPositionsTaken.contains(position));
             animalPositionsTaken.add(position);
-
             Animal addedAnimal = new Animal(position, genome, startEnergyLevel, 0, null, null);
             animals.add(addedAnimal);
             worldMap.place(addedAnimal);
@@ -112,22 +110,29 @@ public class Simulation implements Runnable {
     public void run() {
         //PO CO NAM LISTY ZWIERZAKOW I ROSLIN W SIMULATION I W WORLDMAPIE
         Random rand = new Random();
-
+        ArrayList<Animal> animalsToDelete;
         int day = 1;
-        while(day < 10000) {
+        while(day < 10) {
+            System.out.println("Dzien " + day + " rozpoczyna sie");
 
             //Usunięcie martwych zwierzaków z mapy.
+            System.out.println("Usuwanie martwych zwierzakow z mapy");
+            animalsToDelete = new ArrayList<>();
             for (Animal animal : animals){
                 if (animal.getEnergyLevel() <= 0){
-                    animals.remove(animal);
-                    worldMap.remove(animal);
+                    animalsToDelete.add(animal);
                 }
                 else{
                     animal.updateAge(animal.getAge()+1);
                 }
             }
+            for (Animal animal : animalsToDelete) {
+                animals.remove(animal);
+                worldMap.remove(animal);
+            }
 
             //Skręt i przemieszczenie każdego zwierzaka.
+            System.out.println("Zwierzaki wykonuja swoje ruchy");
             for (Animal animal : animals){
                 String genome = animal.getGenome();
                 String move = genome.substring((day - 1) % genomesLength);
@@ -135,6 +140,7 @@ public class Simulation implements Runnable {
             }
 
             //Konsumpcja roślin, na których pola weszły zwierzaki
+            System.out.println("Zwierzaki jedza napotkane rosliny");
             for (Plant plant : plants){
                 Animal consumer = new Animal(new Vector2d(0,0), "", -1, 0, null, null);
                 for (Animal animal : animals){
@@ -167,6 +173,7 @@ public class Simulation implements Runnable {
                 }
             }
 
+            System.out.println("Zwierzaki rozmnazaja sie");
             //Rozmnażanie się najedzonych zwierzaków znajdujących się na tym samym polu.
             ArrayList<Animal> reproduceCandidates;
             HashSet<Animal> reproducedAnimals = new HashSet<>();
@@ -195,6 +202,7 @@ public class Simulation implements Runnable {
                 }
             }
 
+            System.out.println("Wyrastaja nowe rosliny");
             //Wzrastanie nowych roślin na wybranych polach mapy.
             for(int i = 0; i<dayPlantNumber; i++){
                 //najpierw wybieramy czy w dżungli czy nie
@@ -217,6 +225,7 @@ public class Simulation implements Runnable {
                 worldMap.place(addedPlant);
             }
 
+            System.out.println("Odejmujemy energie");
             //Zmniejszanie energii
             for (Animal animal : animals){
                 //Wariant Bieguny
@@ -237,7 +246,7 @@ public class Simulation implements Runnable {
                     animal.updateEnergyLevel(animal.getEnergyLevel() - energyTakenEachDay);
                 }
             }
-
+            System.out.println("Dzien " + day + " zakonczyl sie\n\n");
             day++;
         }
     }
