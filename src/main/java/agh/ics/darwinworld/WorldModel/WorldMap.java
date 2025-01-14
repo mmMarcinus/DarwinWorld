@@ -18,7 +18,7 @@ public class WorldMap {
     private Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
     private ArrayList<MapChangeListener> observers = new ArrayList<MapChangeListener>();
 
-    WorldMap(int width, int height) {
+    public WorldMap(int width, int height) {
         this.width = width;
         this.height = height;
 

@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Reproduce {
 
-    public static void reproduce(Animal parent1, Animal parent2){
+    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel){
         Random rand = new Random();
 
         //tworzenie genomu młodego
@@ -74,15 +74,12 @@ public class Reproduce {
 
         // tworzenie energii młodego
         // przegadac czy dajemy stala wartosc czy procent energii
-
-        Animal addedAnimal = new Animal(parent1.getPosition(), youngGenome, Simulation.startEnergyLevel, 0);
-        Simulation.animals.add(addedAnimal);
-        Simulation.worldMap.place(addedAnimal);
-
-        parent1.updateEnergyLevel(parent1.getEnergyLevel()-Simulation.startEnergyLevel);
-        parent2.updateEnergyLevel(parent2.getEnergyLevel()-Simulation.startEnergyLevel);
+        parent1.updateEnergyLevel(parent1.getEnergyLevel()-startEnergyLevel/2);
+        parent2.updateEnergyLevel(parent2.getEnergyLevel()-startEnergyLevel/2);
 
         parent1.updateKidsNumber(parent1.getKidsNumber()+1);
         parent2.updateKidsNumber(parent2.getKidsNumber()+1);
+
+        return new Animal(parent1.getPosition(), youngGenome, startEnergyLevel, 0);
     }
 }

@@ -5,6 +5,7 @@ import agh.ics.darwinworld.World;
 
 public class Plant implements WorldElement{
     private Vector2d position;
+    private int energyLevel;
 
     @Override
     public Vector2d getPosition() {
