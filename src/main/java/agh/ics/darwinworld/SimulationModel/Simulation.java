@@ -1,21 +1,13 @@
 package agh.ics.darwinworld.SimulationModel;
 
+import agh.ics.darwinworld.AnimalModel.Animal;
 import agh.ics.darwinworld.Util.Vector2d;
 import agh.ics.darwinworld.WorldModel.WorldMap;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-<<<<<<< Updated upstream
-public class Simulation {
-    private List<Vector2d> positions;
-    private List<Animal> animals;
-    private WorldMap worldMap;
-
-    public Simulation(List<Vector2d> positions, WorldMap worldMap) {
-        this.positions = positions;
-        this.worldMap = worldMap;
-=======
 public class Simulation implements Runnable {
     private int animalsNumber;
     public static List<Animal> animals;
@@ -37,9 +29,9 @@ public class Simulation implements Runnable {
         //dodac dodawanie na nowa pozycje
 
         int i = 0;
-        while(i < animalsNumber){
+        while (i < animalsNumber) {
             String genome = "";
-            for(int k = 0; k < genomesLength; k++){
+            for (int k = 0; k < genomesLength; k++) {
                 int gene = rand.nextInt(8);
                 genome += (char) gene;
             }
@@ -50,12 +42,11 @@ public class Simulation implements Runnable {
         }
     }
 
-    public List<Animal> getAnimals() {return animals;}
+    public List<Animal> getAnimals() {
+        return animals;
+    }
 
-    public void run(){
+    public void run() {
         //tutaj animale będą się ruszać po kolei
-
-
->>>>>>> Stashed changes
     }
 }
