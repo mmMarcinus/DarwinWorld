@@ -19,13 +19,16 @@ public class Simulation implements Runnable {
     private int energyFromPlant;
     private int startPlantNumber;
     private int dayPlantNumber;
+    private int energyTakenEachDay;
+    private int minMutation;
+    private int maxMutation;
     private boolean mapVariant;
     private boolean mutationVariant;
 
 
     public Simulation(int startAnimalsNumber, int startPlantNumber, int dayPlantNumber, int width, int height,
                       int startEnergyLevel, int genomesLength, int reproduceEnergyRequired, int energyFromPlant,
-                      boolean mapVariant, boolean mutationVariant) {
+                      int energyTakenEachDay, int minMutation, int maxMutation, boolean mapVariant, boolean mutationVariant) {
 
         Random rand = new Random();
         this.startAnimalsNumber = startAnimalsNumber;
@@ -39,6 +42,9 @@ public class Simulation implements Runnable {
         this.energyFromPlant = energyFromPlant;
         this.mapVariant = mapVariant;
         this.mutationVariant = mutationVariant;
+        this.energyTakenEachDay = energyTakenEachDay;
+        this.minMutation = minMutation;
+        this.maxMutation = maxMutation;
 
         //dodawanie startowych zwierzakow na losowe pozycje z losowymi genomami
 
@@ -59,7 +65,7 @@ public class Simulation implements Runnable {
             }while(animalPositionsTaken.contains(position));
             animalPositionsTaken.add(position);
 
-            Animal addedAnimal = new Animal(position, genome, startEnergyLevel, 0);
+            Animal addedAnimal = new Animal(position, genome, startEnergyLevel, 0, null, null);
             animals.add(addedAnimal);
             worldMap.place(addedAnimal);
         }
@@ -95,6 +101,7 @@ public class Simulation implements Runnable {
 
         int day = 1;
         while(day < 10000) {
+
             //Usunięcie martwych zwierzaków z mapy.
 
             for (Animal animal : animals){
@@ -118,7 +125,7 @@ public class Simulation implements Runnable {
             //Konsumpcja roślin, na których pola weszły zwierzaki
 
             for (Plant plant : plants){
-                Animal consumer = new Animal(new Vector2d(0,0), "", -1, 0);
+                Animal consumer = new Animal(new Vector2d(0,0), "", -1, 0, null, null);
                 for (Animal animal : animals){
                     if (plant.getPosition() == animal.getPosition()){
                         if (consumer.getEnergyLevel() < animal.getEnergyLevel()){
@@ -173,7 +180,8 @@ public class Simulation implements Runnable {
                                             .thenComparing(Animal::getAge)
                                             .thenComparing(Animal::getKidsNumber));
                     for (int i = 1; i < reproduceCandidates.size(); i+=2){
-                        Reproduce.reproduce(reproduceCandidates.get(i-1),reproduceCandidates.get(i), mutationVariant);
+                        Reproduce.reproduce(reproduceCandidates.get(i-1),reproduceCandidates.get(i), mutationVariant, maxMutation-minMutation);
+
                     }
                 }
             }
@@ -181,6 +189,27 @@ public class Simulation implements Runnable {
             //Wzrastanie nowych roślin na wybranych polach mapy.
 
 
+
+            //Zmniejszanie energii
+            for (Animal animal : animals){
+                //Wariant Bieguny
+                if (mapVariant) {
+                    int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
+                    int increasedEnergyDrop = 0;
+                    if (animal.getPosition().getY() <= poleHeight){
+                        increasedEnergyDrop = animal.getPosition().getY();
+                    }
+                    else if (animal.getPosition().getY() + poleHeight > worldMap.getHeight()){
+                        increasedEnergyDrop = worldMap.getHeight() - animal.getPosition().getY() + 1;
+                    }
+                    increasedEnergyDrop = (int) Math.ceil(increasedEnergyDrop*13/10*energyTakenEachDay);
+                    animal.updateEnergyLevel(animal.getEnergyLevel() - increasedEnergyDrop);
+                }
+                //Wariant normalny
+                else {
+                    animal.updateEnergyLevel(animal.getEnergyLevel() - energyTakenEachDay);
+                }
+            }
 
             day++;
         }
