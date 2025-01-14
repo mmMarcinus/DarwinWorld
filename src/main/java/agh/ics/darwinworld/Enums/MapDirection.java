@@ -2,6 +2,8 @@ package agh.ics.darwinworld.Enums;
 
 import agh.ics.darwinworld.Util.Vector2d;
 
+import java.util.Map;
+
 public enum MapDirection {
     NORTH,
     NORTH_EAST,
@@ -49,6 +51,19 @@ public enum MapDirection {
             case SOUTH_WEST -> WEST;
             case WEST -> NORTH_WEST;
             case NORTH_WEST -> NORTH;
+        };
+    }
+
+    public MapDirection opposite(){
+        return switch(this){
+            case NORTH -> SOUTH;
+            case EAST -> WEST;
+            case WEST -> EAST;
+            case SOUTH -> NORTH;
+            case NORTH_EAST -> SOUTH_WEST;
+            case NORTH_WEST -> SOUTH_EAST;
+            case SOUTH_EAST -> NORTH_WEST;
+            case SOUTH_WEST -> NORTH_EAST;
         };
     }
 

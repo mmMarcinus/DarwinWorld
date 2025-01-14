@@ -12,7 +12,7 @@ public class Simulation implements Runnable {
     private int animalsNumber;
     public static List<Animal> animals;
     public static WorldMap worldMap;
-    private
+
     private int genomesLength;
     private int startEnergyLevel;
 
