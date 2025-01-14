@@ -1,7 +1,6 @@
 package agh.ics.darwinworld.WorldModel;
 
 import agh.ics.darwinworld.AnimalModel.Animal;
-import agh.ics.darwinworld.Enums.MapDirection;
 import agh.ics.darwinworld.Util.Vector2d;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ public class WorldMap {
     WorldMap(int width, int height) {
         this.width = width;
         this.height = height;
+
         this.jungleTop = (int) ( height /2 + height * 0.1);
         this.jungleBottom = (int) (height/2 - height * 0.1);
     }
@@ -30,28 +30,26 @@ public class WorldMap {
         Vector2d position = animal.getPosition();
         if (!animals.containsKey(position)) {
             animals.put(position, animal);
-
-            notifyObservers();
+            //notifyObservers("Ustawiono nowe zwierze na pozycji " + position.toString());
         }//else throw new IncorrectPositionException(position); tutaj będa te rzeczy potem
     }
 
-    public void deleteAnimal(Animal animal){
-
+    public void place(Plant plant){
+        Vector2d position = plant.getPosition();
+        if (!plants.containsKey(position)) {
+            plants.put(position, plant);
+            //notifyObservers("Ustawiono nowe zwierze na pozycji " + position.toString());
+        }//else throw new IncorrectPositionException(position); tutaj będa te rzeczy potem
     }
 
-    public void move(Animal animal, MapDirection direction){
-        Vector2d oldPosition = animal.getPosition();
-        //animal.move(direction,this); trzeba wybrać czy tutaj
+    public void remove(Animal animal){
         Vector2d position = animal.getPosition();
-
-        animals.remove(oldPosition);
-        animals.put(position, animal);
+        animals.remove(position);
     }
 
-    private void notifyObservers(){
-        for (MapChangeListener observer : observers) {
-            observer.mapChanged(this);
-        }
+    public void remove(Plant plant){
+        Vector2d position = plant.getPosition();
+        plants.remove(position);
     }
 
     public boolean isOccupied(Vector2d position) {
@@ -61,12 +59,15 @@ public class WorldMap {
         return false;
     }
 
-    public boolean canMoveTo(Vector2d position){
-        return !animals.containsKey(position);
-    }
+    //niepotrzebne bo zwierzaki moga wchodzic na te same pola
+//    public boolean canMoveTo(Vector2d position){
+//        return !animals.containsKey(position);
+//    }
 
     public int getWidth() { return width; }
     public int getHeight() { return height; }
     public int getJungleTop() { return jungleTop; }
     public int getJungleBottom() { return jungleBottom; }
+
+
 }
