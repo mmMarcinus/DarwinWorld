@@ -38,7 +38,7 @@ public class WorldMap {
         Vector2d position = plant.getPosition();
         if (!plants.containsKey(position)) {
             plants.put(position, plant);
-            //notifyObservers("Ustawiono nowe zwierze na pozycji " + position.toString());
+            //notifyObservers("Ustawiono nowa rosline na pozycji " + position.toString());
         }//else throw new IncorrectPositionException(position); tutaj będa te rzeczy potem
     }
 
@@ -59,10 +59,6 @@ public class WorldMap {
         return false;
     }
 
-    //niepotrzebne bo zwierzaki moga wchodzic na te same pola
-//    public boolean canMoveTo(Vector2d position){
-//        return !animals.containsKey(position);
-//    }
 
     public int getWidth() { return width; }
     public int getHeight() { return height; }
