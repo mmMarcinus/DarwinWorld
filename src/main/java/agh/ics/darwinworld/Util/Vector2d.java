@@ -2,7 +2,7 @@ package agh.ics.darwinworld.Util;
 
 import java.util.Objects;
 
-public class Vector2d {
+public class    Vector2d {
     private final int x;
     private final int y;
 

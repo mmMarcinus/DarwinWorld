@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Reproduce {
 
-    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel){
+    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel, boolean mutationVariant, int mutations){
         Random rand = new Random();
 
         //tworzenie genomu młodego
@@ -30,56 +30,54 @@ public class Reproduce {
         //mutacje
         //trzeba dorobic zeby wersja 2 sie robila tylko wtedy gdy uzytkownik tak wybierze w GUI
 
-        //wersja normalna
-        HashSet mutatedPlaces = new HashSet<>();
-        int mutationCount = rand.nextInt(n+1);
-        int newGene;
-        String oldGene;
-
         int i = 0;
-        while(i < mutationCount){
-            int mutationPlace = rand.nextInt(n);
-            if (!mutatedPlaces.contains(mutationPlace)){
-                mutatedPlaces.add(mutationPlace);
+        boolean change = true;
+        while (i < mutations) {
+            if (mutationVariant) {
+                change = rand.nextBoolean();
+            }
+            //wersja normalna "pelna losowosc"
+            if (change) {
+                int newGene;
+                String oldGene;
+                int mutationPlace = rand.nextInt(n);
                 do {
                     newGene = rand.nextInt(8);
-                    oldGene = youngGenome.substring(newGene, newGene+1);
-                } while(Integer.valueOf(oldGene) == newGene);
+                    oldGene = youngGenome.substring(newGene, newGene + 1);
+                } while (Integer.valueOf(oldGene) == newGene);
 
                 char[] youngGenomeChars = youngGenome.toCharArray();
                 youngGenomeChars[mutationPlace] = (char) newGene;
                 youngGenome = String.valueOf(youngGenomeChars);
                 i++;
             }
+            //wersja 2 "podmianka"
+            else {
+                int firstChangePlace;
+                int secondChangePlace;
+
+                firstChangePlace = rand.nextInt(n);
+                do {
+                    secondChangePlace = rand.nextInt(n);
+                } while (firstChangePlace == secondChangePlace);
+
+                char[] youngGenomeChars = youngGenome.toCharArray();
+                char buf = youngGenomeChars[firstChangePlace];
+                youngGenomeChars[firstChangePlace] = youngGenomeChars[secondChangePlace];
+                youngGenomeChars[secondChangePlace] = buf;
+                youngGenome = String.valueOf(youngGenomeChars);
+            }
         }
 
-        //wersja 2
 
-        boolean change = rand.nextBoolean();
-        int firstChangePlace;
-        int secondChangePlace;
-
-        if (change){
-            firstChangePlace = rand.nextInt(n);
-            do{
-                secondChangePlace = rand.nextInt(n);
-            }while(firstChangePlace == secondChangePlace);
-
-            char[] youngGenomeChars = youngGenome.toCharArray();
-            char buf = youngGenomeChars[firstChangePlace];
-            youngGenomeChars[firstChangePlace] = youngGenomeChars[secondChangePlace];
-            youngGenomeChars[secondChangePlace] = buf;
-            youngGenome = String.valueOf(youngGenomeChars);
-        }
-
-        // tworzenie energii młodego
-        // przegadac czy dajemy stala wartosc czy procent energii
         parent1.updateEnergyLevel(parent1.getEnergyLevel()-startEnergyLevel/2);
         parent2.updateEnergyLevel(parent2.getEnergyLevel()-startEnergyLevel/2);
 
         parent1.updateKidsNumber(parent1.getKidsNumber()+1);
         parent2.updateKidsNumber(parent2.getKidsNumber()+1);
 
-        return new Animal(parent1.getPosition(), youngGenome, startEnergyLevel, 0);
+        return new Animal(parent1.getPosition(), youngGenome, startEnergyLevel, 0, parent1, parent2);
+        //UpdateFamilyTree.updateFamilyTree(parent1, parent2); nie dziala bo moze sie zapetlic w nieskonczonosc jakby ktorys sie rozmnozyl z dziadkiem albo dalej w drzewie
+
     }
 }
