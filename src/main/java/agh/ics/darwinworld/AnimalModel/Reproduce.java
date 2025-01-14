@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Reproduce {
 
-    public static void reproduce(Animal parent1, Animal parent2){
+    public static void reproduce(Animal parent1, Animal parent2, boolean mutationVariant){
         Random rand = new Random();
 
         //tworzenie genomu młodego
@@ -54,22 +54,23 @@ public class Reproduce {
         }
 
         //wersja 2
+        if (mutationVariant) {
+            boolean change = rand.nextBoolean();
+            int firstChangePlace;
+            int secondChangePlace;
 
-        boolean change = rand.nextBoolean();
-        int firstChangePlace;
-        int secondChangePlace;
+            if (change) {
+                firstChangePlace = rand.nextInt(n);
+                do {
+                    secondChangePlace = rand.nextInt(n);
+                } while (firstChangePlace == secondChangePlace);
 
-        if (change){
-            firstChangePlace = rand.nextInt(n);
-            do{
-                secondChangePlace = rand.nextInt(n);
-            }while(firstChangePlace == secondChangePlace);
-
-            char[] youngGenomeChars = youngGenome.toCharArray();
-            char buf = youngGenomeChars[firstChangePlace];
-            youngGenomeChars[firstChangePlace] = youngGenomeChars[secondChangePlace];
-            youngGenomeChars[secondChangePlace] = buf;
-            youngGenome = String.valueOf(youngGenomeChars);
+                char[] youngGenomeChars = youngGenome.toCharArray();
+                char buf = youngGenomeChars[firstChangePlace];
+                youngGenomeChars[firstChangePlace] = youngGenomeChars[secondChangePlace];
+                youngGenomeChars[secondChangePlace] = buf;
+                youngGenome = String.valueOf(youngGenomeChars);
+            }
         }
 
         // tworzenie energii młodego

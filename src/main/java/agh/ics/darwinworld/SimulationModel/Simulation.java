@@ -91,7 +91,6 @@ public class Simulation implements Runnable {
     public void run() {
         //tutaj animale będą się ruszać po kolei
 
-        //PO CO NAM LISTY ZWIERZAKOW I ROSLIN W SIMULATION I W WORLDMAPIE
         Random rand = new Random();
 
         int day = 1;
@@ -174,7 +173,7 @@ public class Simulation implements Runnable {
                                             .thenComparing(Animal::getAge)
                                             .thenComparing(Animal::getKidsNumber));
                     for (int i = 1; i < reproduceCandidates.size(); i+=2){
-                        Reproduce.reproduce(reproduceCandidates.get(i-1),reproduceCandidates.get(i));
+                        Reproduce.reproduce(reproduceCandidates.get(i-1),reproduceCandidates.get(i), mutationVariant);
                     }
                 }
             }
