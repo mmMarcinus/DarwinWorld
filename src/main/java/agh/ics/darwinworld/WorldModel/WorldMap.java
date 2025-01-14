@@ -15,7 +15,7 @@ public class WorldMap {
 
     private Map<Vector2d,Animal> animals = new HashMap<Vector2d, Animal>();
 
-    WorldMap(int width, int height) {
+    public WorldMap(int width, int height) {
         this.width = width;
         this.height = height;
 

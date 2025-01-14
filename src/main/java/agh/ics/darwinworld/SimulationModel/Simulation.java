@@ -6,32 +6,49 @@ import agh.ics.darwinworld.WorldModel.WorldMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Simulation implements Runnable {
-    private List<Vector2d> positions;
+    private int animalsNumber;
     public static List<Animal> animals;
     public static WorldMap worldMap;
-    private List<String> genomes;
+
+    private int genomesLength;
     private int startEnergyLevel;
 
 
-    public Simulation(List<Vector2d> positions, WorldMap worldMap, List<String> genomes, int startEnergyLevel) {
-        this.positions = positions;
-        this.worldMap = worldMap;
-        this.animals = new ArrayList<Animal>();
+
+    public Simulation(int animalsNumber, int width, int height, int startEnergyLevel, int genomesLength) {
+
+        Random rand = new Random();
+        this.animalsNumber = animalsNumber;
+        this.worldMap = new WorldMap(width, height);
+        this.animals = new ArrayList<>();
+        this.startEnergyLevel = startEnergyLevel;
+        this.genomesLength = genomesLength;
+
+        //dodac dodawanie na nowa pozycje
+
 
         int i = 0;
-        for (Vector2d position : positions) {
-            Animal addedAnimal = new Animal(position, genomes.get(i), startEnergyLevel);
+        while (i < animalsNumber) {
+            String genome = "";
+            for (int k = 0; k < genomesLength; k++) {
+                int gene = rand.nextInt(8);
+                genome += (char) gene;
+            }
+
+            Animal addedAnimal = new Animal(position, genome, startEnergyLevel);
             animals.add(addedAnimal);
             worldMap.place(addedAnimal);
-            i++;
         }
     }
 
-    public List<Animal> getAnimals() {return animals;}
+    public List<Animal> getAnimals() {
+        return animals;
+    }
 
-    public void run(){
+    public void run() {
         //tutaj animale będą się ruszać po kolei
     }
 }
