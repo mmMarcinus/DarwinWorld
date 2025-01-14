@@ -87,7 +87,6 @@ public class Animal implements WorldElement {
         newposition = this.position.add(this.direction.toUnitVector());
 
         this.position = newposition;
-        
     }
 
 }
