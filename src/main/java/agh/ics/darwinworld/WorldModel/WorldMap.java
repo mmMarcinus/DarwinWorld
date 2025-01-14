@@ -9,7 +9,7 @@ public class WorldMap {
     private int jungleBottom;
     //Lista Animali
 
-    WorldMap(int width, int height) {
+    public WorldMap(int width, int height) {
         this.width = width;
         this.height = height;
 
