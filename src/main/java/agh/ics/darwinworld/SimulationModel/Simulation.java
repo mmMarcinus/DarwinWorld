@@ -17,6 +17,7 @@ public class Simulation implements Runnable {
     private int startEnergyLevel;
 
 
+
     public Simulation(int animalsNumber, int width, int height, int startEnergyLevel, int genomesLength) {
 
         Random rand = new Random();
@@ -27,6 +28,7 @@ public class Simulation implements Runnable {
         this.genomesLength = genomesLength;
 
         //dodac dodawanie na nowa pozycje
+
 
         int i = 0;
         while (i < animalsNumber) {

@@ -12,6 +12,7 @@ public class WorldMap {
     private int height;
     private int jungleTop;
     private int jungleBottom;
+
     private Map<Vector2d,Animal> animals = new HashMap<Vector2d, Animal>();
 
     public WorldMap(int width, int height) {
