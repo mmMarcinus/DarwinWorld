@@ -3,6 +3,7 @@ package agh.ics.darwinworld.WorldModel;
 import agh.ics.darwinworld.AnimalModel.Animal;
 import agh.ics.darwinworld.Util.Vector2d;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,8 @@ public class WorldMap {
     private int jungleBottom;
 
     private Map<Vector2d,Animal> animals = new HashMap<Vector2d, Animal>();
-    private Map<Vector2d,Plant> plants = new HashMap<>();
+    private Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
+    private ArrayList<MapChangeListener> observers = new ArrayList<MapChangeListener>();
 
     public WorldMap(int width, int height) {
         this.width = width;

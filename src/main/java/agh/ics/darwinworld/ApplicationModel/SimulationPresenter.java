@@ -11,6 +11,10 @@ public class SimulationPresenter implements MapChangeListener {
         this.worldMap = map;
     }
 
+    public void drawMap(){
+        //tutaj po kolei rysuje wszytkie rzeczy na mapie
+    }
+
     @Override
     public void mapChanged(WorldMap worldMap) {
         //tutaj renderuje mape na nowo

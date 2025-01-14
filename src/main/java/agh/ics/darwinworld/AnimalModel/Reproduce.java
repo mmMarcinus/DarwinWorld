@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Reproduce {
 
-    public static void reproduce(Animal parent1, Animal parent2, boolean mutationVariant, int mutations){
+    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel, boolean mutationVariant, int mutations){
         Random rand = new Random();
 
         //tworzenie genomu młodego
@@ -29,8 +29,6 @@ public class Reproduce {
 
         //mutacje
         //trzeba dorobic zeby wersja 2 sie robila tylko wtedy gdy uzytkownik tak wybierze w GUI
-
-
 
         int i = 0;
         boolean change = true;
@@ -72,18 +70,14 @@ public class Reproduce {
         }
 
 
-        // tworzenie energii młodego
-
-        Animal addedAnimal = new Animal(parent1.getPosition(), youngGenome, Simulation.startEnergyLevel, 0, parent1, parent2);
-        Simulation.animals.add(addedAnimal);
-        Simulation.worldMap.place(addedAnimal);
-
-        parent1.updateEnergyLevel(parent1.getEnergyLevel()-Simulation.startEnergyLevel);
-        parent2.updateEnergyLevel(parent2.getEnergyLevel()-Simulation.startEnergyLevel);
+        parent1.updateEnergyLevel(parent1.getEnergyLevel()-startEnergyLevel/2);
+        parent2.updateEnergyLevel(parent2.getEnergyLevel()-startEnergyLevel/2);
 
         parent1.updateKidsNumber(parent1.getKidsNumber()+1);
         parent2.updateKidsNumber(parent2.getKidsNumber()+1);
 
+        return new Animal(parent1.getPosition(), youngGenome, startEnergyLevel, 0, parent1, parent2);
         //UpdateFamilyTree.updateFamilyTree(parent1, parent2); nie dziala bo moze sie zapetlic w nieskonczonosc jakby ktorys sie rozmnozyl z dziadkiem albo dalej w drzewie
+
     }
 }
