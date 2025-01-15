@@ -48,12 +48,12 @@ public class WorldMap {
 
     public void remove(Animal animal){
         Vector2d position = animal.getPosition();
-        animals.remove(position);
+        animals.remove(position, animal);
     }
 
     public void remove(Plant plant){
         Vector2d position = plant.getPosition();
-        plants.remove(position);
+        plants.remove(position, plant);
     }
 
     public boolean isOccupied(Vector2d position) {
@@ -67,6 +67,7 @@ public class WorldMap {
     public int getHeight() { return height; }
     public int getJungleTop() { return jungleTop; }
     public int getJungleBottom() { return jungleBottom; }
-
+    public Map<Vector2d, Plant> getPlants() {return plants;}
+    public Map<Vector2d, Animal> getAnimals() {return animals;}
 
 }
