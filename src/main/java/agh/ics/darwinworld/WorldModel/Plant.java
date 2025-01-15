@@ -1,9 +1,9 @@
 package agh.ics.darwinworld.WorldModel;
 
 import agh.ics.darwinworld.Util.Vector2d;
-import agh.ics.darwinworld.World;
+import agh.ics.darwinworld.WorldModel.Abstracts.WorldElement;
 
-public class Plant implements WorldElement{
+public class Plant implements WorldElement {
     private Vector2d position;
     private int energyLevel;
 
