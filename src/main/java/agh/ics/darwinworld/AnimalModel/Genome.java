@@ -3,8 +3,8 @@ package agh.ics.darwinworld.AnimalModel;
 import java.util.Random;
 
 public class Genome {
-    private String genes;
-    private final int length;
+    protected String genes;
+    protected final int length;
 
     public Genome(int length){
         this.length = length;
@@ -35,7 +35,7 @@ public class Genome {
         return new Genome(youngGenomeGenes, length);
     }
 
-    public void twist(boolean change){
+    public void twist(){
         Random rand = new Random();
         int newGene;
         String oldGene;
@@ -48,22 +48,6 @@ public class Genome {
         char[] genesChars = genes.toCharArray();
         genesChars[mutationPlace] = (char) (newGene + '0');
         this.genes = String.valueOf(genesChars);
-
-        if (change){
-            int firstChangePlace;
-            int secondChangePlace;
-
-            firstChangePlace = rand.nextInt(length);
-            do {
-                secondChangePlace = rand.nextInt(length);
-            } while (firstChangePlace == secondChangePlace);
-
-            genesChars = this.genes.toCharArray();
-            char buf = genesChars[firstChangePlace];
-            genesChars[firstChangePlace] = genesChars[secondChangePlace];
-            genesChars[secondChangePlace] = buf;
-            this.genes = String.valueOf(genesChars);
-        }
     }
 
     public String getGenes(){return genes;}

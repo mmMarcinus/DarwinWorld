@@ -9,7 +9,7 @@ import java.util.logging.ConsoleHandler;
 
 public class Reproduce {
 
-    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel, boolean mutationVariant, int mutations){
+    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel,  int mutationsNumber){
         Random rand = new Random();
 
         //tworzenie genomu młodego
@@ -28,16 +28,9 @@ public class Reproduce {
         //trzeba dorobic zeby wersja 2 sie robila tylko wtedy gdy uzytkownik tak wybierze w GUI
 
         int i = 0;
-        boolean change = true;
-        while (i < mutations) {
-            if (mutationVariant) {
-                change = rand.nextBoolean();
-            }
-            //wersja normalna "pelna losowosc"
-
-            youngGenome.twist(change);
+        while (i < mutationsNumber) {
+            youngGenome.twist();
             i++;
-
         }
 
         int startGene = rand.nextInt(youngGenome.getLength())-1;
@@ -51,6 +44,5 @@ public class Reproduce {
         UpdateFamilyTree.updateFamilyTree(parent1, parent2, new HashSet<>());
 
         return new Animal(parent1.getPosition(), youngGenome, startEnergyLevel, 0, parent1, parent2, startGene);
-
     }
 }

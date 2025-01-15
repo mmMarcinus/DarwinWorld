@@ -2,16 +2,16 @@ package agh.ics.darwinworld.AnimalModel;
 
 import agh.ics.darwinworld.Enums.MapDirection;
 import agh.ics.darwinworld.Util.Vector2d;
-import agh.ics.darwinworld.WorldModel.WorldElement;
-import agh.ics.darwinworld.WorldModel.WorldMap;
+import agh.ics.darwinworld.WorldModel.Abstracts.WorldElement;
+import agh.ics.darwinworld.WorldModel.Abstracts.WorldMap;
 
 import java.util.Random;
 
 public class Animal implements WorldElement {
-    private MapDirection direction;
-    private Vector2d position;
+    protected MapDirection direction;
+    protected Vector2d position;
     private Genome genome;
-    private int energyLevel;
+    protected int energyLevel;
     private int age;
     private int kidsNumber;
     private int familyNumber;

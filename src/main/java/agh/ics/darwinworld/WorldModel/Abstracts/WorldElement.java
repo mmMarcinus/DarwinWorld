@@ -1,4 +1,4 @@
-package agh.ics.darwinworld.WorldModel;
+package agh.ics.darwinworld.WorldModel.Abstracts;
 
 import agh.ics.darwinworld.Util.Vector2d;
 

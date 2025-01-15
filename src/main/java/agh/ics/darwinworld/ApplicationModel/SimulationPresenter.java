@@ -1,14 +1,14 @@
 package agh.ics.darwinworld.ApplicationModel;
 
-import agh.ics.darwinworld.World;
-import agh.ics.darwinworld.WorldModel.MapChangeListener;
-import agh.ics.darwinworld.WorldModel.WorldMap;
+import agh.ics.darwinworld.WorldModel.Abstracts.MapChangeListener;
+import agh.ics.darwinworld.WorldModel.NormalWorldMap;
+import agh.ics.darwinworld.WorldModel.Abstracts.WorldMap;
 
 public class SimulationPresenter implements MapChangeListener {
-    WorldMap worldMap;
+    NormalWorldMap normalWorldMap;
 
-    public void setWorldMap(WorldMap map) {
-        this.worldMap = map;
+    public void setWorldMap(NormalWorldMap map) {
+        this.normalWorldMap = map;
     }
 
     public void drawMap(){
@@ -19,4 +19,5 @@ public class SimulationPresenter implements MapChangeListener {
     public void mapChanged(WorldMap worldMap) {
         //tutaj renderuje mape na nowo
     }
+
 }
