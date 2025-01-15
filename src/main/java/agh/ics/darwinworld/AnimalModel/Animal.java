@@ -17,8 +17,9 @@ public class Animal implements WorldElement {
     private int familyNumber;
     private Animal parent1;
     private Animal parent2;
+    private int currentGene;
 
-    public Animal(Vector2d initialPosition, String genome, int basicEnergyLevel, int age, Animal parent1, Animal parent2) {
+    public Animal(Vector2d initialPosition, String genome, int basicEnergyLevel, int age, Animal parent1, Animal parent2, int currentGene) {
         Random rand = new Random();
         this.position = initialPosition;
         this.genome = genome;
@@ -29,6 +30,7 @@ public class Animal implements WorldElement {
         this.familyNumber = 0;
         this.parent1 = parent1;
         this.parent2 = parent2;
+        this.currentGene = currentGene;
         int random = rand.nextInt(8);
         for(int i = 0; i < random; i++){
             this.direction = direction.next();
@@ -80,11 +82,19 @@ public class Animal implements WorldElement {
     }
 
     public Animal getParent1(){
-        return this.getParent1();
+        return this.parent1;
     }
 
     public Animal getParent2(){
-        return this.getParent2();
+        return this.parent2;
+    }
+
+    public int getCurrentGene(){
+        return this.currentGene;
+    }
+
+    public void updateCurrentGene(int currentGene){
+        this.currentGene = currentGene;
     }
 
     @Override
