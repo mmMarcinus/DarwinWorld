@@ -1,6 +1,7 @@
 package agh.ics.darwinworld.SimulationModel;
 
 import agh.ics.darwinworld.AnimalModel.Animal;
+import agh.ics.darwinworld.AnimalModel.Genome;
 import agh.ics.darwinworld.AnimalModel.Reproduce;
 import agh.ics.darwinworld.Util.Vector2d;
 import agh.ics.darwinworld.WorldModel.Plant;
@@ -49,18 +50,13 @@ public class Simulation implements Runnable {
 
         int i = 0;
         while (i < startAnimalsNumber) {
-            String genome = "";
-            for (int k = 0; k < genomesLength; k++) {
-                int gene = rand.nextInt(8);
-                genome +=  Integer.toString(gene);
-            }
             do{
                 int x = rand.nextInt(0, width) ;
                 int y = rand.nextInt(0, height);
                 position = new Vector2d(x,y);
             }while(animalPositionsTaken.contains(position));
             animalPositionsTaken.add(position);
-            Animal addedAnimal = new Animal(position, genome, startEnergyLevel, 0, null, null, 0);
+            Animal addedAnimal = new Animal(position, new Genome(genomesLength), startEnergyLevel, 0, null, null, 0);
 
             worldMap.place(addedAnimal);
             i+=1;
@@ -126,8 +122,8 @@ public class Simulation implements Runnable {
             //Skręt i przemieszczenie każdego zwierzaka.
             System.out.println("Zwierzaki wykonuja swoje ruchy");
             for (Animal animal : worldMap.getAnimals().values()){
-                String genome = animal.getGenome();
-                String move = genome.substring((animal.getCurrentGene()));
+                Genome genome = animal.getGenome();
+                String move = genome.getGenes().substring((animal.getCurrentGene()));
                 animal.move(move,worldMap);
             }
 
@@ -137,7 +133,7 @@ public class Simulation implements Runnable {
             Animal consumer;
             plantsToDelete = new ArrayList<>();
             for (Plant plant : worldMap.getPlants().values()){
-                consumer = new Animal(new Vector2d(0,0), "", -1, 0, null, null, 0);
+                consumer = new Animal(new Vector2d(0,0), new Genome(0), -1, 0, null, null, 0);
                 if (plantsToDelete.contains(plant)){
                     continue;
                 }

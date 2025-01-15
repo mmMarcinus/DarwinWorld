@@ -10,7 +10,7 @@ import java.util.Random;
 public class Animal implements WorldElement {
     private MapDirection direction;
     private Vector2d position;
-    private String genome;
+    private Genome genome;
     private int energyLevel;
     private int age;
     private int kidsNumber;
@@ -19,7 +19,7 @@ public class Animal implements WorldElement {
     private Animal parent2;
     private int currentGene;
 
-    public Animal(Vector2d initialPosition, String genome, int basicEnergyLevel, int age, Animal parent1, Animal parent2, int currentGene) {
+    public Animal(Vector2d initialPosition, Genome genome, int basicEnergyLevel, int age, Animal parent1, Animal parent2, int currentGene) {
         Random rand = new Random();
         this.position = initialPosition;
         this.genome = genome;
@@ -45,7 +45,7 @@ public class Animal implements WorldElement {
         return this.direction;
     }
 
-    public String getGenome(){
+    public Genome getGenome(){
         return this.genome;
     }
 
