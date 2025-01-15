@@ -71,6 +71,7 @@ public class Reproduce {
             }
         }
 
+        int startGene = rand.nextInt(youngGenome.length())-1;
 
         parent1.updateEnergyLevel(parent1.getEnergyLevel()-startEnergyLevel/2);
         parent2.updateEnergyLevel(parent2.getEnergyLevel()-startEnergyLevel/2);
@@ -78,9 +79,9 @@ public class Reproduce {
         parent1.updateKidsNumber(parent1.getKidsNumber()+1);
         parent2.updateKidsNumber(parent2.getKidsNumber()+1);
 
-        return new Animal(parent1.getPosition(), youngGenome, startEnergyLevel, 0, parent1, parent2);
+        UpdateFamilyTree.updateFamilyTree(parent1, parent2, new HashSet<>());
 
-        //UpdateFamilyTree.updateFamilyTree(parent1, parent2); nie dziala bo moze sie zapetlic w nieskonczonosc jakby ktorys sie rozmnozyl z dziadkiem albo dalej w drzewie
+        return new Animal(parent1.getPosition(), youngGenome, startEnergyLevel, 0, parent1, parent2, startGene);
 
     }
 }

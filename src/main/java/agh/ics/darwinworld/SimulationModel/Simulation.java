@@ -60,7 +60,7 @@ public class Simulation implements Runnable {
                 position = new Vector2d(x,y);
             }while(animalPositionsTaken.contains(position));
             animalPositionsTaken.add(position);
-            Animal addedAnimal = new Animal(position, genome, startEnergyLevel, 0, null, null);
+            Animal addedAnimal = new Animal(position, genome, startEnergyLevel, 0, null, null, 0);
 
             worldMap.place(addedAnimal);
             i+=1;
@@ -127,16 +127,17 @@ public class Simulation implements Runnable {
             System.out.println("Zwierzaki wykonuja swoje ruchy");
             for (Animal animal : worldMap.getAnimals().values()){
                 String genome = animal.getGenome();
-                String move = genome.substring((day - 1) % genomesLength);
+                String move = genome.substring((animal.getCurrentGene()));
                 animal.move(move,worldMap);
             }
 
             //Konsumpcja roślin, na których pola weszły zwierzaki
             System.out.println("Zwierzaki jedza napotkane rosliny");
 
-            Animal consumer = new Animal(new Vector2d(0,0), "", -1, 0, null, null);
+            Animal consumer;
             plantsToDelete = new ArrayList<>();
             for (Plant plant : worldMap.getPlants().values()){
+                consumer = new Animal(new Vector2d(0,0), "", -1, 0, null, null, 0);
                 if (plantsToDelete.contains(plant)){
                     continue;
                 }
@@ -166,7 +167,6 @@ public class Simulation implements Runnable {
                 if (consumer.getEnergyLevel() != -1){
                     consumer.updateEnergyLevel(consumer.getEnergyLevel()+energyFromPlant);
                     plantsToDelete.add(plant);
-                    consumer = new Animal(new Vector2d(0,0), "", -1, 0, null, null);
                 }
             }
             //usuwamy zjedzone rosliny
@@ -246,6 +246,10 @@ public class Simulation implements Runnable {
                 else {
                     animal.updateEnergyLevel(animal.getEnergyLevel() - energyTakenEachDay);
                 }
+            }
+            // Przesuwanie genomu na następny
+            for (Animal animal : worldMap.getAnimals().values()){
+                animal.updateCurrentGene((animal.getCurrentGene()+1)%genomesLength);
             }
             System.out.println("Dzien " + day + " zakonczyl sie\n\n");
            day++;
