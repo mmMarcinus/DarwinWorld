@@ -129,7 +129,6 @@ public class Simulation implements Runnable {
                 String genome = animal.getGenome();
                 String move = genome.substring((day - 1) % genomesLength);
                 animal.move(move,worldMap);
-                System.out.println(animal.getPosition());
             }
 
             //Konsumpcja roślin, na których pola weszły zwierzaki
@@ -139,12 +138,10 @@ public class Simulation implements Runnable {
             plantsToDelete = new ArrayList<>();
             for (Plant plant : worldMap.getPlants().values()){
                 if (plantsToDelete.contains(plant)){
-                    System.out.println("BYLO BYLO BYLO");
                     continue;
                 }
                 for (Animal animal : worldMap.getAnimals().values()){
                     if (plant.getPosition().equals(animal.getPosition())){
-                        System.out.println("Weszliosmy");
                         if (consumer.getEnergyLevel() < animal.getEnergyLevel()){
                             consumer = animal;
                         }
@@ -167,13 +164,11 @@ public class Simulation implements Runnable {
                     }
                 }
                 if (consumer.getEnergyLevel() != -1){
-                    System.out.println("Zjadamy krzaka");
                     consumer.updateEnergyLevel(consumer.getEnergyLevel()+energyFromPlant);
                     plantsToDelete.add(plant);
                     consumer = new Animal(new Vector2d(0,0), "", -1, 0, null, null);
                 }
             }
-            System.out.println(plantsToDelete);
             //usuwamy zjedzone rosliny
             for(Plant plant : plantsToDelete){
                 worldMap.remove(plant);
@@ -209,51 +204,50 @@ public class Simulation implements Runnable {
                 }
             }
 
-//            System.out.println("Wyrastaja nowe rosliny");
-//            //Wzrastanie nowych roślin na wybranych polach mapy.
-//            for(int i = 0; i<dayPlantNumber; i++){
-//                //najpierw wybieramy czy w dżungli czy nie
-//                double isJungle = rand.nextDouble();
-//                int x = rand.nextInt(0, worldMap.getWidth());
-//                int y = 0;
-//                if (isJungle<=0.8){//w dzungli
-//                    y = rand.nextInt(worldMap.getJungleBottom(), worldMap.getJungleTop());
-//                }else{//poza dzungla
-//                    double isBottom = rand.nextDouble();
-//                    if(isBottom<=0.5){//poludnie
-//                        y = rand.nextInt(0, worldMap.getJungleBottom());
-//                    }else{//polnoc
-//                        y = rand.nextInt(worldMap.getJungleTop(), worldMap.getHeight());
-//                    }
-//                }
-//
-//                Plant addedPlant = new Plant(new Vector2d(x,y), startEnergyLevel);
-//                plants.add(addedPlant);
-//                worldMap.place(addedPlant);
-//            }
+            System.out.println("Wyrastaja nowe rosliny");
+            //Wzrastanie nowych roślin na wybranych polach mapy.
+            for(int i = 0; i<dayPlantNumber; i++){
+                //najpierw wybieramy czy w dżungli czy nie
+                double isJungle = rand.nextDouble();
+                int x = rand.nextInt(0, worldMap.getWidth());
+                int y = 0;
+                if (isJungle<=0.8){//w dzungli
+                    y = rand.nextInt(worldMap.getJungleBottom(), worldMap.getJungleTop());
+                }else{//poza dzungla
+                    double isBottom = rand.nextDouble();
+                    if(isBottom<=0.5){//poludnie
+                        y = rand.nextInt(0, worldMap.getJungleBottom());
+                    }else{//polnoc
+                        y = rand.nextInt(worldMap.getJungleTop(), worldMap.getHeight());
+                    }
+                }
 
-//            System.out.println("Odejmujemy energie");
-//            //Zmniejszanie energii
-//            for (Animal animal : worldMap.getAnimals().values()){
-//                //Wariant Bieguny
-//                if (mapVariant) {
-//                    int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
-//                    int increasedEnergyDrop = 0;
-//                    if (animal.getPosition().getY() <= poleHeight){
-//                        increasedEnergyDrop = animal.getPosition().getY();
-//                    }
-//                    else if (animal.getPosition().getY() + poleHeight > worldMap.getHeight()){
-//                        increasedEnergyDrop = worldMap.getHeight() - animal.getPosition().getY() + 1;
-//                    }
-//                    increasedEnergyDrop = (int) Math.ceil(increasedEnergyDrop*13/10*energyTakenEachDay);
-//                    animal.updateEnergyLevel(animal.getEnergyLevel() - increasedEnergyDrop);
-//                }
-//                //Wariant normalny
-//                else {
-//                    animal.updateEnergyLevel(animal.getEnergyLevel() - energyTakenEachDay);
-//                }
-//            }
-//            System.out.println("Dzien " + day + " zakonczyl sie\n\n");
+                Plant addedPlant = new Plant(new Vector2d(x,y), startEnergyLevel);
+                worldMap.place(addedPlant);
+            }
+
+            System.out.println("Odejmujemy energie");
+            //Zmniejszanie energii
+            for (Animal animal : worldMap.getAnimals().values()){
+                //Wariant Bieguny
+                if (mapVariant) {
+                    int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
+                    int increasedEnergyDrop = 0;
+                    if (animal.getPosition().getY() <= poleHeight){
+                        increasedEnergyDrop = animal.getPosition().getY();
+                    }
+                    else if (animal.getPosition().getY() + poleHeight > worldMap.getHeight()){
+                        increasedEnergyDrop = worldMap.getHeight() - animal.getPosition().getY() + 1;
+                    }
+                    increasedEnergyDrop = (int) Math.ceil(increasedEnergyDrop*13/10*energyTakenEachDay);
+                    animal.updateEnergyLevel(animal.getEnergyLevel() - increasedEnergyDrop);
+                }
+                //Wariant normalny
+                else {
+                    animal.updateEnergyLevel(animal.getEnergyLevel() - energyTakenEachDay);
+                }
+            }
+            System.out.println("Dzien " + day + " zakonczyl sie\n\n");
            day++;
        }
     }
