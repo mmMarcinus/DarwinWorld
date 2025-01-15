@@ -1,6 +1,7 @@
 package agh.ics.darwinworld;
 
 import agh.ics.darwinworld.SimulationModel.Simulation;
+import agh.ics.darwinworld.Util.Vector2d;
 import agh.ics.darwinworld.WorldModel.WorldMap;
 
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ public class World {
 
         WorldMap worldMap = new WorldMap(10,10);
 
-        //grassMap.addObserver(new ConsoleMapDisplay());
 
         Simulation firstSimulation = new Simulation(3, 100, 5, 10, 10, 8,
                                                 8, 16, 5, 2, 1,

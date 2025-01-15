@@ -26,6 +26,10 @@ public class WorldMap {
         this.jungleBottom = (int) (height/2 - height * 0.1);
     }
 
+    public void attachListener(MapChangeListener listener) {
+        observers.add(listener);
+    }
+
     public void place(Animal animal){
         Vector2d position = animal.getPosition();
         if (!animals.containsKey(position)) {
@@ -38,18 +42,18 @@ public class WorldMap {
         Vector2d position = plant.getPosition();
         if (!plants.containsKey(position)) {
             plants.put(position, plant);
-            //notifyObservers("Ustawiono nowa rosline na pozycji " + position.toString());
+            //notifyObservers("Ustawiono nowe zwierze na pozycji " + position.toString());
         }//else throw new IncorrectPositionException(position); tutaj będa te rzeczy potem
     }
 
     public void remove(Animal animal){
         Vector2d position = animal.getPosition();
-        animals.remove(position);
+        animals.remove(position, animal);
     }
 
     public void remove(Plant plant){
         Vector2d position = plant.getPosition();
-        plants.remove(position);
+        plants.remove(position, plant);
     }
 
     public boolean isOccupied(Vector2d position) {
@@ -59,11 +63,11 @@ public class WorldMap {
         return false;
     }
 
-
     public int getWidth() { return width; }
     public int getHeight() { return height; }
     public int getJungleTop() { return jungleTop; }
     public int getJungleBottom() { return jungleBottom; }
-
+    public Map<Vector2d, Plant> getPlants() {return plants;}
+    public Map<Vector2d, Animal> getAnimals() {return animals;}
 
 }

@@ -1,6 +1,7 @@
 package agh.ics.darwinworld.AnimalModel;
 
 import agh.ics.darwinworld.SimulationModel.Simulation;
+import agh.ics.darwinworld.Util.Vector2d;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -44,10 +45,11 @@ public class Reproduce {
                 do {
                     newGene = rand.nextInt(8);
                     oldGene = youngGenome.substring(newGene, newGene + 1);
-                } while (Integer.valueOf(oldGene) == newGene);
+                } while (Integer.parseInt(oldGene) == newGene);
 
                 char[] youngGenomeChars = youngGenome.toCharArray();
-                youngGenomeChars[mutationPlace] = (char) newGene;
+                youngGenomeChars[mutationPlace] = (char) (newGene + '0');
+                System.out.println(youngGenomeChars[0]);
                 youngGenome = String.valueOf(youngGenomeChars);
                 i++;
             }
@@ -77,6 +79,7 @@ public class Reproduce {
         parent2.updateKidsNumber(parent2.getKidsNumber()+1);
 
         return new Animal(parent1.getPosition(), youngGenome, startEnergyLevel, 0, parent1, parent2);
+
         //UpdateFamilyTree.updateFamilyTree(parent1, parent2); nie dziala bo moze sie zapetlic w nieskonczonosc jakby ktorys sie rozmnozyl z dziadkiem albo dalej w drzewie
 
     }
