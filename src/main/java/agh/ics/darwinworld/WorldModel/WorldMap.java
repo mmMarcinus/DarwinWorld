@@ -26,6 +26,10 @@ public class WorldMap {
         this.jungleBottom = (int) (height/2 - height * 0.1);
     }
 
+    public void attachListener(MapChangeListener listener) {
+        observers.add(listener);
+    }
+
     public void place(Animal animal){
         Vector2d position = animal.getPosition();
         if (!animals.containsKey(position)) {
@@ -38,7 +42,7 @@ public class WorldMap {
         Vector2d position = plant.getPosition();
         if (!plants.containsKey(position)) {
             plants.put(position, plant);
-            //notifyObservers("Ustawiono nowa rosline na pozycji " + position.toString());
+            //notifyObservers("Ustawiono nowe zwierze na pozycji " + position.toString());
         }//else throw new IncorrectPositionException(position); tutaj będa te rzeczy potem
     }
 
@@ -58,7 +62,6 @@ public class WorldMap {
         }
         return false;
     }
-
 
     public int getWidth() { return width; }
     public int getHeight() { return height; }
