@@ -213,7 +213,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     @Override
     public void notifyListeners() {
         for (MapChangeListener observer : observers) {
-            observer.mapChanged(this);
+            observer.mapChanged();
         }
     }
 }

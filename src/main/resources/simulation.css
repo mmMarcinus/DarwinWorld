@@ -1,6 +1,41 @@
 .grid-pane {
-    -fx-scale-x: 4; /* Powiększa szerokość siatki */
-    -fx-scale-y: 4; /* Powiększa wysokość siatki */
-    -fx-padding: 10;  /* Dodaje odstęp wewnętrzny wokół siatki */
+    -fx-scale-x: 1; /* Powiększa szerokość siatki */
+    -fx-scale-y: 1; /* Powiększa wysokość siatki */
+    -fx-min-width: 100px;
+    -fx-max-height: 100px;
+    -fx-padding: 10px;
+}
 
+.left-vbox {
+    -fx-alignment: bottom;
+    -fx-background-color: Colors.RED;
+    -fx-border-color: transparent black transparent transparent;
+}
+
+.parameter-label{
+    -fx-padding: 3 7 0 7;
+    -fx-text-alignment: left;
+    -fx-font-size: 18;
+    -fx-max-width: 180;
+}
+
+.parameter_category-label{
+    -fx-padding: 7 7 0 7;
+    -fx-text-alignment: left;
+    -fx-font-size: 18;
+    -fx-max-width: 180;
+}
+
+.title-label{
+    -fx-padding: 7 7 0 7;
+    -fx-text-alignment: center;
+    -fx-font-size: 21px;
+    -fx-max-width: 120;
+}
+
+.left-scrollpane{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: never;
 }
