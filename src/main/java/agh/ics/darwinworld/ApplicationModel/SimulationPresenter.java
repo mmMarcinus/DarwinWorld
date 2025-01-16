@@ -3,8 +3,8 @@ package agh.ics.darwinworld.ApplicationModel;
 import agh.ics.darwinworld.WorldModel.Abstracts.MapChangeListener;
 import agh.ics.darwinworld.WorldModel.NormalWorldMap;
 import agh.ics.darwinworld.WorldModel.Abstracts.WorldMap;
+import agh.ics.darwinworld.Records.WorldParameters;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -12,10 +12,16 @@ import javafx.scene.layout.RowConstraints;
 
 public class SimulationPresenter implements MapChangeListener {
 
+    private WorldParameters worldParameters;
+
     private NormalWorldMap normalWorldMap;
 
     @FXML
     private GridPane mapGrid;
+
+    public void setWorldParameters(WorldParameters worldParameters){
+        this.worldParameters = worldParameters;
+    }
 
     public void setWorldMap(NormalWorldMap normalWorldMap) {
         this.normalWorldMap = normalWorldMap;

@@ -1,13 +1,6 @@
-.block-background {
-    -fx-background-color:
-            linear-gradient(from 0% 0% to 100% 100%, #E0FFD6, #A0522D),
-            linear-gradient(from 0% 100% to 100% 0%, #A0522D, #E0FFD6);
-    -fx-background-insets: 0, 0, 1, 1;
-}
-
 .grid-pane {
     -fx-font-size: 14px;
-    -fx-font-family: "Arial";
+    -fx-font-family: "Aptos";
 }
 
 .label-default {
@@ -17,34 +10,33 @@
 .text-field {
     -fx-pref-width: 200px;
     -fx-pref-height: 25px;
+    -fx-padding: 10px
 }
 
 .button {
-    -fx-background-color: #4CAF50;
+    -fx-background-color: #318B3B;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-padding: 7px 14px;
+    -fx-padding: 10px 15px;
 }
 
 .button:hover {
-    -fx-background-color: #45a049;
+    -fx-background-color: #18491B;
 }
 
 .check-box {
-    -fx-font-size: 12px;
+    -fx-font-size: 15px;
 }
 
 .heading-label {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-alignment: center;
-    -fx-text-fill: #333333;
-    -fx-padding: 10 0 10 0;
+    -fx-padding: 10;
 }
 
 .world-label {
-    -fx-font-family: "Comic Sans MS", "Comic Sans", cursive;
+    -fx-font-family: "Aptos";
     -fx-font-size: 40px;
-    -fx-text-fill: #333333;
-    -fx-padding: 7px;
+    -fx-padding: 10px;
 }
