@@ -1,7 +1,8 @@
-package agh.ics.darwinworld.Presenter;
+package agh.ics.darwinworld.Presenter.Menu;
 
 import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
+import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

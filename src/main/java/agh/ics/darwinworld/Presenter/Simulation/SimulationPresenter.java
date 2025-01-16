@@ -1,4 +1,4 @@
-package agh.ics.darwinworld.Presenter;
+package agh.ics.darwinworld.Presenter.Simulation;
 
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.Util.Vector2d;
