@@ -1,9 +1,9 @@
-package agh.ics.darwinworld.AnimalModel;
+package agh.ics.darwinworld.Model.AnimalModel;
 
-import agh.ics.darwinworld.Enums.MapDirection;
-import agh.ics.darwinworld.Util.Vector2d;
-import agh.ics.darwinworld.WorldModel.Abstracts.WorldElement;
-import agh.ics.darwinworld.WorldModel.Abstracts.WorldMap;
+import agh.ics.darwinworld.Model.Enums.MapDirection;
+import agh.ics.darwinworld.Model.Util.Vector2d;
+import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldElement;
+import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 
 import java.util.Random;
 

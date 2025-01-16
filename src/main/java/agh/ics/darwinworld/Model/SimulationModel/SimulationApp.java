@@ -1,4 +1,4 @@
-package agh.ics.darwinworld.SimulationModel;
+package agh.ics.darwinworld.Model.SimulationModel;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;

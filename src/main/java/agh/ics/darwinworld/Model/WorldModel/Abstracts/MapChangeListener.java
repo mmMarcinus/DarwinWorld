@@ -1,4 +1,4 @@
-package agh.ics.darwinworld.WorldModel.Abstracts;
+package agh.ics.darwinworld.Model.WorldModel.Abstracts;
 
 public interface MapChangeListener {
     void mapChanged();

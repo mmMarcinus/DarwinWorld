@@ -1,7 +1,6 @@
 package agh.ics.darwinworld;
 
-import agh.ics.darwinworld.MenuModel.MapMenuApp;
-import agh.ics.darwinworld.SimulationModel.SimulationApp;
+import agh.ics.darwinworld.Model.SimulationModel.SimulationApp;
 import javafx.application.Application;
 
 public class WorldGUI {

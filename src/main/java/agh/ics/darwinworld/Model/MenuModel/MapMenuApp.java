@@ -1,5 +1,6 @@
-package agh.ics.darwinworld.MenuModel;
+package agh.ics.darwinworld.Model.MenuModel;
 
+import agh.ics.darwinworld.Presenter.MapMenuPresenter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

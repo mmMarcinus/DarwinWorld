@@ -1,4 +1,4 @@
-package agh.ics.darwinworld.Util;
+package agh.ics.darwinworld.Model.Util;
 
 import java.util.Objects;
 

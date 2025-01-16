@@ -1,15 +1,11 @@
-package agh.ics.darwinworld.AnimalModel;
-
-import agh.ics.darwinworld.SimulationModel.Simulation;
-import agh.ics.darwinworld.Util.Vector2d;
+package agh.ics.darwinworld.Model.AnimalModel;
 
 import java.util.HashSet;
 import java.util.Random;
-import java.util.logging.ConsoleHandler;
 
 public class Reproduce {
 
-    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel,  int mutationsNumber){
+    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel, int mutationsNumber){
         Random rand = new Random();
 
         //tworzenie genomu młodego

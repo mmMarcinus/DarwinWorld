@@ -1,8 +1,6 @@
-package agh.ics.darwinworld.Enums;
+package agh.ics.darwinworld.Model.Enums;
 
-import agh.ics.darwinworld.Util.Vector2d;
-
-import java.util.Map;
+import agh.ics.darwinworld.Model.Util.Vector2d;
 
 public enum MapDirection {
     NORTH,

@@ -1,7 +1,7 @@
-package agh.ics.darwinworld.WorldModel;
+package agh.ics.darwinworld.Model.WorldModel;
 
-import agh.ics.darwinworld.Util.Vector2d;
-import agh.ics.darwinworld.WorldModel.Abstracts.WorldElement;
+import agh.ics.darwinworld.Model.Util.Vector2d;
+import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldElement;
 
 public class Plant implements WorldElement {
     private Vector2d position;
