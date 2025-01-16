@@ -8,6 +8,9 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="550.0" minWidth="850.0"
+            minHeight="800.0" minWidth="1100"
             fx:controller="agh.ics.darwinworld.ApplicationModel.SimulationPresenter">
+    <center>
+        <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" styleClass="grid-pane"/>
+    </center>
 </BorderPane>
