@@ -3,87 +3,71 @@ package agh.ics.darwinworld.SimulationModel;
 import agh.ics.darwinworld.AnimalModel.Animal;
 import agh.ics.darwinworld.AnimalModel.ChangeGenome;
 import agh.ics.darwinworld.AnimalModel.Genome;
+import agh.ics.darwinworld.ApplicationModel.SimulationPresenter;
 import agh.ics.darwinworld.Util.Vector2d;
 import agh.ics.darwinworld.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.WorldModel.Plant;
 import agh.ics.darwinworld.WorldModel.NormalWorldMap;
 import agh.ics.darwinworld.WorldModel.PolarWorldMap;
+import agh.ics.darwinworld.Records.WorldParameters;
 
 import java.util.*;
 
 public class Simulation implements Runnable {
-    private final int startAnimalsNumber;
+    private WorldParameters worldParameters;
+
     private WorldMap worldMap;
-    private final int genomesLength;
-    private final int startEnergyLevel;
-    private int reproduceEnergyRequired;
-    private int energyFromPlant;
-    private final int startPlantNumber;
-    private final int dayPlantNumber;
-    private final int energyTakenEachDay;
-    private final int minMutation;
-    private final int maxMutation;
-    private boolean polarMap;
-    private boolean changeGenome;
 
-    public Simulation(int startAnimalsNumber, int startPlantNumber, int dayPlantNumber, int width, int height,
-                      int startEnergyLevel, int genomesLength, int reproduceEnergyRequired, int energyFromPlant,
-                      int energyTakenEachDay, int minMutation, int maxMutation,boolean polarMap, boolean changeGenome) {
+    private int dayCount;
 
-        this.startAnimalsNumber = startAnimalsNumber;
-        this.startPlantNumber = startPlantNumber;
-        this.dayPlantNumber = dayPlantNumber;
-        this.startEnergyLevel = startEnergyLevel;
-        this.genomesLength = genomesLength;
-        this.reproduceEnergyRequired = reproduceEnergyRequired;
-        this.energyFromPlant = energyFromPlant;
-        this.changeGenome = changeGenome;
-        this.polarMap = polarMap;
-        this.energyTakenEachDay = energyTakenEachDay;
-        this.minMutation = minMutation;
-        this.maxMutation = maxMutation;
-        if(!polarMap){
-            this.worldMap = new NormalWorldMap(width, height);
+    public Simulation(WorldParameters worldParameters, SimulationPresenter presenter) {
+        Random rand = new Random();
+
+        this.worldParameters = worldParameters;
+
+        if(!worldParameters.polarMap()){
+            this.worldMap = new NormalWorldMap(worldParameters.width(), worldParameters.height());
         } else{
-            this.worldMap = new PolarWorldMap(width, height);
+            this.worldMap = new PolarWorldMap(worldParameters.width(), worldParameters.height());
         }
 
-        Random rand = new Random();
+
         //dodawanie startowych zwierzakow na losowe pozycje z losowymi genomami
 
         HashSet<Vector2d> animalPositionsTaken = new HashSet<>();
         Vector2d position;
 
         int i = 0;
-        while (i < startAnimalsNumber) {
+        while (i < worldParameters.startAnimalsNumber()) {
             do{
-                int x = rand.nextInt(0, width) ;
-                int y = rand.nextInt(0, height);
+                int x = rand.nextInt(0, worldParameters.width()) ;
+                int y = rand.nextInt(0, worldParameters.height());
                 position = new Vector2d(x,y);
             }while(animalPositionsTaken.contains(position));
             animalPositionsTaken.add(position);
             Genome newGenome;
-            if (!changeGenome){
-                newGenome = new Genome(genomesLength);
+            if (!worldParameters.changeGenome()){
+                newGenome = new Genome(worldParameters.genomesLength());
             }else{
-                newGenome = new ChangeGenome(genomesLength);
+                newGenome = new ChangeGenome(worldParameters.genomesLength());
             }
-            Animal addedAnimal = new Animal(position, newGenome, startEnergyLevel, 0, null, null, 0);
+            Animal addedAnimal = new Animal(position, newGenome, worldParameters.startEnergyLevel(), 0, null, null, 0);
 
             worldMap.place(addedAnimal);
             i+=1;
         }
+
 
         //dodawanie startowych roślinek na losowe pozycje
 
         HashSet<Vector2d> plantPositionsTaken = new HashSet<>();
 
         i = 0;
-        while (i < startPlantNumber) {
+        while (i < worldParameters.startPlantNumber()) {
             do{
                 //najpierw wybieramy czy w jungli czy nie
                 double isJungle = rand.nextDouble();
-                int x = rand.nextInt(0, width);
+                int x = rand.nextInt(0, worldParameters.width());
                 int y = 0;
                 if (isJungle<=0.8){//w dzungli
                     y = rand.nextInt(worldMap.getJungleBottom(), worldMap.getJungleTop());
@@ -98,7 +82,7 @@ public class Simulation implements Runnable {
                 position = new Vector2d(x,y);
             }while(plantPositionsTaken.contains(position));
             plantPositionsTaken.add(position);
-            Plant addedPlant = new Plant(position, energyFromPlant);
+            Plant addedPlant = new Plant(position, worldParameters.energyFromPlant());
 
             worldMap.place(addedPlant);
             i+=1;
@@ -106,12 +90,15 @@ public class Simulation implements Runnable {
 
     }
 
-    public void run() {
-        Random rand = new Random();
+    public WorldMap getWorldMap(){
+        return worldMap;
+    }
 
-        int day = 1;
-        while(day < 4) {
-            System.out.println("Dzien " + day + " rozpoczyna sie");
+    public void run() {
+
+        this.dayCount = 1;
+        while(dayCount < 4) {
+            System.out.println("Dzien " + dayCount + " rozpoczyna sie");
 
 
             //Usunięcie martwych zwierzaków z mapy.
@@ -120,23 +107,23 @@ public class Simulation implements Runnable {
 
             //Skręt i przemieszczenie każdego zwierzaka.
             System.out.println("Zwierzaki wykonuja swoje ruchy");
-            worldMap.moveAllAnimals(energyTakenEachDay);
+            worldMap.moveAllAnimals(worldParameters.energyTakenEachDay());
 
             //Konsumpcja roślin, na których pola weszły zwierzaki
             System.out.println("Zwierzaki jedza napotkane rosliny");
-            worldMap.eatPlants(energyFromPlant);
+            worldMap.eatPlants(worldParameters.energyFromPlant());
 
             //Rozmnażanie się najedzonych zwierzaków znajdujących się na tym samym polu.
             System.out.println("Zwierzaki rozmnazaja sie");
-            worldMap.reproduceAnimals(startEnergyLevel, reproduceEnergyRequired, maxMutation-minMutation);
+            worldMap.reproduceAnimals(worldParameters.startEnergyLevel(), worldParameters.reproduceEnergyRequired(),
+                                      (worldParameters.maxMutation()-worldParameters.minMutation()));
 
             System.out.println("Wyrastaja nowe rosliny");
             //Wzrastanie nowych roślin na wybranych polach mapy.
-            worldMap.placeNewPlants(dayPlantNumber, energyFromPlant);
+            worldMap.placeNewPlants(worldParameters.dayPlantNumber(), worldParameters.energyFromPlant());
 
-
-            System.out.println("Dzien " + day + " zakonczyl sie\n\n");
-            day++;
+            System.out.println("Dzien " + dayCount + " zakonczyl sie\n\n");
+            dayCount++;
        }
     }
 }
