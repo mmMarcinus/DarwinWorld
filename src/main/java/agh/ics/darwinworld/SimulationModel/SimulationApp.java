@@ -13,6 +13,7 @@ public class SimulationApp extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
         BorderPane viewRoot = fxmlLoader.load();
+
         configureStage(primaryStage, viewRoot);
 
         primaryStage.show();
@@ -20,6 +21,10 @@ public class SimulationApp extends Application {
 
     private void configureStage(Stage primaryStage, BorderPane viewRoot) {
         var scene = new Scene(viewRoot);
+
+        String css = getClass().getClassLoader().getResource("simulation.css").toExternalForm();
+        scene.getStylesheets().add(css);
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("Simulation");
         primaryStage.minWidthProperty().bind(viewRoot.minWidthProperty());

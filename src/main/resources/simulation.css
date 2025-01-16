@@ -1,0 +1,6 @@
+.grid-pane {
+    -fx-scale-x: 4; /* Powiększa szerokość siatki */
+    -fx-scale-y: 4; /* Powiększa wysokość siatki */
+    -fx-padding: 10;  /* Dodaje odstęp wewnętrzny wokół siatki */
+
+}
