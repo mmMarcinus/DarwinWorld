@@ -24,7 +24,7 @@ public class MapMenuApp extends Application {
     private void configureStage(Stage primaryStage, GridPane viewRoot) {
         var scene = new Scene(viewRoot);
 
-        String css = getClass().getClassLoader().getResource("menu.css").toExternalForm();
+        String css = getClass().getClassLoader().getResource("MapMenu.css").toExternalForm();
         scene.getStylesheets().add(css);
 
         primaryStage.setScene(scene);

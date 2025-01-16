@@ -10,7 +10,12 @@
             xmlns:fx="http://javafx.com/fxml"
             minHeight="800.0" minWidth="1100"
             fx:controller="agh.ics.darwinworld.ApplicationModel.SimulationPresenter">
+    <left>
+        <VBox styleClass="left-vbox">
+            <Label fx:id="testLabel" text="Wypisanie danych"/>
+        </VBox>
+    </left>
     <center>
-        <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" styleClass="grid-pane"/>
+        <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" styleClass="grid-pane" />
     </center>
 </BorderPane>
