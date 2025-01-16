@@ -1,7 +1,7 @@
-package agh.ics.darwinworld.WorldModel;
+package agh.ics.darwinworld.Model.WorldModel;
 
-import agh.ics.darwinworld.AnimalModel.Animal;
-import agh.ics.darwinworld.WorldModel.Abstracts.AbstractWorldMap;
+import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.WorldModel.Abstracts.AbstractWorldMap;
 
 
 public class NormalWorldMap extends AbstractWorldMap {

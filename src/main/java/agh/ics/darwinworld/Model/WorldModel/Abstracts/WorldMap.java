@@ -1,8 +1,8 @@
-package agh.ics.darwinworld.WorldModel.Abstracts;
+package agh.ics.darwinworld.Model.WorldModel.Abstracts;
 
-import agh.ics.darwinworld.AnimalModel.Animal;
-import agh.ics.darwinworld.Util.Vector2d;
-import agh.ics.darwinworld.WorldModel.Plant;
+import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.Util.Vector2d;
+import agh.ics.darwinworld.Model.WorldModel.Plant;
 
 import java.util.Map;
 

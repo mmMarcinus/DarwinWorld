@@ -1,4 +1,4 @@
-package agh.ics.darwinworld.AnimalModel;
+package agh.ics.darwinworld.Model.AnimalModel;
 
 import java.util.Random;
 

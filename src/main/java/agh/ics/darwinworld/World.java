@@ -1,7 +1,6 @@
 package agh.ics.darwinworld;
 
-import agh.ics.darwinworld.SimulationModel.Simulation;
-import agh.ics.darwinworld.WorldModel.NormalWorldMap;
+import agh.ics.darwinworld.Model.WorldModel.NormalWorldMap;
 
 public class World {
     public static void main(String[] args) {

@@ -6,10 +6,37 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.shape.Line?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="800.0" minWidth="1100"
-            fx:controller="agh.ics.darwinworld.ApplicationModel.SimulationPresenter">
+            minHeight="300.0" minWidth="800"
+            maxHeight="500"
+            fx:controller="agh.ics.darwinworld.Presenter.SimulationPresenter">
+    <left>
+        <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="left-scrollpane">
+            <content>
+                <VBox styleClass="left-vbox" prefWidth="180" maxWidth="200">
+                    <Label fx:id="is_polar_label" text="BIEGUNY" styleClass="title-label"/>
+                    <Label fx:id="is_change_label" text="ZAMIANA" prefWidth="200" styleClass="title-label"/>
+                    <Label text="MAP:" styleClass="parameter_category-label"/>
+                    <Label fx:id="height_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="width_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label text="ANIMALS:" styleClass="parameter_category-label"/>
+                    <Label fx:id="start_number_of_animals_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="start_animal_energy_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="energy_taken_each_day_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="energy_required_to_reproduce_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="genome_length_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="min_mutation_number_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="max_mutation_number_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label text="PLANTS:" styleClass="parameter_category-label"/>
+                    <Label fx:id="number_of_plants_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="plants_grown_each_day_label" text="Wypisanie danych danych" styleClass="parameter-label"/>
+                    <Label fx:id="energy_from_plant_label" text="Wypisanie danych" styleClass="parameter-label"/>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </left>
     <center>
         <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" styleClass="grid-pane"/>
     </center>

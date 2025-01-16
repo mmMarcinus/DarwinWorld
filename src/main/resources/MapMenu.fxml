@@ -8,7 +8,7 @@
           xmlns:fx="http://javafx.com/fxml"
           prefHeight="700.0" prefWidth="1000.0"
           hgap = "10" vgap = "10"
-          fx:controller="agh.ics.darwinworld.MenuModel.MapMenuPresenter">
+          fx:controller="agh.ics.darwinworld.Presenter.MapMenuPresenter">
 
     <padding>
         <Insets top="25" right="25" bottom="10" left="25"/>

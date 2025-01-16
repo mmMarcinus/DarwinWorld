@@ -1,15 +1,15 @@
-package agh.ics.darwinworld.SimulationModel;
+package agh.ics.darwinworld.Model.SimulationModel;
 
-import agh.ics.darwinworld.AnimalModel.Animal;
-import agh.ics.darwinworld.AnimalModel.ChangeGenome;
-import agh.ics.darwinworld.AnimalModel.Genome;
-import agh.ics.darwinworld.ApplicationModel.SimulationPresenter;
-import agh.ics.darwinworld.Util.Vector2d;
-import agh.ics.darwinworld.WorldModel.Abstracts.WorldMap;
-import agh.ics.darwinworld.WorldModel.Plant;
-import agh.ics.darwinworld.WorldModel.NormalWorldMap;
-import agh.ics.darwinworld.WorldModel.PolarWorldMap;
-import agh.ics.darwinworld.Records.WorldParameters;
+import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.AnimalModel.ChangeGenome;
+import agh.ics.darwinworld.Model.AnimalModel.Genome;
+import agh.ics.darwinworld.Presenter.SimulationPresenter;
+import agh.ics.darwinworld.Model.Util.Vector2d;
+import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
+import agh.ics.darwinworld.Model.WorldModel.Plant;
+import agh.ics.darwinworld.Model.WorldModel.NormalWorldMap;
+import agh.ics.darwinworld.Model.WorldModel.PolarWorldMap;
+import agh.ics.darwinworld.Model.Records.WorldParameters;
 
 import java.util.*;
 
