@@ -3,9 +3,7 @@ package agh.ics.darwinworld.WorldModel.Abstracts;
 import agh.ics.darwinworld.AnimalModel.Animal;
 import agh.ics.darwinworld.AnimalModel.Genome;
 import agh.ics.darwinworld.AnimalModel.Reproduce;
-import agh.ics.darwinworld.Enums.MapDirection;
 import agh.ics.darwinworld.Util.Vector2d;
-import agh.ics.darwinworld.World;
 import agh.ics.darwinworld.WorldModel.Plant;
 
 import java.util.*;

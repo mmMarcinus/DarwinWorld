@@ -1,11 +1,12 @@
 package agh.ics.darwinworld.ApplicationModel;
 
+import agh.ics.darwinworld.Records.WorldParameters;
 import agh.ics.darwinworld.View.AnimalView;
+import agh.ics.darwinworld.View.EmptyTileView;
 import agh.ics.darwinworld.View.PlantView;
 import agh.ics.darwinworld.WorldModel.Abstracts.MapChangeListener;
-import agh.ics.darwinworld.WorldModel.NormalWorldMap;
 import agh.ics.darwinworld.WorldModel.Abstracts.WorldMap;
-import agh.ics.darwinworld.Records.WorldParameters;
+import agh.ics.darwinworld.WorldModel.NormalWorldMap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -41,12 +42,14 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void drawMap(){
         mapGrid.getChildren().clear();
-//        mapGrid.add(new AnimalView(),0,0);
-//        mapGrid.add(new AnimalView(),1,0);
-//        mapGrid.add(new AnimalView(),0,1);
-//        mapGrid.add(new PlantView(), 10, 10);
-//        mapGrid.add(new PlantView(), 1, 1);
-//        mapGrid.add(new AnimalView(),3,0);
+        mapGrid.add(new AnimalView(),0,0);
+        mapGrid.add(new AnimalView(),1,0);
+        mapGrid.add(new AnimalView(),0,1);
+        mapGrid.add(new PlantView(), 3, 3);
+        mapGrid.add(new PlantView(), 1, 1);
+        mapGrid.add(new AnimalView(),3,0);
+        mapGrid.add(new EmptyTileView(),2,1);
+        mapGrid.add(new EmptyTileView(),2,2);
 
         //tutaj bede roibl
 //        //tutaj po kolei rysuje wszytkie rzeczy na mapie

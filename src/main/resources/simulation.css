@@ -4,6 +4,8 @@
     -fx-min-width: 100;
     -fx-max-height: 100;
     -fx-padding: 10;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
 }
 
 .left-vbox {

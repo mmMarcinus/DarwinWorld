@@ -12,10 +12,10 @@
             fx:controller="agh.ics.darwinworld.ApplicationModel.SimulationPresenter">
     <left>
         <VBox styleClass="left-vbox">
-            <Label fx:id="testLabel" text="Wypisanie danych"/>
+<!--            <Label fx:id="testLabel" text="Wypisanie danych"/>-->
         </VBox>
     </left>
     <center>
-        <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" styleClass="grid-pane" />
+        <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" styleClass="grid-pane" columnConstraints="120" rowConstraints="120"/>
     </center>
 </BorderPane>
