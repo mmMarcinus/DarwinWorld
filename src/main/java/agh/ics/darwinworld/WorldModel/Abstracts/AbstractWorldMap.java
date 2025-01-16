@@ -178,12 +178,14 @@ public abstract class AbstractWorldMap implements WorldMap {
     public void remove(Animal animal){
         Vector2d position = animal.getPosition();
         animals.remove(position, animal);
+        notifyListeners();
     }
 
     @Override
     public void remove(Plant plant){
         Vector2d position = plant.getPosition();
         plants.remove(position, plant);
+        notifyListeners();
     }
 
     public int getWidth() { return width; }
