@@ -78,7 +78,7 @@
 
     <!-- Buttons -->
     <HBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.columnSpan="6">
-        <Button text="Start simulation" fx:id="startSimulation" styleClass="button" maxWidth="1.7976931348623157E308" onAction=""/>
+        <Button text="Start simulation" fx:id="startSimulation" styleClass="button" maxWidth="1.7976931348623157E308"/>
     </HBox>
 
 </GridPane>
