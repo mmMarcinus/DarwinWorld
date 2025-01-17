@@ -8,7 +8,7 @@
           xmlns:fx="http://javafx.com/fxml"
           prefHeight="700.0" prefWidth="1000.0"
           hgap = "10" vgap = "10"
-          fx:controller="agh.ics.darwinworld.Presenter.MapMenuPresenter">
+          fx:controller="agh.ics.darwinworld.Presenter.Menu.MapMenuPresenter">
 
     <padding>
         <Insets top="25" right="25" bottom="10" left="25"/>
@@ -78,7 +78,7 @@
 
     <!-- Buttons -->
     <HBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.columnSpan="6">
-        <Button text="Start simulation" fx:id="startSimulation" styleClass="button" maxWidth="1.7976931348623157E308"/>
+        <Button text="Start simulation" fx:id="startSimulation" styleClass="button" maxWidth="1.7976931348623157E308" onAction=""/>
     </HBox>
 
 </GridPane>

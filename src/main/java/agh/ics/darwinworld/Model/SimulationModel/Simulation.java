@@ -3,7 +3,7 @@ package agh.ics.darwinworld.Model.SimulationModel;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.AnimalModel.ChangeGenome;
 import agh.ics.darwinworld.Model.AnimalModel.Genome;
-import agh.ics.darwinworld.Presenter.SimulationPresenter;
+import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.Model.WorldModel.Plant;

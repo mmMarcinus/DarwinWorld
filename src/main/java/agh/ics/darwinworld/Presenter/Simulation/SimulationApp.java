@@ -1,7 +1,6 @@
-package agh.ics.darwinworld.Model.SimulationModel;
+package agh.ics.darwinworld.Presenter.Simulation;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
