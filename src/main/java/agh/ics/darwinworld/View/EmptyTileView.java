@@ -2,11 +2,16 @@ package agh.ics.darwinworld.View;
 
 
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 
-public class EmptyTileView extends Label {
-    public EmptyTileView() {
-        super();
-        setStyle("-fx-background-color: #95bb65; -fx-padding: 10; -fx-pref-width: 80; -fx-pref-height: 80");
-        setText("*");
-    }
+public class EmptyTileView extends StackPane {
+        public EmptyTileView() {
+            super();
+            setStyle("-fx-background-color: #95bb65; -fx-background-image: url('/images/EmptyTileImage.png'); -fx-background-size: cover;");
+            setPrefWidth(999);
+            setPrefHeight(999);
+            setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        }
 }

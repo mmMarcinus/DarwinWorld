@@ -1,15 +1,30 @@
+.border-pane{
+    -fx-background-color: #a7bfb5;
+}
+
 .grid-pane {
-    -fx-scale-x: 1; /* Powiększa szerokość siatki */
-    -fx-scale-y: 1; /* Powiększa wysokość siatki */
-    -fx-min-width: 100px;
-    -fx-max-height: 100px;
-    -fx-padding: 10px;
+    align-content: center;
+}
+
+.left-scrollpane{
+    -fx-background-color: #c5d9d0;
+    -fx-border-color: transparent;
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: never;
+    -fx-border-radius: 40;
+}
+
+.left-scrollpane .viewport {
+    -fx-background-color: #c5d9d0;         /* bez tego tło nie działało */
+}
+
+.left-scrollpane .content {
+    -fx-background-color: #c5d9d0;         /* Tło zawartości, np. VBox */
 }
 
 .left-vbox {
     -fx-alignment: bottom;
-    -fx-background-color: Colors.RED;
-    -fx-border-color: transparent black transparent transparent;
+    -fx-background-color: #c5d9d0;
 }
 
 .parameter-label{
@@ -33,9 +48,3 @@
     -fx-max-width: 120;
 }
 
-.left-scrollpane{
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-hbar-policy: never;
-    -fx-vbar-policy: never;
-}

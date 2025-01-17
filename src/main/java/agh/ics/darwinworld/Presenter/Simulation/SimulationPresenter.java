@@ -12,7 +12,10 @@ import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 
 import java.util.HashSet;
 import java.util.List;
@@ -62,7 +65,8 @@ public class SimulationPresenter implements MapChangeListener {
 
     @FXML
     public void initialize(){
-        worldMap = new NormalWorldMap(10,10);
+        worldMap = new NormalWorldMap(20,20);
+
         setWorldMap(worldMap);
         fillLabels();
         drawMap();
@@ -94,12 +98,26 @@ public class SimulationPresenter implements MapChangeListener {
         for (Animal currentAnimal : animals) {
             if (!usedPositions.contains(currentAnimal.getPosition())) {
                 mapGrid.add(new AnimalView(), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                ColumnConstraints columnConstraints = new ColumnConstraints();
+                columnConstraints.setHgrow(Priority.ALWAYS);
+                RowConstraints rowConstraints = new RowConstraints();
+                rowConstraints.setVgrow(Priority.ALWAYS);
+                mapGrid.getColumnConstraints().add(columnConstraints);
+                mapGrid.getRowConstraints().add(rowConstraints);
+
                 usedPositions.add(currentAnimal.getPosition());
             }
         }
         for (Plant currentPlant : plants) {
             if (!usedPositions.contains(currentPlant.getPosition())) {
                 mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                ColumnConstraints columnConstraints = new ColumnConstraints();
+                columnConstraints.setHgrow(Priority.ALWAYS);
+                RowConstraints rowConstraints = new RowConstraints();
+                rowConstraints.setVgrow(Priority.ALWAYS);
+                mapGrid.getColumnConstraints().add(columnConstraints);
+                mapGrid.getRowConstraints().add(rowConstraints);
+
                 usedPositions.add(currentPlant.getPosition());
             }
         }
@@ -107,6 +125,12 @@ public class SimulationPresenter implements MapChangeListener {
             for (int y = 0; y<worldMap.getWidth(); y++){
                 if(!usedPositions.contains(new Vector2d(x,y))){
                     mapGrid.add(new EmptyTileView(),x,y);
+                    ColumnConstraints columnConstraints = new ColumnConstraints();
+                    columnConstraints.setHgrow(Priority.ALWAYS);
+                    RowConstraints rowConstraints = new RowConstraints();
+                    rowConstraints.setVgrow(Priority.ALWAYS);
+                    mapGrid.getColumnConstraints().add(columnConstraints);
+                    mapGrid.getRowConstraints().add(rowConstraints);
                 }
             }
         }
