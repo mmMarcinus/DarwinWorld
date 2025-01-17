@@ -30,7 +30,7 @@
         <Label text="Width:" styleClass="label-default"/>
         <TextField fx:id="parameterMapWidth" text="10" styleClass="text-field" maxWidth="100"/>
         <Label text="Polar map variant:" styleClass="label-default"/>
-        <CheckBox fx:id="polarMap" prefWidth="100"/>
+        <CheckBox fx:id="parameterPolarMap" prefWidth="100"/>
     </HBox>
 
 
