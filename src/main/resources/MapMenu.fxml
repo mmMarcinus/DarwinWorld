@@ -30,7 +30,7 @@
         <Label text="Width:" styleClass="label-default"/>
         <TextField fx:id="parameterMapWidth" text="10" styleClass="text-field" maxWidth="100"/>
         <Label text="Polar map variant:" styleClass="label-default"/>
-        <CheckBox fx:id="polarMap" prefWidth="100"/>
+        <CheckBox fx:id="parameterPolarMap" prefWidth="100"/>
     </HBox>
 
 
@@ -78,7 +78,7 @@
 
     <!-- Buttons -->
     <HBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.columnSpan="6">
-        <Button text="Start simulation" fx:id="startSimulation" styleClass="button" maxWidth="1.7976931348623157E308" onAction=""/>
+        <Button text="Start simulation" fx:id="startSimulation" styleClass="button" maxWidth="1.7976931348623157E308"/>
     </HBox>
 
 </GridPane>
