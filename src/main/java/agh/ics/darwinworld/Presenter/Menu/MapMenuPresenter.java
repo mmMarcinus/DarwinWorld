@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -68,7 +69,7 @@ public class MapMenuPresenter {
                 //validateStartParameters(worldparameters);
                 startNewSimulation(worldparameters);
             } catch (Exception e) {
-                System.out.println("Error");
+                System.out.println(e.getMessage());
             }
         });
     }
@@ -97,7 +98,7 @@ public class MapMenuPresenter {
         Stage stage = new Stage();
 
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
-        GridPane view = loader.load();
+        BorderPane view = loader.load();
         SimulationPresenter presenter = loader.getController();
         presenter.setWorldParameters(worldParameters);
         //presenter.prepare();
