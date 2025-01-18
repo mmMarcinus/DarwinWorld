@@ -65,8 +65,7 @@ public class SimulationPresenter implements MapChangeListener {
 
     @FXML
     public void initialize(){
-        worldMap = new NormalWorldMap(7,5);
-
+        worldMap = new NormalWorldMap(100,100);
         setWorldMap(worldMap);
         fillLabels();
         drawMap();
