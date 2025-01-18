@@ -15,7 +15,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected int jungleBottom;
     protected Map<Vector2d, Animal> animals = new HashMap<Vector2d,Animal>();
     protected Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
-    protected List<MapChangeListener> observers = new ArrayList<>();
+    protected List<MapChangeListener> listeners = new ArrayList<>();
 
     @Override
     public abstract void move(Animal animal, String move, int energyTakenEachDay);
@@ -199,19 +199,19 @@ public abstract class AbstractWorldMap implements WorldMap {
     public Map<Vector2d, Animal> getAnimals() {return animals;}
 
     @Override
-    public void attachListener(MapChangeListener observer){
-        observers.add(observer);
+    public void attachListener(MapChangeListener listener){
+        listeners.add(listener);
     }
 
     @Override
-    public void detachListener(MapChangeListener observer){
-        observers.remove(observer);
+    public void detachListener(MapChangeListener listener){
+        listeners.remove(listener);
     }
 
     @Override
     public void notifyListeners() {
-        for (MapChangeListener observer : observers) {
-            observer.mapChanged();
+        for (MapChangeListener listener : listeners) {
+            listener.mapChanged();
         }
     }
 }
