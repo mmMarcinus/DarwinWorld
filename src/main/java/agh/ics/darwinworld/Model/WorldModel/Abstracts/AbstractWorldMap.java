@@ -93,7 +93,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void reproduceAnimals(int startEnergyLevel, int reproduceEnergyRequired, int mutationsNumber) {
+    public void reproduceAnimals(int startEnergyLevel, int reproduceEnergyRequired, int minMutation, int maxMutation) {
         ArrayList<Animal> reproduceCandidates;
         HashSet<Animal> reproducedAnimals = new HashSet<>();
 
@@ -116,7 +116,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                         .thenComparing(Animal::getAge)
                         .thenComparing(Animal::getKidsNumber));
                 for (int i = 1; i < reproduceCandidates.size(); i+=2){
-                    Reproduce.reproduce(reproduceCandidates.get(i-1),reproduceCandidates.get(i), startEnergyLevel, mutationsNumber);
+                    Reproduce.reproduce(reproduceCandidates.get(i-1),reproduceCandidates.get(i), startEnergyLevel, minMutation, maxMutation);
                 }
             }
         }

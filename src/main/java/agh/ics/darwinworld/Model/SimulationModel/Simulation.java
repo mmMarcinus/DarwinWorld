@@ -116,7 +116,7 @@ public class Simulation implements Runnable {
             //Rozmnażanie się najedzonych zwierzaków znajdujących się na tym samym polu.
             System.out.println("Zwierzaki rozmnazaja sie");
             worldMap.reproduceAnimals(worldParameters.startEnergyLevel(), worldParameters.reproduceEnergyRequired(),
-                                      (worldParameters.maxMutation()-worldParameters.minMutation()));
+                                      worldParameters.minMutation(), worldParameters.maxMutation());
 
             System.out.println("Wyrastaja nowe rosliny");
             //Wzrastanie nowych roślin na wybranych polach mapy.
