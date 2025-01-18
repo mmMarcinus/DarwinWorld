@@ -182,7 +182,10 @@ public class MapMenuPresenter {
 
         simulation.getWorldMap().attachListener(simulationPresenter);
 
-        new Thread(simulation).start();
+        Thread simulationThread = new Thread(simulation);
+        simulationThread.start();
+        stage.setOnCloseRequest(event -> {
+            simulation.stop();
+        });
     }
-
 }

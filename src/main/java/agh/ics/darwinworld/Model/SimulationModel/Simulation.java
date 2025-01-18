@@ -20,6 +20,8 @@ public class Simulation implements Runnable {
 
     private int dayCount;
 
+    private volatile boolean running;
+
     public Simulation(WorldParameters worldParameters) {
         Random rand = new Random();
 
@@ -96,7 +98,8 @@ public class Simulation implements Runnable {
     public void run() {
 
         this.dayCount = 1;
-        while(dayCount < 20) {
+        running = true;
+        while(running) {
             System.out.println("Dzien " + dayCount + " rozpoczyna sie");
 
 
@@ -124,5 +127,9 @@ public class Simulation implements Runnable {
             System.out.println("Dzien " + dayCount + " zakonczyl sie\n\n");
             dayCount++;
         }
+    }
+
+    public void stop(){
+        running=false;
     }
 }

@@ -32,6 +32,7 @@
     -fx-text-alignment: left;
     -fx-font-size: 18;
     -fx-max-width: 180;
+    -fx-wrap-text: true;
 }
 
 .parameter_category-label{
@@ -39,13 +40,16 @@
     -fx-text-alignment: left;
     -fx-font-size: 18;
     -fx-max-width: 180;
+    -fx-border-color: black transparent black transparent;
+    -fx-border-width: 1 0 1 0;
 }
 
 .title-label{
     -fx-padding: 7 7 0 7;
-    -fx-text-alignment: center;
+    -fx-text-alignment: left;
     -fx-font-size: 21px;
-    -fx-max-width: 120;
+    -fx-max-width: 180;
+    -fx-wrap-text: true;
 }
 
 .stop-button {
