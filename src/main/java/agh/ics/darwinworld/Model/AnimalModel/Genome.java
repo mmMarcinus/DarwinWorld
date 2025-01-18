@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Genome {
     protected String genes;
-    protected final int length;
+    protected int length;
 
     public Genome(int length){
         this.length = length;
@@ -40,9 +40,9 @@ public class Genome {
         int newGene;
         String oldGene;
         int mutationPlace = rand.nextInt(length);
+        oldGene = genes.substring(mutationPlace, mutationPlace + 1);
         do {
             newGene = rand.nextInt(8);
-            oldGene = genes.substring(newGene, newGene + 1);
         } while (Integer.parseInt(oldGene) == newGene);
 
         char[] genesChars = genes.toCharArray();

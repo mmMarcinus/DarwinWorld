@@ -91,7 +91,6 @@ public class SimulationPresenter implements MapChangeListener {
     public synchronized void drawMap(){
         Platform.runLater(()->{
             mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
-            System.out.println(worldMap.getAnimals().size());
             //tutaj renderuje mape na nowo
 
             HashSet<Vector2d> usedPositions = new HashSet<>();
@@ -123,8 +122,8 @@ public class SimulationPresenter implements MapChangeListener {
                     usedPositions.add(currentPlant.getPosition());
                 }
             }
-            for(int x = 0; x<worldMap.getHeight(); x++){
-                for (int y = 0; y<worldMap.getWidth(); y++){
+            for(int x = 0; x<worldMap.getWidth(); x++){
+                for (int y = 0; y<worldMap.getHeight(); y++){
                     if(!usedPositions.contains(new Vector2d(x,y))){
                         mapGrid.add(new EmptyTileView(),x,y);
                         ColumnConstraints columnConstraints = new ColumnConstraints();
@@ -143,7 +142,7 @@ public class SimulationPresenter implements MapChangeListener {
     public void mapChanged() {
         drawMap();
         try{
-            Thread.sleep(300);
+            Thread.sleep(100);
         }catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }
