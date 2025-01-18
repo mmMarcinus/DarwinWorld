@@ -99,7 +99,7 @@ public class Simulation implements Runnable {
 
         this.dayCount = 1;
         running = true;
-        while(running) {
+        while(running && dayCount < 100) {
             System.out.println("Dzien " + dayCount + " rozpoczyna sie");
 
 

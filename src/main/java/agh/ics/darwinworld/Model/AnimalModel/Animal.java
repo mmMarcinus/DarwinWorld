@@ -126,7 +126,7 @@ public class Animal implements WorldElement {
             newposition = new Vector2d(map.getWidth()-1, y);
         }
         else if (x >= map.getWidth()){
-            newposition = new Vector2d(1, y);
+            newposition = new Vector2d(0, y);
         }
 
         this.position = newposition;
