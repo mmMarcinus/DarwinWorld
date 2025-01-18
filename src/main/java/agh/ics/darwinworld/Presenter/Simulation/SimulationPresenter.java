@@ -1,6 +1,7 @@
 package agh.ics.darwinworld.Presenter.Simulation;
 
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.View.AnimalView;
 import agh.ics.darwinworld.View.EmptyTileView;
@@ -65,7 +66,7 @@ public class SimulationPresenter implements MapChangeListener {
 
     @FXML
     public void initialize(){
-        worldMap = new NormalWorldMap(100,100);
+        worldMap = new NormalWorldMap(10,10);
         setWorldMap(worldMap);
         fillLabels();
         drawMap();
