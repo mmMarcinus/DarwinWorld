@@ -1,6 +1,7 @@
 package agh.ics.darwinworld.Presenter.Simulation;
 
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.View.AnimalView;
 import agh.ics.darwinworld.View.EmptyTileView;
@@ -12,6 +13,7 @@ import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -24,6 +26,8 @@ import java.util.List;
 public class SimulationPresenter implements MapChangeListener {
     private WorldParameters worldParameters;
     private WorldMap worldMap;
+    private Simulation simulation;
+    private boolean simulationRunning;
 
     @FXML
     private GridPane mapGrid;
@@ -55,6 +59,8 @@ public class SimulationPresenter implements MapChangeListener {
     private Label number_of_plants_label;
     @FXML
     private Label energy_from_plant_label;
+    @FXML
+    private Button startStopSimulation;
 
     public void setWorldParameters(WorldParameters worldParameters){
         this.worldParameters = worldParameters;
@@ -64,18 +70,27 @@ public class SimulationPresenter implements MapChangeListener {
         this.worldMap = worldMap;
     }
 
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
+
+    public void setSimulationRunning(boolean simulationRunning){
+        this.simulationRunning = simulationRunning;
+    }
+
     public void fillLabels(){
-        width_label.setText("width: "+worldParameters.width());
-        height_label.setText("height: "+worldParameters.height());
-        start_number_of_animals_label.setText("animals start number: "+worldParameters.startAnimalsNumber());
-        start_animal_energy_label.setText("animal start energy:"+worldParameters.startEnergyLevel());
-        energy_required_to_reproduce_label.setText("min energy to reproduce: "+worldParameters.startEnergyLevel());
-        energy_from_plant_label.setText("energy from plant: "+worldParameters.energyFromPlant());
-        energy_taken_each_day_label.setText("energy taken per day: "+worldParameters.energyTakenEachDay());
-        plants_grown_each_day_label.setText("plants grown each day: "+worldParameters.dayPlantNumber());
-        genome_length_label.setText("genome length: " + worldParameters.genomesLength());
-        max_mutation_number_label.setText("max mutation number: " + worldParameters.maxMutation());
-        min_mutation_number_label.setText("min mutation number: " + worldParameters.minMutation());
+        width_label.setText("Width: "+worldParameters.width());
+        height_label.setText("Height: "+worldParameters.height());
+        start_number_of_animals_label.setText("Animals start number: "+worldParameters.startAnimalsNumber());
+        start_animal_energy_label.setText("Animal start energy: "+worldParameters.startEnergyLevel());
+        energy_required_to_reproduce_label.setText("Min energy to reproduce: "+worldParameters.startEnergyLevel());
+        energy_from_plant_label.setText("Energy from plant: "+worldParameters.energyFromPlant());
+        energy_taken_each_day_label.setText("Energy taken per day: "+worldParameters.energyTakenEachDay());
+        plants_grown_each_day_label.setText("Plants grown each day: "+worldParameters.dayPlantNumber());
+        genome_length_label.setText("Genome length: " + worldParameters.genomesLength());
+        max_mutation_number_label.setText("Max mutation number: " + worldParameters.maxMutation());
+        min_mutation_number_label.setText("Min mutation number: " + worldParameters.minMutation());
+        number_of_plants_label.setText("Plants start number: " + worldParameters.startPlantNumber());
         if(worldParameters.changeGenome()){
             is_change_label.setText("PRZEMIANKA");
         }else{
@@ -138,11 +153,31 @@ public class SimulationPresenter implements MapChangeListener {
         });
     }
 
+    public void startStopSimulation() {
+        if (simulationRunning) {
+            startStopSimulation.setText("Start simulation");
+            startStopSimulation.getStyleClass().removeAll("stop-button");
+            startStopSimulation.getStyleClass().add("bottom-button");
+            System.out.println("Stopping simulation...");
+            simulation.stop();
+            simulationRunning = false;
+        }
+        else{
+            startStopSimulation.setText("Resume simulation");
+            startStopSimulation.getStyleClass().removeAll("bottom-button");
+            startStopSimulation.getStyleClass().add("stop-button");
+            System.out.println("Resuming simulation...");
+            simulation.start();
+            simulationRunning = true;
+        }
+    }
+
+
     @Override
-    public void mapChanged() {
+    public void mapChanged(Simulation simulation) {
         drawMap();
         try{
-            Thread.sleep(100);
+            Thread.sleep(200);
         }catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }

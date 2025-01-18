@@ -73,7 +73,7 @@
         <Label text="Plants grown each day:" styleClass="label-default"/>
         <TextField fx:id="parameterDayPlantNumber" text="2" styleClass="text-field" maxWidth="100"/>
         <Label text="Energy from plant:" styleClass="label-default"/>
-        <TextField fx:id="parameterEnergyFromPlant" text="10" styleClass="text-field" maxWidth="100"/>
+        <TextField fx:id="parameterEnergyFromPlant" text="15" styleClass="text-field" maxWidth="100"/>
     </HBox>
 
     <!-- Buttons -->

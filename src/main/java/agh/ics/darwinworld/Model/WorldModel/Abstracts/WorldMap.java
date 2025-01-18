@@ -1,6 +1,7 @@
 package agh.ics.darwinworld.Model.WorldModel.Abstracts;
 
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
 
@@ -43,5 +44,5 @@ public interface WorldMap{
 
     void detachListener(MapChangeListener observer);
 
-    void notifyListeners();
+    void notifyListeners(Simulation simulation);
 }

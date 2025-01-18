@@ -18,14 +18,18 @@ public class Simulation implements Runnable {
 
     private WorldMap worldMap;
 
-    private int dayCount;
+    private int dayCount = 1;
 
-    private volatile boolean running;
+    private volatile boolean simulationRunning;
+
+    private boolean running;
 
     public Simulation(WorldParameters worldParameters) {
         Random rand = new Random();
 
         this.worldParameters = worldParameters;
+
+        this.dayCount = dayCount;
 
         if(!worldParameters.polarMap()){
             this.worldMap = new NormalWorldMap(worldParameters.width(), worldParameters.height());
@@ -97,39 +101,48 @@ public class Simulation implements Runnable {
 
     public void run() {
 
-        this.dayCount = 1;
+        simulationRunning = true;
         running = true;
-        while(running && dayCount < 100) {
-            System.out.println("Dzien " + dayCount + " rozpoczyna sie");
+        while(simulationRunning && dayCount <= 20) {
+            if (running) {
+                System.out.println("Dzien " + dayCount + " rozpoczyna sie");
 
+                //Usunięcie martwych zwierzaków z mapy.
+                System.out.println("Usuwanie martwych zwierzakow z mapy");
+                worldMap.removeDeadAnimals();
 
-            //Usunięcie martwych zwierzaków z mapy.
-            System.out.println("Usuwanie martwych zwierzakow z mapy");
-            worldMap.removeDeadAnimals();
+                //Skręt i przemieszczenie każdego zwierzaka.
+                System.out.println("Zwierzaki wykonuja swoje ruchy");
+                worldMap.moveAllAnimals(worldParameters.energyTakenEachDay());
 
-            //Skręt i przemieszczenie każdego zwierzaka.
-            System.out.println("Zwierzaki wykonuja swoje ruchy");
-            worldMap.moveAllAnimals(worldParameters.energyTakenEachDay());
+                //Konsumpcja roślin, na których pola weszły zwierzaki
+                System.out.println("Zwierzaki jedza napotkane rosliny");
+                worldMap.eatPlants(worldParameters.energyFromPlant());
 
-            //Konsumpcja roślin, na których pola weszły zwierzaki
-            System.out.println("Zwierzaki jedza napotkane rosliny");
-            worldMap.eatPlants(worldParameters.energyFromPlant());
+                //Rozmnażanie się najedzonych zwierzaków znajdujących się na tym samym polu.
+                System.out.println("Zwierzaki rozmnazaja sie");
+                worldMap.reproduceAnimals(worldParameters.startEnergyLevel(), worldParameters.reproduceEnergyRequired(),
+                        worldParameters.minMutation(), worldParameters.maxMutation());
 
-            //Rozmnażanie się najedzonych zwierzaków znajdujących się na tym samym polu.
-            System.out.println("Zwierzaki rozmnazaja sie");
-            worldMap.reproduceAnimals(worldParameters.startEnergyLevel(), worldParameters.reproduceEnergyRequired(),
-                                      worldParameters.minMutation(), worldParameters.maxMutation());
+                System.out.println("Wyrastaja nowe rosliny");
+                //Wzrastanie nowych roślin na wybranych polach mapy.
+                worldMap.placeNewPlants(worldParameters.dayPlantNumber(), worldParameters.energyFromPlant());
 
-            System.out.println("Wyrastaja nowe rosliny");
-            //Wzrastanie nowych roślin na wybranych polach mapy.
-            worldMap.placeNewPlants(worldParameters.dayPlantNumber(), worldParameters.energyFromPlant());
-
-            System.out.println("Dzien " + dayCount + " zakonczyl sie\n\n");
-            dayCount++;
+                System.out.println("Dzien " + dayCount + " zakonczyl sie\n\n");
+                dayCount++;
+            }
         }
+    }
+
+    public void close(){
+        simulationRunning=false;
     }
 
     public void stop(){
         running=false;
+    }
+
+    public void start(){
+        running=true;
     }
 }

@@ -42,7 +42,7 @@
 
     <bottom>
         <HBox spacing="30" alignment="CENTER" styleClass="bottom-hbox" prefHeight="30">
-            <Button fx:id="startStopSimulation" text="Stop simulation" styleClass="stop-button"/>
+            <Button fx:id="startStopSimulation" text="Stop simulation" styleClass="stop-button" onAction="#startStopSimulation"/>
             <Button fx:id="mostPopularGenotypes" text="Show animals with most popular genomes" styleClass="bottom-button"/>
             <Button fx:id="areasPreferredByPlants" text="Show areas preferred by plants" styleClass="bottom-button"/>
         </HBox>
