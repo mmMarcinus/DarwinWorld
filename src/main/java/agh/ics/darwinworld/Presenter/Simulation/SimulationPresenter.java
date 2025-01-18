@@ -1,7 +1,6 @@
 package agh.ics.darwinworld.Presenter.Simulation;
 
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
-import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.View.AnimalView;
 import agh.ics.darwinworld.View.EmptyTileView;
@@ -11,6 +10,7 @@ import agh.ics.darwinworld.Model.WorldModel.NormalWorldMap;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -64,81 +64,79 @@ public class SimulationPresenter implements MapChangeListener {
         this.worldMap = worldMap;
     }
 
-    @FXML
-    public void initialize(){
-        worldMap = new NormalWorldMap(10,10);
-        setWorldMap(worldMap);
-        fillLabels();
-        drawMap();
-    }
-
     public void fillLabels(){
-        //TUTAJ DZIALA TYLKO NIE MA DANYCH W WORLDPRAAMETERS
-//        width_label.setText("width: "+worldParameters.width());
-//        height_label.setText("height: "+worldParameters.height());
-//        start_number_of_animals_label.setText("animals start number: "+worldParameters.startAnimalsNumber());
-//        start_animal_energy_label.setText("animal start energy:"+worldParameters.startEnergyLevel());
-//        energy_required_to_reproduce_label.setText("min energy to reproduce: "+worldParameters.startEnergyLevel());
-//        energy_from_plant_label.setText("energy from plant: "+worldParameters.energyFromPlant());
-//        energy_taken_each_day_label.setText("energy taken per day: "+worldParameters.energyTakenEachDay());
-//        plants_grown_each_day_label.setText("plants grown each day: "+worldParameters.dayPlantNumber());
-//        genome_length_label.setText("genome length: " + worldParameters.genomesLength());
-//        max_mutation_number_label.setText("max mutation number: " + worldParameters.maxMutation());
-//        min_mutation_number_label.setText("min mutation number: " + worldParameters.minMutation());
+        width_label.setText("width: "+worldParameters.width());
+        height_label.setText("height: "+worldParameters.height());
+        start_number_of_animals_label.setText("animals start number: "+worldParameters.startAnimalsNumber());
+        start_animal_energy_label.setText("animal start energy:"+worldParameters.startEnergyLevel());
+        energy_required_to_reproduce_label.setText("min energy to reproduce: "+worldParameters.startEnergyLevel());
+        energy_from_plant_label.setText("energy from plant: "+worldParameters.energyFromPlant());
+        energy_taken_each_day_label.setText("energy taken per day: "+worldParameters.energyTakenEachDay());
+        plants_grown_each_day_label.setText("plants grown each day: "+worldParameters.dayPlantNumber());
+        genome_length_label.setText("genome length: " + worldParameters.genomesLength());
+        max_mutation_number_label.setText("max mutation number: " + worldParameters.maxMutation());
+        min_mutation_number_label.setText("min mutation number: " + worldParameters.minMutation());
     }
 
-    public void drawMap(){
-        mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
-        System.out.println(worldMap.getAnimals().size());
-        //tutaj renderuje mape na nowo
+    public synchronized void drawMap(){
+        Platform.runLater(()->{
+            mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
+            System.out.println(worldMap.getAnimals().size());
+            //tutaj renderuje mape na nowo
 
-        HashSet<Vector2d> usedPositions = new HashSet<>();
-        List<Animal> animals = worldMap.getAnimals().values().stream().toList();
-        List<Plant> plants = worldMap.getPlants().values().stream().toList();
-        for (Animal currentAnimal : animals) {
-            if (!usedPositions.contains(currentAnimal.getPosition())) {
-                mapGrid.add(new AnimalView(), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
-                ColumnConstraints columnConstraints = new ColumnConstraints();
-                columnConstraints.setHgrow(Priority.ALWAYS);
-                RowConstraints rowConstraints = new RowConstraints();
-                rowConstraints.setVgrow(Priority.ALWAYS);
-                mapGrid.getColumnConstraints().add(columnConstraints);
-                mapGrid.getRowConstraints().add(rowConstraints);
-
-                usedPositions.add(currentAnimal.getPosition());
-            }
-        }
-        for (Plant currentPlant : plants) {
-            if (!usedPositions.contains(currentPlant.getPosition())) {
-                mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
-                ColumnConstraints columnConstraints = new ColumnConstraints();
-                columnConstraints.setHgrow(Priority.ALWAYS);
-                RowConstraints rowConstraints = new RowConstraints();
-                rowConstraints.setVgrow(Priority.ALWAYS);
-                mapGrid.getColumnConstraints().add(columnConstraints);
-                mapGrid.getRowConstraints().add(rowConstraints);
-
-                usedPositions.add(currentPlant.getPosition());
-            }
-        }
-        for(int x = 0; x<worldMap.getHeight(); x++){
-            for (int y = 0; y<worldMap.getWidth(); y++){
-                if(!usedPositions.contains(new Vector2d(x,y))){
-                    mapGrid.add(new EmptyTileView(),x,y);
+            HashSet<Vector2d> usedPositions = new HashSet<>();
+            List<Animal> animals = worldMap.getAnimals().values().stream().toList();
+            List<Plant> plants = worldMap.getPlants().values().stream().toList();
+            for (Animal currentAnimal : animals) {
+                if (!usedPositions.contains(currentAnimal.getPosition())) {
+                    mapGrid.add(new AnimalView(), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                     ColumnConstraints columnConstraints = new ColumnConstraints();
                     columnConstraints.setHgrow(Priority.ALWAYS);
                     RowConstraints rowConstraints = new RowConstraints();
                     rowConstraints.setVgrow(Priority.ALWAYS);
                     mapGrid.getColumnConstraints().add(columnConstraints);
                     mapGrid.getRowConstraints().add(rowConstraints);
+
+                    usedPositions.add(currentAnimal.getPosition());
                 }
             }
-        }
+            for (Plant currentPlant : plants) {
+                if (!usedPositions.contains(currentPlant.getPosition())) {
+                    mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                    ColumnConstraints columnConstraints = new ColumnConstraints();
+                    columnConstraints.setHgrow(Priority.ALWAYS);
+                    RowConstraints rowConstraints = new RowConstraints();
+                    rowConstraints.setVgrow(Priority.ALWAYS);
+                    mapGrid.getColumnConstraints().add(columnConstraints);
+                    mapGrid.getRowConstraints().add(rowConstraints);
+
+                    usedPositions.add(currentPlant.getPosition());
+                }
+            }
+            for(int x = 0; x<worldMap.getHeight(); x++){
+                for (int y = 0; y<worldMap.getWidth(); y++){
+                    if(!usedPositions.contains(new Vector2d(x,y))){
+                        mapGrid.add(new EmptyTileView(),x,y);
+                        ColumnConstraints columnConstraints = new ColumnConstraints();
+                        columnConstraints.setHgrow(Priority.ALWAYS);
+                        RowConstraints rowConstraints = new RowConstraints();
+                        rowConstraints.setVgrow(Priority.ALWAYS);
+                        mapGrid.getColumnConstraints().add(columnConstraints);
+                        mapGrid.getRowConstraints().add(rowConstraints);
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void mapChanged() {
-
+        drawMap();
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {
+            System.out.println(e);
+        }
     }
 
 }

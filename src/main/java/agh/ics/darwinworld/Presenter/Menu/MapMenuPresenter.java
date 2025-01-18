@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.util.Objects;
 
 public class MapMenuPresenter {
@@ -157,31 +158,31 @@ public class MapMenuPresenter {
         BorderPane viewRoot = fxmlLoader.load();
         var scene = new Scene(viewRoot);
 
-        SimulationPresenter presenter = fxmlLoader.getController();
-        presenter.setWorldParameters(worldParameters);
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Icon.png")));
+        stage.getIcons().add(icon);
+
+        SimulationPresenter simulationPresenter = fxmlLoader.getController();
+
+        stage.show();
 
         String css = getClass().getClassLoader().getResource("simulation.css").toExternalForm();
         scene.getStylesheets().add(css);
 
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Icon.png")));
-        stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.setTitle("Simulation");
         stage.setResizable(false);
         stage.minWidthProperty().bind(viewRoot.minWidthProperty());
         stage.minHeightProperty().bind(viewRoot.minHeightProperty());
 
-        stage.show();
+        Simulation simulation = new Simulation(worldParameters);
+        simulationPresenter.setWorldParameters(worldParameters);
+        simulationPresenter.setWorldMap(simulation.getWorldMap());
+        simulationPresenter.fillLabels();
+        simulationPresenter.drawMap();
 
+        simulation.getWorldMap().attachListener(simulationPresenter);
 
-//        ExtendedThread thread = new ExtendedThread(simulation);
-//        thread.start();
-//
-//        stage.setOnCloseRequest(event -> {
-//            simulation.stopRunning();
-//        });
-
-//        presenter.setThread(thread);
+        new Thread(simulation).start();
     }
 
 }
