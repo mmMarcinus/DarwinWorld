@@ -63,27 +63,26 @@ public class SimulationPresenter implements MapChangeListener {
         this.worldMap = worldMap;
     }
 
-    @FXML
-    public void initialize(){
-        worldMap = new NormalWorldMap(100,100);
-        setWorldMap(worldMap);
-        fillLabels();
-        drawMap();
-    }
+//    @FXML
+//    public void initialize(){
+//        worldMap = new NormalWorldMap(10,10);
+//        setWorldMap(worldMap);
+//        fillLabels();
+//        drawMap();
+//    }
 
     public void fillLabels(){
-        //TUTAJ DZIALA TYLKO NIE MA DANYCH W WORLDPRAAMETERS
-//        width_label.setText("width: "+worldParameters.width());
-//        height_label.setText("height: "+worldParameters.height());
-//        start_number_of_animals_label.setText("animals start number: "+worldParameters.startAnimalsNumber());
-//        start_animal_energy_label.setText("animal start energy:"+worldParameters.startEnergyLevel());
-//        energy_required_to_reproduce_label.setText("min energy to reproduce: "+worldParameters.startEnergyLevel());
-//        energy_from_plant_label.setText("energy from plant: "+worldParameters.energyFromPlant());
-//        energy_taken_each_day_label.setText("energy taken per day: "+worldParameters.energyTakenEachDay());
-//        plants_grown_each_day_label.setText("plants grown each day: "+worldParameters.dayPlantNumber());
-//        genome_length_label.setText("genome length: " + worldParameters.genomesLength());
-//        max_mutation_number_label.setText("max mutation number: " + worldParameters.maxMutation());
-//        min_mutation_number_label.setText("min mutation number: " + worldParameters.minMutation());
+        width_label.setText("width: "+worldParameters.width());
+        height_label.setText("height: "+worldParameters.height());
+        start_number_of_animals_label.setText("animals start number: "+worldParameters.startAnimalsNumber());
+        start_animal_energy_label.setText("animal start energy:"+worldParameters.startEnergyLevel());
+        energy_required_to_reproduce_label.setText("min energy to reproduce: "+worldParameters.startEnergyLevel());
+        energy_from_plant_label.setText("energy from plant: "+worldParameters.energyFromPlant());
+        energy_taken_each_day_label.setText("energy taken per day: "+worldParameters.energyTakenEachDay());
+        plants_grown_each_day_label.setText("plants grown each day: "+worldParameters.dayPlantNumber());
+        genome_length_label.setText("genome length: " + worldParameters.genomesLength());
+        max_mutation_number_label.setText("max mutation number: " + worldParameters.maxMutation());
+        min_mutation_number_label.setText("min mutation number: " + worldParameters.minMutation());
     }
 
     public void drawMap(){

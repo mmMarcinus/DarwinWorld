@@ -3,6 +3,7 @@ package agh.ics.darwinworld.Presenter.Menu;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.Exceptions.*;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
+import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.util.Objects;
 
 public class MapMenuPresenter {
@@ -159,8 +161,7 @@ public class MapMenuPresenter {
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Icon.png")));
         stage.getIcons().add(icon);
 
-        SimulationPresenter presenter = fxmlLoader.getController();
-        presenter.setWorldParameters(worldParameters);
+        SimulationPresenter simulationPresenter = fxmlLoader.getController();
 
         stage.show();
 
@@ -173,16 +174,15 @@ public class MapMenuPresenter {
         stage.minWidthProperty().bind(viewRoot.minWidthProperty());
         stage.minHeightProperty().bind(viewRoot.minHeightProperty());
 
+        Simulation simulation = new Simulation(worldParameters);
+        simulation.getWorldMap().attachListener(simulationPresenter);
+        //simulation.run();
 
-//        Simulation simulation = new Simulation(worldParameters, presenter);
-//        ExtendedThread thread = new ExtendedThread(simulation);
-//        thread.start();
-//
-//        stage.setOnCloseRequest(event -> {
-//            simulation.stopRunning();
-//        });
+        simulationPresenter.setWorldParameters(worldParameters);
+        simulationPresenter.setWorldMap(simulation.getWorldMap());
+        simulationPresenter.fillLabels();
+        simulationPresenter.drawMap();
 
-//        presenter.setThread(thread);
     }
 
 }

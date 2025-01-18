@@ -14,13 +14,13 @@ import agh.ics.darwinworld.Model.Records.WorldParameters;
 import java.util.*;
 
 public class Simulation implements Runnable {
-    private WorldParameters worldParameters;
+    private final WorldParameters worldParameters;
 
     private WorldMap worldMap;
 
     private int dayCount;
 
-    public Simulation(WorldParameters worldParameters, SimulationPresenter presenter) {
+    public Simulation(WorldParameters worldParameters) {
         Random rand = new Random();
 
         this.worldParameters = worldParameters;
