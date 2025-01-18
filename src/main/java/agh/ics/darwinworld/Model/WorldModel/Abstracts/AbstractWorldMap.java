@@ -3,6 +3,7 @@ package agh.ics.darwinworld.Model.WorldModel.Abstracts;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.AnimalModel.Genome;
 import agh.ics.darwinworld.Model.AnimalModel.Reproduce;
+import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
 
@@ -16,6 +17,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected Map<Vector2d, Animal> animals = new HashMap<Vector2d,Animal>();
     protected Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
     protected List<MapChangeListener> listeners = new ArrayList<>();
+    protected Simulation simulation;
 
     @Override
     public abstract void move(Animal animal, String move, int energyTakenEachDay);
@@ -35,7 +37,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         for (Animal animal : animalsToDelete) {
             this.remove(animal);
         }
-        notifyListeners();
+        notifyListeners(simulation);
     }
 
     @Override
@@ -45,7 +47,7 @@ public abstract class AbstractWorldMap implements WorldMap {
             String move = genome.getGenes().substring((animal.getCurrentGene()));
             move(animal, move, energyTakenEachDay);
         }
-        notifyListeners();
+        notifyListeners(simulation);
     }
 
     @Override
@@ -92,7 +94,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         for(Plant plant : plantsToDelete){
             this.remove(plant);
         }
-        notifyListeners();
+        notifyListeners(simulation);
     }
 
     @Override
@@ -123,7 +125,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 }
             }
         }
-        notifyListeners();
+        notifyListeners(simulation);
     }
 
     @Override
@@ -157,7 +159,7 @@ public abstract class AbstractWorldMap implements WorldMap {
             Plant addedPlant = new Plant(new Vector2d(x,y), energyFromPlant);
             this.place(addedPlant);
         }
-        notifyListeners();
+        notifyListeners(simulation);
     }
 
 
@@ -208,9 +210,9 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void notifyListeners() {
+    public void notifyListeners(Simulation simulation) {
         for (MapChangeListener listener : listeners) {
-            listener.mapChanged();
+            listener.mapChanged(simulation);
         }
     }
 }

@@ -177,6 +177,8 @@ public class MapMenuPresenter {
         Simulation simulation = new Simulation(worldParameters);
         simulationPresenter.setWorldParameters(worldParameters);
         simulationPresenter.setWorldMap(simulation.getWorldMap());
+        simulationPresenter.setSimulation(simulation);
+        simulationPresenter.setSimulationRunning(true);
         simulationPresenter.fillLabels();
         simulationPresenter.drawMap();
 
@@ -185,7 +187,7 @@ public class MapMenuPresenter {
         Thread simulationThread = new Thread(simulation);
         simulationThread.start();
         stage.setOnCloseRequest(event -> {
-            simulation.stop();
+            simulation.close();
         });
     }
 }
