@@ -76,6 +76,16 @@ public class SimulationPresenter implements MapChangeListener {
         genome_length_label.setText("genome length: " + worldParameters.genomesLength());
         max_mutation_number_label.setText("max mutation number: " + worldParameters.maxMutation());
         min_mutation_number_label.setText("min mutation number: " + worldParameters.minMutation());
+        if(worldParameters.changeGenome()){
+            is_change_label.setText("PRZEMIANKA");
+        }else{
+            is_change_label.setText("BEZ PRZEMIANKI");
+        }
+        if (worldParameters.polarMap()){
+            is_polar_label.setText("BIEGUNY");
+        }else{
+            is_polar_label.setText("BEZ BIEGUNÓW");
+        }
     }
 
     public synchronized void drawMap(){
@@ -133,9 +143,9 @@ public class SimulationPresenter implements MapChangeListener {
     public void mapChanged() {
         drawMap();
         try{
-            Thread.sleep(1000);
+            Thread.sleep(300);
         }catch(InterruptedException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
