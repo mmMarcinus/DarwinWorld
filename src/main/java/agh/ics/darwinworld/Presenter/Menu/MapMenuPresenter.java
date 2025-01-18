@@ -66,7 +66,7 @@ public class MapMenuPresenter {
         startSimulation.setOnAction(event -> {
             try {
                 WorldParameters worldparameters = getWorldParameters();
-                //validateStartParameters(worldparameters);
+                //validateStartParameters(worldparameters);t
                 startNewSimulation(worldparameters);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -94,29 +94,22 @@ public class MapMenuPresenter {
     }
 
     private void startNewSimulation(WorldParameters worldParameters) throws Exception {
-        FXMLLoader loader = new FXMLLoader();
+        FXMLLoader fxmlLoader = new FXMLLoader();
         Stage stage = new Stage();
+        fxmlLoader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
+        BorderPane viewRoot = fxmlLoader.load();
 
-        loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
-        BorderPane view = loader.load();
-        SimulationPresenter presenter = loader.getController();
-        presenter.setWorldParameters(worldParameters);
-        //presenter.prepare();
+        var scene = new Scene(viewRoot);
 
-        Simulation simulation = new Simulation(worldParameters, presenter);
-//        ExtendedThread thread = new ExtendedThread(simulation);
-//        thread.start();
-//
-//        stage.setOnCloseRequest(event -> {
-//            simulation.stopRunning();
-//        });
-
-//        presenter.setThread(thread);
-
-        stage.setTitle("Darwin World");
-        stage.setScene(new Scene(view));
-        stage.setMaximized(true);
         stage.show();
+
+        String css = getClass().getClassLoader().getResource("simulation.css").toExternalForm();
+        scene.getStylesheets().add(css);
+
+        stage.setScene(scene);
+        stage.setTitle("Simulation");
+        stage.minWidthProperty().bind(viewRoot.minWidthProperty());
+        stage.minHeightProperty().bind(viewRoot.minHeightProperty());
     }
 
 }
