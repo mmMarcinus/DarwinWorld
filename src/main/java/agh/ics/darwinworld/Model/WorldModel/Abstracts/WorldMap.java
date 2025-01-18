@@ -23,7 +23,7 @@ public interface WorldMap{
 
     void eatPlants(int energyFromPlant);
 
-    void reproduceAnimals(int startEnergyLevel, int reproduceEnergyRequired, int mutationsNumber);
+    void reproduceAnimals(int startEnergyLevel, int reproduceEnergyRequired, int minMutations, int maxMutations);
 
     void placeNewPlants(int dayPlantNumber, int energyFromPlant);
 

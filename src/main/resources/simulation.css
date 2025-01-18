@@ -48,3 +48,25 @@
     -fx-max-width: 120;
 }
 
+.stop-button {
+    -fx-background-color: #bf0d0d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 7px 13px;
+}
+
+.stop-button:hover {
+    -fx-background-color: #9e0707;
+}
+
+.bottom-button {
+    -fx-background-color: #318B3B;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 7px 13px;
+}
+
+.bottom-button:hover {
+    -fx-background-color: #18491B;
+}
+

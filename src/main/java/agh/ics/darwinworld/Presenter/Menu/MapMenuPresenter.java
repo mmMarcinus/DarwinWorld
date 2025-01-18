@@ -1,6 +1,7 @@
 package agh.ics.darwinworld.Presenter.Menu;
 
-import agh.ics.darwinworld.Model.SimulationModel.Simulation;
+import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.Exceptions.*;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
 import javafx.fxml.FXML;
@@ -9,9 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class MapMenuPresenter {
 
@@ -66,13 +69,14 @@ public class MapMenuPresenter {
         startSimulation.setOnAction(event -> {
             try {
                 WorldParameters worldparameters = getWorldParameters();
-                //validateStartParameters(worldparameters);
+                checkParameters(worldparameters);
                 startNewSimulation(worldparameters);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         });
     }
+
 
     private WorldParameters getWorldParameters() {
         return new WorldParameters(
@@ -93,17 +97,84 @@ public class MapMenuPresenter {
                 );
     }
 
+    private void checkParameters(WorldParameters worldParameters) throws Exception {
+
+        //Mapa
+        if (worldParameters.width() <= 0 || worldParameters.width() > 100) {
+            throw new MapWidthException();
+        }
+
+        if (worldParameters.height() <= 0 || worldParameters.height() > 100) {
+            throw new MapHeightException();
+        }
+
+
+        //Animals
+        if (worldParameters.startAnimalsNumber() <= 0 || worldParameters.startAnimalsNumber() > worldParameters.height() * worldParameters.width()) {
+            throw new AnimalStartNumberException();
+        }
+
+        if (worldParameters.startEnergyLevel() <= 0) {
+            throw new StartEnergyLevelException();
+        }
+
+        if (worldParameters.energyTakenEachDay() < 0) {
+            throw new EnergyTakenEachDayException();
+        }
+
+        if (worldParameters.reproduceEnergyRequired() < worldParameters.startEnergyLevel() / 2) {
+            throw new ReproduceEnergyRequiredException();
+        }
+
+        if (worldParameters.genomesLength() <= 0) {
+            throw new GenomesLengthException();
+        }
+
+        if (worldParameters.minMutation() < 0 || worldParameters.minMutation() > worldParameters.maxMutation() || worldParameters.maxMutation() > worldParameters.genomesLength()) {
+            throw new MutationException();
+        }
+
+
+        //Plant
+        if (worldParameters.startPlantNumber() <= 0 || worldParameters.startPlantNumber() > worldParameters.height() * worldParameters.width()) {
+            throw new StartPlantNumberException();
+        }
+
+        if (worldParameters.dayPlantNumber() <= 0 || worldParameters.dayPlantNumber() > worldParameters.height() * worldParameters.width()) {
+            throw new dayPlantNumberException();
+        }
+
+        if (worldParameters.energyFromPlant() <= 0) {
+            throw new EnergyFromPlantException();
+        }
+    }
+
     private void startNewSimulation(WorldParameters worldParameters) throws Exception {
-        FXMLLoader loader = new FXMLLoader();
+        FXMLLoader fxmlLoader = new FXMLLoader();
         Stage stage = new Stage();
+        fxmlLoader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
+        BorderPane viewRoot = fxmlLoader.load();
+        var scene = new Scene(viewRoot);
 
-        loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
-        BorderPane view = loader.load();
-        SimulationPresenter presenter = loader.getController();
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Icon.png")));
+        stage.getIcons().add(icon);
+
+        SimulationPresenter presenter = fxmlLoader.getController();
         presenter.setWorldParameters(worldParameters);
-        //presenter.prepare();
 
-        Simulation simulation = new Simulation(worldParameters, presenter);
+        stage.show();
+
+        String css = getClass().getClassLoader().getResource("simulation.css").toExternalForm();
+        scene.getStylesheets().add(css);
+
+        stage.setScene(scene);
+        stage.setTitle("Simulation");
+        stage.setResizable(false);
+        stage.minWidthProperty().bind(viewRoot.minWidthProperty());
+        stage.minHeightProperty().bind(viewRoot.minHeightProperty());
+
+
+//        Simulation simulation = new Simulation(worldParameters, presenter);
 //        ExtendedThread thread = new ExtendedThread(simulation);
 //        thread.start();
 //
@@ -112,11 +183,6 @@ public class MapMenuPresenter {
 //        });
 
 //        presenter.setThread(thread);
-
-        stage.setTitle("Darwin World");
-        stage.setScene(new Scene(view));
-        stage.setMaximized(true);
-        stage.show();
     }
 
 }
