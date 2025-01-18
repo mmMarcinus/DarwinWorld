@@ -20,7 +20,7 @@ public class Simulation implements Runnable {
 
     private int dayCount;
 
-    public Simulation(WorldParameters worldParameters, SimulationPresenter presenter) {
+    public Simulation(WorldParameters worldParameters) {
         Random rand = new Random();
 
         this.worldParameters = worldParameters;

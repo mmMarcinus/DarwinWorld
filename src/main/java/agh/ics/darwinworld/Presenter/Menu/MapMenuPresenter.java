@@ -3,6 +3,7 @@ package agh.ics.darwinworld.Presenter.Menu;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.Exceptions.*;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
+import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -156,25 +157,23 @@ public class MapMenuPresenter {
         BorderPane viewRoot = fxmlLoader.load();
         var scene = new Scene(viewRoot);
 
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Icon.png")));
-        stage.getIcons().add(icon);
-
         SimulationPresenter presenter = fxmlLoader.getController();
         presenter.setWorldParameters(worldParameters);
-
-        stage.show();
 
         String css = getClass().getClassLoader().getResource("simulation.css").toExternalForm();
         scene.getStylesheets().add(css);
 
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Icon.png")));
+        stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.setTitle("Simulation");
         stage.setResizable(false);
         stage.minWidthProperty().bind(viewRoot.minWidthProperty());
         stage.minHeightProperty().bind(viewRoot.minHeightProperty());
 
+        stage.show();
 
-//        Simulation simulation = new Simulation(worldParameters, presenter);
+
 //        ExtendedThread thread = new ExtendedThread(simulation);
 //        thread.start();
 //
