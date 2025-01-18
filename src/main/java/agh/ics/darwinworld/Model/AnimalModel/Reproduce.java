@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Reproduce {
 
-    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel, int mutationsNumber){
+    public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel, int minMutation, int maxMutation){
         Random rand = new Random();
 
         //tworzenie genomu młodego
@@ -24,6 +24,7 @@ public class Reproduce {
         //trzeba dorobic zeby wersja 2 sie robila tylko wtedy gdy uzytkownik tak wybierze w GUI
 
         int i = 0;
+        int mutationsNumber = rand.nextInt(minMutation, maxMutation);
         while (i < mutationsNumber) {
             youngGenome.twist();
             i++;

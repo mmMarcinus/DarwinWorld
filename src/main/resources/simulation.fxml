@@ -11,6 +11,7 @@
             maxWidth="900" maxHeight="700"
             styleClass="border-pane"
             fx:controller="agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter">
+
     <left>
         <ScrollPane styleClass="left-scrollpane">
             <VBox styleClass="left-vbox" prefWidth="180" maxWidth="200">
@@ -34,7 +35,17 @@
             </VBox>
         </ScrollPane>
     </left>
+
     <center>
         <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" styleClass="grid-pane"/>
     </center>
+
+    <bottom>
+        <HBox spacing="30" alignment="CENTER" styleClass="bottom-hbox" prefHeight="30">
+            <Button fx:id="startStopSimulation" text="Stop simulation" styleClass="stop-button"/>
+            <Button fx:id="mostPopularGenotypes" text="Show animals with most popular genomes" styleClass="bottom-button"/>
+            <Button fx:id="areasPreferredByPlants" text="Show areas preferred by plants" styleClass="bottom-button"/>
+        </HBox>
+    </bottom>
+
 </BorderPane>
