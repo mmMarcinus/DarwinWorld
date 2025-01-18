@@ -10,6 +10,7 @@ import agh.ics.darwinworld.Model.WorldModel.NormalWorldMap;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -63,14 +64,6 @@ public class SimulationPresenter implements MapChangeListener {
         this.worldMap = worldMap;
     }
 
-//    @FXML
-//    public void initialize(){
-//        worldMap = new NormalWorldMap(10,10);
-//        setWorldMap(worldMap);
-//        fillLabels();
-//        drawMap();
-//    }
-
     public void fillLabels(){
         width_label.setText("width: "+worldParameters.width());
         height_label.setText("height: "+worldParameters.height());
@@ -85,58 +78,65 @@ public class SimulationPresenter implements MapChangeListener {
         min_mutation_number_label.setText("min mutation number: " + worldParameters.minMutation());
     }
 
-    public void drawMap(){
-        mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
-        System.out.println(worldMap.getAnimals().size());
-        //tutaj renderuje mape na nowo
+    public synchronized void drawMap(){
+        Platform.runLater(()->{
+            mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
+            System.out.println(worldMap.getAnimals().size());
+            //tutaj renderuje mape na nowo
 
-        HashSet<Vector2d> usedPositions = new HashSet<>();
-        List<Animal> animals = worldMap.getAnimals().values().stream().toList();
-        List<Plant> plants = worldMap.getPlants().values().stream().toList();
-        for (Animal currentAnimal : animals) {
-            if (!usedPositions.contains(currentAnimal.getPosition())) {
-                mapGrid.add(new AnimalView(), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
-                ColumnConstraints columnConstraints = new ColumnConstraints();
-                columnConstraints.setHgrow(Priority.ALWAYS);
-                RowConstraints rowConstraints = new RowConstraints();
-                rowConstraints.setVgrow(Priority.ALWAYS);
-                mapGrid.getColumnConstraints().add(columnConstraints);
-                mapGrid.getRowConstraints().add(rowConstraints);
-
-                usedPositions.add(currentAnimal.getPosition());
-            }
-        }
-        for (Plant currentPlant : plants) {
-            if (!usedPositions.contains(currentPlant.getPosition())) {
-                mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
-                ColumnConstraints columnConstraints = new ColumnConstraints();
-                columnConstraints.setHgrow(Priority.ALWAYS);
-                RowConstraints rowConstraints = new RowConstraints();
-                rowConstraints.setVgrow(Priority.ALWAYS);
-                mapGrid.getColumnConstraints().add(columnConstraints);
-                mapGrid.getRowConstraints().add(rowConstraints);
-
-                usedPositions.add(currentPlant.getPosition());
-            }
-        }
-        for(int x = 0; x<worldMap.getHeight(); x++){
-            for (int y = 0; y<worldMap.getWidth(); y++){
-                if(!usedPositions.contains(new Vector2d(x,y))){
-                    mapGrid.add(new EmptyTileView(),x,y);
+            HashSet<Vector2d> usedPositions = new HashSet<>();
+            List<Animal> animals = worldMap.getAnimals().values().stream().toList();
+            List<Plant> plants = worldMap.getPlants().values().stream().toList();
+            for (Animal currentAnimal : animals) {
+                if (!usedPositions.contains(currentAnimal.getPosition())) {
+                    mapGrid.add(new AnimalView(), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                     ColumnConstraints columnConstraints = new ColumnConstraints();
                     columnConstraints.setHgrow(Priority.ALWAYS);
                     RowConstraints rowConstraints = new RowConstraints();
                     rowConstraints.setVgrow(Priority.ALWAYS);
                     mapGrid.getColumnConstraints().add(columnConstraints);
                     mapGrid.getRowConstraints().add(rowConstraints);
+
+                    usedPositions.add(currentAnimal.getPosition());
                 }
             }
-        }
+            for (Plant currentPlant : plants) {
+                if (!usedPositions.contains(currentPlant.getPosition())) {
+                    mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                    ColumnConstraints columnConstraints = new ColumnConstraints();
+                    columnConstraints.setHgrow(Priority.ALWAYS);
+                    RowConstraints rowConstraints = new RowConstraints();
+                    rowConstraints.setVgrow(Priority.ALWAYS);
+                    mapGrid.getColumnConstraints().add(columnConstraints);
+                    mapGrid.getRowConstraints().add(rowConstraints);
+
+                    usedPositions.add(currentPlant.getPosition());
+                }
+            }
+            for(int x = 0; x<worldMap.getHeight(); x++){
+                for (int y = 0; y<worldMap.getWidth(); y++){
+                    if(!usedPositions.contains(new Vector2d(x,y))){
+                        mapGrid.add(new EmptyTileView(),x,y);
+                        ColumnConstraints columnConstraints = new ColumnConstraints();
+                        columnConstraints.setHgrow(Priority.ALWAYS);
+                        RowConstraints rowConstraints = new RowConstraints();
+                        rowConstraints.setVgrow(Priority.ALWAYS);
+                        mapGrid.getColumnConstraints().add(columnConstraints);
+                        mapGrid.getRowConstraints().add(rowConstraints);
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void mapChanged() {
-
+        drawMap();
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {
+            System.out.println(e);
+        }
     }
 
 }

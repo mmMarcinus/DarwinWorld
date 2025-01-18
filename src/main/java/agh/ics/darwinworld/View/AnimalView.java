@@ -1,9 +1,14 @@
 package agh.ics.darwinworld.View;
 import javafx.scene.control.Label;
-public class AnimalView extends Label{
-    public AnimalView(){
+import javafx.scene.layout.StackPane;
+
+public class AnimalView extends StackPane{
+    public AnimalView() {
         super();
-        setStyle("-fx-background-color: #572b0f; -fx-padding: 10; -fx-pref-width: 80; -fx-pref-height: 80");
-        setText("Animal");
+        setStyle("-fx-background-color: #572b0f;");
+        setPrefWidth(999);
+        setPrefHeight(999);
+        setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        getChildren().add(new Label("Animal"));
     }
 }

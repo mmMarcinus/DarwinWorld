@@ -31,7 +31,6 @@ public class Simulation implements Runnable {
             this.worldMap = new PolarWorldMap(worldParameters.width(), worldParameters.height());
         }
 
-
         //dodawanie startowych zwierzakow na losowe pozycje z losowymi genomami
 
         HashSet<Vector2d> animalPositionsTaken = new HashSet<>();
@@ -70,7 +69,7 @@ public class Simulation implements Runnable {
                 int x = rand.nextInt(0, worldParameters.width());
                 int y = 0;
                 if (isJungle<=0.8){//w dzungli
-                    y = rand.nextInt(worldMap.getJungleBottom(), worldMap.getJungleTop());
+                    y = rand.nextInt(worldMap.getJungleBottom(), worldMap.getJungleTop()+1);
                 }else{//poza dzungla
                     double isBottom = rand.nextDouble();
                     if(isBottom<=0.5){//poludnie
@@ -97,7 +96,7 @@ public class Simulation implements Runnable {
     public void run() {
 
         this.dayCount = 1;
-        while(dayCount < 4) {
+        while(dayCount < 20) {
             System.out.println("Dzien " + dayCount + " rozpoczyna sie");
 
 
@@ -124,6 +123,6 @@ public class Simulation implements Runnable {
 
             System.out.println("Dzien " + dayCount + " zakonczyl sie\n\n");
             dayCount++;
-       }
+        }
     }
 }

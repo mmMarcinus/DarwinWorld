@@ -175,14 +175,14 @@ public class MapMenuPresenter {
         stage.minHeightProperty().bind(viewRoot.minHeightProperty());
 
         Simulation simulation = new Simulation(worldParameters);
-        simulation.getWorldMap().attachListener(simulationPresenter);
-        //simulation.run();
-
         simulationPresenter.setWorldParameters(worldParameters);
         simulationPresenter.setWorldMap(simulation.getWorldMap());
         simulationPresenter.fillLabels();
         simulationPresenter.drawMap();
 
+        simulation.getWorldMap().attachListener(simulationPresenter);
+
+        new Thread(simulation).start();
     }
 
 }

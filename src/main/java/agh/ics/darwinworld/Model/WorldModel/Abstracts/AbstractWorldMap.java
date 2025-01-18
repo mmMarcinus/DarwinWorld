@@ -35,6 +35,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         for (Animal animal : animalsToDelete) {
             this.remove(animal);
         }
+        notifyListeners();
     }
 
     @Override
@@ -44,6 +45,7 @@ public abstract class AbstractWorldMap implements WorldMap {
             String move = genome.getGenes().substring((animal.getCurrentGene()));
             move(animal, move, energyTakenEachDay);
         }
+        notifyListeners();
     }
 
     @Override
@@ -90,6 +92,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         for(Plant plant : plantsToDelete){
             this.remove(plant);
         }
+        notifyListeners();
     }
 
     @Override
@@ -120,6 +123,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 }
             }
         }
+        notifyListeners();
     }
 
     @Override
@@ -153,37 +157,32 @@ public abstract class AbstractWorldMap implements WorldMap {
             Plant addedPlant = new Plant(new Vector2d(x,y), energyFromPlant);
             this.place(addedPlant);
         }
+        notifyListeners();
     }
 
 
     @Override
     public void place(Animal animal){
         Vector2d position = animal.getPosition();
-
         animals.put(position, animal);
-        notifyListeners();
     }
 
     @Override
     public void place(Plant plant){
         Vector2d position = plant.getPosition();
-
         plants.put(position, plant);
-        notifyListeners();
     }
 
     @Override
     public void remove(Animal animal){
         Vector2d position = animal.getPosition();
         animals.remove(position, animal);
-        notifyListeners();
     }
 
     @Override
     public void remove(Plant plant){
         Vector2d position = plant.getPosition();
         plants.remove(position, plant);
-        notifyListeners();
     }
 
     public int getWidth() { return width; }
