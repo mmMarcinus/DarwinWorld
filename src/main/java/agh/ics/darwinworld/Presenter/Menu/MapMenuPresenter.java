@@ -1,10 +1,10 @@
 package agh.ics.darwinworld.Presenter.Menu;
 
-import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.Exceptions.*;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
+import agh.ics.darwinworld.Presenter.Statistics.MapStatistics;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,7 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.util.Objects;
 
 public class MapMenuPresenter {
@@ -177,9 +176,9 @@ public class MapMenuPresenter {
         Simulation simulation = new Simulation(worldParameters);
         simulationPresenter.setWorldParameters(worldParameters);
         simulationPresenter.setWorldMap(simulation.getWorldMap());
+        simulationPresenter.setMapStatistics(new MapStatistics());
         simulationPresenter.setSimulation(simulation);
         simulationPresenter.setSimulationRunning(true);
-        simulationPresenter.fillLabels();
         simulationPresenter.drawMap();
 
         simulation.getWorldMap().attachListener(simulationPresenter);
