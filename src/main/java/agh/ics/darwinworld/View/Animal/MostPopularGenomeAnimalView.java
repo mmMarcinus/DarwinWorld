@@ -5,8 +5,6 @@ import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
 import javafx.geometry.Pos;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 public class MostPopularGenomeAnimalView extends AnimalView {
     public MostPopularGenomeAnimalView(SimulationPresenter simulationPresenter, Animal animal) {
@@ -15,7 +13,7 @@ public class MostPopularGenomeAnimalView extends AnimalView {
         this.getChildren().clear();
 
         StackPane animalImage = new StackPane();
-        animalImage.setStyle("-fx-background-image: url('/images/HighlightedAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
+        animalImage.setStyle("-fx-background-image: url('/images/Animal/HighlightedAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
         animalImage.setPrefSize(999, 999);
         animalImage.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         this.getChildren().add(animalImage);

@@ -187,14 +187,14 @@ public class SimulationPresenter implements MapChangeListener {
                             if (!mostPopularAnimals.contains(currentAnimal)) {
                                 mapGrid.add(new PoleHighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }else{
-                                mapGrid.add(new PoleHighlightedMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                mapGrid.add(new PoleMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }
                         }else{
                             if (!mostPopularAnimals.contains(currentAnimal)){
                                 mapGrid.add(new PoleAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }
                             else{
-                                mapGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                mapGrid.add(new PoleMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }
                         }
                     }
@@ -203,7 +203,7 @@ public class SimulationPresenter implements MapChangeListener {
                             if (!mostPopularAnimals.contains(currentAnimal)) {
                                 mapGrid.add(new HighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             } else {
-                                mapGrid.add(new HighlightedMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                mapGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }
                         } else {
                             if (!mostPopularAnimals.contains(currentAnimal)) {
@@ -415,6 +415,7 @@ public class SimulationPresenter implements MapChangeListener {
         higlightedAnimal = animal;
         animalHighlighted=true;
         drawAnimalStats(animal);
+        drawMap();
     }
 
     public void unhighlightAnimal(Animal animal){
@@ -433,7 +434,7 @@ public class SimulationPresenter implements MapChangeListener {
         }
         drawMap();
         try{
-            Thread.sleep(1500);
+            Thread.sleep(500);
         }catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }

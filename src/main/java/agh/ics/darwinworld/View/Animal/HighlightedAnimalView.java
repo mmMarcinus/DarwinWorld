@@ -4,16 +4,15 @@ import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 public class HighlightedAnimalView extends AnimalView {
     public HighlightedAnimalView(SimulationPresenter simulationPresenter, Animal animal) {
         super(simulationPresenter, animal);
+
         this.getChildren().clear();
 
         StackPane animalImage = new StackPane();
-        animalImage.setStyle("-fx-background-image: url('/images/HighlightedAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
+        animalImage.setStyle("-fx-background-image: url('/images/Animal/ClickedAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
         animalImage.setPrefSize(999, 999);
         animalImage.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         this.getChildren().add(animalImage);
