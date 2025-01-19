@@ -15,6 +15,7 @@ import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -181,7 +182,7 @@ public class SimulationPresenter implements MapChangeListener {
         }
     }
 
-    public void drawAnimalStats(Animal animal, MapStatistics mapStatistics){
+    public synchronized void drawAnimalStats(Animal animal){
         Platform.runLater(()->{
             Button returnButton = new Button();
             returnButton.setText("Return");
@@ -216,10 +217,42 @@ public class SimulationPresenter implements MapChangeListener {
         });
     }
 
+    public synchronized void fillAnimalStats(Animal animal){
+        Platform.runLater(()->{
+            Button returnButton = new Button();
+            returnButton.setText("Return");
+            returnButton.setStyle("-fx-padding: 0 40 0 40; -fx-background-color: green;");
+            AnimalTitleLabel titleLabel = new AnimalTitleLabel();
+            titleLabel.setText("ANIMAL STATS");
+            AnimalStatLabel ageLabel = new AnimalStatLabel();
+            ageLabel.setText("Animal age: " + animal.getAge());
+            AnimalStatLabel childrenLabel = new AnimalStatLabel();
+            childrenLabel.setText("Children number: " + animal.getKidsNumber());
+            AnimalStatLabel energyLabel = new AnimalStatLabel();
+            energyLabel.setText("Energy: " + animal.getEnergyLevel());
+            AnimalStatLabel genomeLabel = new AnimalStatLabel();
+            genomeLabel.setText("Genome: " + animal.getGenome().getGenes());
+            AnimalStatLabel currentGeneLabel = new AnimalStatLabel();
+            currentGeneLabel.setText("Current gene: " + animal.getCurrentGene());
+
+            ObservableList<Node> leftStackPaneChildren = left_stack_pane.getChildren();
+            VBox animalStatsVBoxAux = (VBox) leftStackPaneChildren.getLast();
+            animalStatsVBoxAux.getChildren().setAll(returnButton, titleLabel, ageLabel, childrenLabel, energyLabel, genomeLabel);
+
+            returnButton.setOnAction(event -> {
+                Platform.runLater(()->{
+                    left_stack_pane.getChildren().remove(animalStatsVBoxAux);
+                    unhighlightAnimal(animal);
+                });
+            });
+        });
+    }
+
     public void highlightAnimal(Animal animal){
         animal.highlight();
         higlightedAnimal = animal;
         animalHighlighted=true;
+        drawAnimalStats(animal);
     }
 
     public void unhighlightAnimal(Animal animal){
@@ -230,13 +263,13 @@ public class SimulationPresenter implements MapChangeListener {
     @Override
     public void mapChanged(MapStatistics statistics) {
         if(animalHighlighted){
-           drawAnimalStats(higlightedAnimal, statistics);
+            fillAnimalStats(higlightedAnimal);
         }else{
             fillLabels(statistics);
         }
         drawMap();
         try{
-            Thread.sleep(200);
+            Thread.sleep(500);
         }catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }

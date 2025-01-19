@@ -15,7 +15,7 @@
     <left>
         <ScrollPane styleClass="left-scrollpane">
             <StackPane fx:id="left_stack_pane">
-                <VBox fx:id="left_vbox" styleClass="left-vbox" prefWidth="180" maxWidth="200">
+                <VBox styleClass="left-vbox" prefWidth="180" maxWidth="200">
                     <Label fx:id="day" text="Wypisanie danych" styleClass="parameter-label"/>
                     <Label text="Statistics:" styleClass="parameter_category-label"/>
                     <Label fx:id="animalNumber" text="Wypisanie danych" styleClass="parameter-label"/>
