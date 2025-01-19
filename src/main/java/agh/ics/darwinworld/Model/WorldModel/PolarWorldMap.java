@@ -1,6 +1,7 @@
 package agh.ics.darwinworld.Model.WorldModel;
 
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.AbstractWorldMap;
 
 import java.util.UUID;
@@ -19,7 +20,12 @@ public class PolarWorldMap extends AbstractWorldMap {
 
     @Override
     public void move(Animal animal, String move, int energyTakenEachDay) {
+        Vector2d oldPosition = animal.getPosition();
         animal.move(move, this);
+        this.animals.remove(oldPosition, animal);
+        Vector2d newPosition = animal.getPosition();
+        this.animals.put(newPosition, animal);
+
         //usuwamy energię zgodnie z odległością od bieguna
         int poleHeight = (int) (height * 2 / 10);
         int increasedEnergyDrop = 0;
@@ -30,7 +36,7 @@ public class PolarWorldMap extends AbstractWorldMap {
             increasedEnergyDrop = height - animal.getPosition().getY() + 1;
         }
         increasedEnergyDrop = (int) Math.ceil(increasedEnergyDrop*13/10*energyTakenEachDay);
-        animal.updateEnergyLevel(animal.getEnergyLevel() - increasedEnergyDrop);
+        animal.updateEnergyLevel(animal.getEnergyLevel() - increasedEnergyDrop - energyTakenEachDay);
 
         int updatedGene=animal.getCurrentGene();
         if(animal.getCurrentGene()>=animal.getGenome().getLength()-1){

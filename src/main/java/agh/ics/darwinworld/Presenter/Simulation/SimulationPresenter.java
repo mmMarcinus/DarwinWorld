@@ -371,6 +371,9 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void highlightAnimal(Animal animal){
+        if(animalHighlighted){
+            return;
+        }
         animal.highlight();
         higlightedAnimal = animal;
         animalHighlighted=true;
@@ -383,6 +386,8 @@ public class SimulationPresenter implements MapChangeListener {
         drawMap();
     }
 
+    public boolean isAnimalHighlighted(){return animalHighlighted;}
+
     @Override
     public void mapChanged(MapStatistics statistics) {
         fillLabels(statistics);
@@ -391,7 +396,7 @@ public class SimulationPresenter implements MapChangeListener {
         }
         drawMap();
         try{
-            Thread.sleep(500);
+            Thread.sleep(2500);
         }catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }

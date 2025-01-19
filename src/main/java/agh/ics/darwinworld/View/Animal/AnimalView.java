@@ -32,13 +32,8 @@ public class AnimalView extends StackPane{
         this.setAlignment(Pos.TOP_CENTER);
 
         setOnMouseClicked(event -> {
-            if(!animal.isHighlighted()){
-                Circle greenCircle = new Circle();
-                greenCircle.setRadius(30);
-                greenCircle.setStroke(Color.LIGHTGREEN);
-                greenCircle.setFill(Color.TRANSPARENT);
-                greenCircle.setStrokeWidth(3);
-                this.getChildren().add(greenCircle);
+            if(!animal.isHighlighted() && !simulationPresenter.isAnimalHighlighted()){
+                animalImage.setStyle("-fx-background-image: url('/images/HighlightedAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
                 simulationPresenter.highlightAnimal(animal);
             }
         });

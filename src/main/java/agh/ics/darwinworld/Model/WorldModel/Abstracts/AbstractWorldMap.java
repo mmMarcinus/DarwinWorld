@@ -9,6 +9,7 @@ import agh.ics.darwinworld.Model.WorldModel.Plant;
 import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public abstract class AbstractWorldMap implements WorldMap {
@@ -17,7 +18,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected int height;
     protected int jungleTop;
     protected int jungleBottom;
-    protected Map<Vector2d, Animal> animals = new HashMap<Vector2d,Animal>();
+    protected ConcurrentHashMap<Vector2d, Animal> animals = new ConcurrentHashMap<>();
     protected Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
     protected List<MapChangeListener> listeners = new ArrayList<>();
     protected Simulation simulation;
@@ -27,7 +28,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     public abstract void move(Animal animal, String move, int energyTakenEachDay);
 
     @Override
-    public void removeDeadAnimals() {
+    public synchronized void removeDeadAnimals() {
+        System.out.println(animals.size());
         ArrayList<Animal> animalsToDelete;
         animalsToDelete = new ArrayList<>();
         for (Animal animal : animals.values()) {
@@ -246,7 +248,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void remove(Animal animal){
+    public synchronized void remove(Animal animal){
         Vector2d position = animal.getPosition();
         animals.remove(position, animal);
     }

@@ -23,12 +23,5 @@ public class HighlightedMostPopularGenomeAnimalView extends AnimalView {
         energyBar.setMaxHeight(10);
         energyBar.setStyle("-fx-accent: lightgreen");
         this.getChildren().add(energyBar);
-
-        Circle greenCircle = new Circle();
-        greenCircle.setRadius(30);
-        greenCircle.setStroke(Color.LIGHTGREEN);
-        greenCircle.setFill(Color.TRANSPARENT);
-        greenCircle.setStrokeWidth(3);
-        this.getChildren().add(greenCircle);
     }
 }
