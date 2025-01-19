@@ -15,6 +15,7 @@ import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
 import agh.ics.darwinworld.View.Plant.PolePlantView;
+import agh.ics.darwinworld.WorldGUI;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -76,6 +77,8 @@ public class SimulationPresenter implements MapChangeListener {
     public void setWorldParameters(WorldParameters worldParameters){
         this.worldParameters = worldParameters;
     }
+
+    public WorldParameters getWorldParameters(){return worldParameters;}
 
     public void setWorldMap(WorldMap worldMap) {
         this.worldMap = worldMap;
@@ -317,8 +320,9 @@ public class SimulationPresenter implements MapChangeListener {
             animalStatsVBox.setStyle("-fx-background-color: #c5d9d0; -fx-alignment: center; -fx-min-height: 400");
 
             left_stack_pane.setAlignment(Pos.CENTER);
-
-            left_stack_pane.getChildren().add(animalStatsVBox);
+            if(!left_stack_pane.getChildren().contains(animalStatsVBox)){
+                left_stack_pane.getChildren().add(animalStatsVBox);
+            }
 
             returnButton.setOnAction(event -> {
                 Platform.runLater(()->{
@@ -349,7 +353,8 @@ public class SimulationPresenter implements MapChangeListener {
 
             ObservableList<Node> leftStackPaneChildren = left_stack_pane.getChildren();
             VBox animalStatsVBoxAux = (VBox) leftStackPaneChildren.getLast();
-            animalStatsVBoxAux.getChildren().setAll(returnButton, titleLabel, ageLabel, childrenLabel, energyLabel, genomeLabel);
+            animalStatsVBoxAux.getChildren().clear();
+            animalStatsVBoxAux.getChildren().addAll(returnButton, titleLabel, ageLabel, childrenLabel, energyLabel, genomeLabel);
 
             returnButton.setOnAction(event -> {
                 Platform.runLater(()->{
