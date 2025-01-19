@@ -13,15 +13,26 @@
     -fx-padding: 10px
 }
 
-.button {
+.start-button {
     -fx-background-color: #318B3B;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-padding: 10px 15px;
 }
 
-.button:hover {
+.start-button:hover {
     -fx-background-color: #18491B;
+}
+
+.files-button {
+    -fx-background-color: #1e70e3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 15px;
+}
+
+.files-button:hover {
+    -fx-background-color: #094383;
 }
 
 .check-box {

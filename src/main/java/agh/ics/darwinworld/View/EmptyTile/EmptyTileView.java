@@ -1,9 +1,6 @@
-package agh.ics.darwinworld.View;
+package agh.ics.darwinworld.View.EmptyTile;
 
 
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class EmptyTileView extends StackPane {
