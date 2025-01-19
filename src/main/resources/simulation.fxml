@@ -14,24 +14,19 @@
 
     <left>
         <ScrollPane styleClass="left-scrollpane">
-            <VBox fx:id="left_vbox" styleClass="left-vbox" prefWidth="180" maxWidth="200">
-                <Label fx:id="is_polar_label" text="BIEGUNY" styleClass="title-label"/>
-                <Label fx:id="is_change_label" text="ZAMIANA" styleClass="title-label"/>
-                <Label text="MAP:" styleClass="parameter_category-label"/>
-                <Label fx:id="height_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="width_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label text="ANIMALS:" styleClass="parameter_category-label"/>
-                <Label fx:id="start_number_of_animals_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="start_animal_energy_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="energy_taken_each_day_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="energy_required_to_reproduce_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="genome_length_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="min_mutation_number_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="max_mutation_number_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label text="PLANTS:" styleClass="parameter_category-label"/>
-                <Label fx:id="number_of_plants_label" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="plants_grown_each_day_label" text="Wypisanie danych danych" styleClass="parameter-label"/>
-                <Label fx:id="energy_from_plant_label" text="Wypisanie danych" styleClass="parameter-label"/>
+            <VBox styleClass="left-vbox" prefWidth="180" maxWidth="200">
+                <Label fx:id="day" text="Wypisanie danych" styleClass="parameter-label"/>
+                <Label text="Statistics:" styleClass="parameter_category-label"/>
+                <Label fx:id="animalNumber" text="Wypisanie danych" styleClass="parameter-label"/>
+                <Label fx:id="plantNumber" text="Wypisanie danych" styleClass="parameter-label"/>
+                <Label fx:id="emptyTiles" text="Wypisanie danych" styleClass="parameter-label"/>
+                <Label fx:id="averageEnergyLevel" text="Wypisanie danych" styleClass="parameter-label"/>
+                <Label fx:id="averageLifeLength" text="Wypisanie danych" styleClass="parameter-label"/>
+                <Label fx:id="averageKidsNumber" text="Wypisanie danych" styleClass="parameter-label"/>
+                <Label text="Genomes:" styleClass="parameter_category-label"/>
+                <Label fx:id="firstPopularGenome" text="Wypisanie danych" styleClass="parameter-label"/>
+                <Label fx:id="secondPopularGenome" text="Wypisanie danych" styleClass="parameter-label"/>
+                <Label fx:id="thirdPopularGenome" text="Wypisanie danych" styleClass="parameter-label"/>
             </VBox>
         </ScrollPane>
     </left>
@@ -42,7 +37,7 @@
 
     <bottom>
         <HBox spacing="30" alignment="CENTER" styleClass="bottom-hbox" prefHeight="30">
-            <Button fx:id="startStopSimulation" text="Stop simulation" styleClass="stop-button"/>
+            <Button fx:id="startStopSimulation" text="Stop simulation" styleClass="stop-button" onAction="#startStopSimulation"/>
             <Button fx:id="mostPopularGenotypes" text="Show animals with most popular genomes" styleClass="bottom-button"/>
             <Button fx:id="areasPreferredByPlants" text="Show areas preferred by plants" styleClass="bottom-button"/>
         </HBox>

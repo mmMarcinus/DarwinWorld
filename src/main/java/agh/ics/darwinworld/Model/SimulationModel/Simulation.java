@@ -3,13 +3,13 @@ package agh.ics.darwinworld.Model.SimulationModel;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.AnimalModel.ChangeGenome;
 import agh.ics.darwinworld.Model.AnimalModel.Genome;
-import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
 import agh.ics.darwinworld.Model.WorldModel.NormalWorldMap;
 import agh.ics.darwinworld.Model.WorldModel.PolarWorldMap;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
+import agh.ics.darwinworld.Presenter.Statistics.MapStatistics;
 
 import java.util.*;
 
@@ -18,9 +18,13 @@ public class Simulation implements Runnable {
 
     private WorldMap worldMap;
 
-    private int dayCount;
+    private int dayCount = 1;
 
-    private volatile boolean running;
+    private volatile boolean simulationRunning;
+
+    private boolean running;
+
+    private MapStatistics mapStatistics = new MapStatistics();
 
     public Simulation(WorldParameters worldParameters) {
         Random rand = new Random();
@@ -97,39 +101,41 @@ public class Simulation implements Runnable {
 
     public void run() {
 
-        this.dayCount = 1;
+        simulationRunning = true;
         running = true;
-        while(running) {
-            System.out.println("Dzien " + dayCount + " rozpoczyna sie");
+        while(simulationRunning && dayCount <= 50) {
+            if (running) {
+                System.out.println("Dzien " + dayCount);
 
+                worldMap.updateStatistics(mapStatistics, dayCount);
 
-            //Usunięcie martwych zwierzaków z mapy.
-            System.out.println("Usuwanie martwych zwierzakow z mapy");
-            worldMap.removeDeadAnimals();
+                worldMap.removeDeadAnimals();
 
-            //Skręt i przemieszczenie każdego zwierzaka.
-            System.out.println("Zwierzaki wykonuja swoje ruchy");
-            worldMap.moveAllAnimals(worldParameters.energyTakenEachDay());
+                worldMap.moveAllAnimals(worldParameters.energyTakenEachDay());
 
-            //Konsumpcja roślin, na których pola weszły zwierzaki
-            System.out.println("Zwierzaki jedza napotkane rosliny");
-            worldMap.eatPlants(worldParameters.energyFromPlant());
+                worldMap.eatPlants(worldParameters.energyFromPlant());
 
-            //Rozmnażanie się najedzonych zwierzaków znajdujących się na tym samym polu.
-            System.out.println("Zwierzaki rozmnazaja sie");
-            worldMap.reproduceAnimals(worldParameters.startEnergyLevel(), worldParameters.reproduceEnergyRequired(),
-                                      worldParameters.minMutation(), worldParameters.maxMutation());
+                worldMap.reproduceAnimals(worldParameters.startEnergyLevel(), worldParameters.reproduceEnergyRequired(),
+                        worldParameters.minMutation(), worldParameters.maxMutation());
 
-            System.out.println("Wyrastaja nowe rosliny");
-            //Wzrastanie nowych roślin na wybranych polach mapy.
-            worldMap.placeNewPlants(worldParameters.dayPlantNumber(), worldParameters.energyFromPlant());
+                worldMap.placeNewPlants(worldParameters.dayPlantNumber(), worldParameters.energyFromPlant());
 
-            System.out.println("Dzien " + dayCount + " zakonczyl sie\n\n");
-            dayCount++;
+                worldMap.notifyListeners(this, mapStatistics);
+
+                dayCount++;
+            }
         }
+    }
+
+    public void close(){
+        simulationRunning=false;
     }
 
     public void stop(){
         running=false;
+    }
+
+    public void start(){
+        running=true;
     }
 }

@@ -1,8 +1,10 @@
 package agh.ics.darwinworld.Model.WorldModel.Abstracts;
 
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
+import agh.ics.darwinworld.Presenter.Statistics.MapStatistics;
 
 import java.util.Map;
 
@@ -43,5 +45,7 @@ public interface WorldMap{
 
     void detachListener(MapChangeListener observer);
 
-    void notifyListeners();
+    void notifyListeners(Simulation simulation, MapStatistics statistics);
+
+    void updateStatistics(MapStatistics statistics, int dayCount);
 }

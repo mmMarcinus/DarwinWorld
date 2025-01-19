@@ -3,10 +3,13 @@ package agh.ics.darwinworld.Model.WorldModel.Abstracts;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.AnimalModel.Genome;
 import agh.ics.darwinworld.Model.AnimalModel.Reproduce;
+import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
+import agh.ics.darwinworld.Presenter.Statistics.MapStatistics;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbstractWorldMap implements WorldMap {
     protected int width;
@@ -16,6 +19,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected Map<Vector2d, Animal> animals = new HashMap<Vector2d,Animal>();
     protected Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
     protected List<MapChangeListener> listeners = new ArrayList<>();
+    protected Simulation simulation;
+    protected List<Animal> deadAnimals = new ArrayList<>();
 
     @Override
     public abstract void move(Animal animal, String move, int energyTakenEachDay);
@@ -33,9 +38,9 @@ public abstract class AbstractWorldMap implements WorldMap {
             }
         }
         for (Animal animal : animalsToDelete) {
+            deadAnimals.add(animal);
             this.remove(animal);
         }
-        notifyListeners();
     }
 
     @Override
@@ -45,7 +50,6 @@ public abstract class AbstractWorldMap implements WorldMap {
             String move = genome.getGenes().substring((animal.getCurrentGene()));
             move(animal, move, energyTakenEachDay);
         }
-        notifyListeners();
     }
 
     @Override
@@ -92,7 +96,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         for(Plant plant : plantsToDelete){
             this.remove(plant);
         }
-        notifyListeners();
     }
 
     @Override
@@ -123,7 +126,6 @@ public abstract class AbstractWorldMap implements WorldMap {
                 }
             }
         }
-        notifyListeners();
     }
 
     @Override
@@ -157,9 +159,78 @@ public abstract class AbstractWorldMap implements WorldMap {
             Plant addedPlant = new Plant(new Vector2d(x,y), energyFromPlant);
             this.place(addedPlant);
         }
-        notifyListeners();
     }
 
+    private void addOrUpdateGenome(Map<String, Integer> map, String genome) {
+        map.put(genome, map.getOrDefault(genome, 0) + 1);
+    }
+
+    public void updateStatistics(MapStatistics statistics, int dayCount){
+        double averageKidsNumber = 0.0;
+        double averageEnergyLevel = 0.0;
+        String firstPopularGenome;
+        int firstPopularGenomeCount;
+        String secondPopularGenome;
+        int secondPopularGenomeCount;
+        String thirdPopularGenome;
+        int thirdPopularGenomeCount;
+        Map<Vector2d, Animal> animalPlaces = new HashMap<>();
+        Map<String, Integer> genomesWithCount = new HashMap<>();
+
+        for (Animal animal : animals.values()) {
+            averageKidsNumber += animal.getKidsNumber();
+            averageEnergyLevel += animal.getEnergyLevel();
+            addOrUpdateGenome(genomesWithCount, animal.getGenome().getGenes());
+            Vector2d position = animal.getPosition();
+            if (!animalPlaces.containsKey(position)){
+                animalPlaces.put(position, animal);
+            }
+        }
+
+        averageKidsNumber /= animals.size();
+        averageEnergyLevel /= animals.size();
+
+        List<Map.Entry<String, Integer>> top3 = genomesWithCount.entrySet().stream()
+                .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+                .limit(3)
+                .collect(Collectors.toList());
+
+        if (top3.size() > 0) {
+            firstPopularGenome = top3.get(0).getKey();
+            firstPopularGenomeCount = top3.get(0).getValue();
+        } else {
+            firstPopularGenome = "Too little different genomes";
+            firstPopularGenomeCount = 0;
+        }
+
+        if (top3.size() > 1) {
+            secondPopularGenome = top3.get(1).getKey();
+            secondPopularGenomeCount = top3.get(1).getValue();
+        } else {
+            secondPopularGenome = "Too little different genomes";
+            secondPopularGenomeCount = 0;
+        }
+
+        if (top3.size() > 2) {
+            thirdPopularGenome = top3.get(2).getKey();
+            thirdPopularGenomeCount = top3.get(2).getValue();
+        } else {
+            thirdPopularGenome = "Too little different genomes";
+            thirdPopularGenomeCount = 0;
+        }
+
+        double averageLifeLength = 0.0;
+
+        for (Animal deadAnimal : deadAnimals) {
+            averageLifeLength += deadAnimal.getAge();
+        }
+
+        averageLifeLength /= deadAnimals.size();
+
+        statistics.setStatistics(dayCount, animals.size(), plants.size(), height * width - plants.size() - animalPlaces.size(),
+                firstPopularGenome, firstPopularGenomeCount, secondPopularGenome, secondPopularGenomeCount, thirdPopularGenome,
+                thirdPopularGenomeCount, averageEnergyLevel, averageLifeLength, averageKidsNumber);
+    }
 
     @Override
     public void place(Animal animal){
@@ -208,9 +279,9 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void notifyListeners() {
+    public void notifyListeners(Simulation simulation, MapStatistics mapStatistics) {
         for (MapChangeListener listener : listeners) {
-            listener.mapChanged();
+            listener.mapChanged(simulation, mapStatistics);
         }
     }
 }
