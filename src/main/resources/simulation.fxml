@@ -14,20 +14,22 @@
 
     <left>
         <ScrollPane styleClass="left-scrollpane">
-            <VBox styleClass="left-vbox" prefWidth="180" maxWidth="200">
-                <Label fx:id="day" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label text="Statistics:" styleClass="parameter_category-label"/>
-                <Label fx:id="animalNumber" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="plantNumber" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="emptyTiles" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="averageEnergyLevel" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="averageLifeLength" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="averageKidsNumber" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label text="Genomes:" styleClass="parameter_category-label"/>
-                <Label fx:id="firstPopularGenome" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="secondPopularGenome" text="Wypisanie danych" styleClass="parameter-label"/>
-                <Label fx:id="thirdPopularGenome" text="Wypisanie danych" styleClass="parameter-label"/>
-            </VBox>
+            <StackPane fx:id="left_stack_pane">
+                <VBox fx:id="left_vbox" styleClass="left-vbox" prefWidth="180" maxWidth="200">
+                    <Label fx:id="day" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label text="Statistics:" styleClass="parameter_category-label"/>
+                    <Label fx:id="animalNumber" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="plantNumber" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="emptyTiles" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="averageEnergyLevel" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="averageLifeLength" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="averageKidsNumber" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label text="Genomes:" styleClass="parameter_category-label"/>
+                    <Label fx:id="firstPopularGenome" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="secondPopularGenome" text="Wypisanie danych" styleClass="parameter-label"/>
+                    <Label fx:id="thirdPopularGenome" text="Wypisanie danych" styleClass="parameter-label"/>
+                </VBox>
+            </StackPane>
         </ScrollPane>
     </left>
 
