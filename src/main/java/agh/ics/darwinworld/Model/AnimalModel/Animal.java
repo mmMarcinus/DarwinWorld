@@ -18,6 +18,7 @@ public class Animal implements WorldElement {
     private Animal parent1;
     private Animal parent2;
     private int currentGene;
+    boolean highlighted;
 
     public Animal(Vector2d initialPosition, Genome genome, int basicEnergyLevel, int age, Animal parent1, Animal parent2, int currentGene) {
         Random rand = new Random();
@@ -35,6 +36,7 @@ public class Animal implements WorldElement {
         for(int i = 0; i < random; i++){
             this.direction = direction.next();
         }
+        this.highlighted = false;
     }
 
     public Vector2d getPosition() {
@@ -95,6 +97,18 @@ public class Animal implements WorldElement {
 
     public void updateCurrentGene(int currentGene){
         this.currentGene = currentGene;
+    }
+
+    public boolean isHighlighted(){
+        return highlighted;
+    }
+
+    public void highlight(){
+        highlighted=true;
+    }
+
+    public void unhighlight(){
+        highlighted=false;
     }
 
     @Override

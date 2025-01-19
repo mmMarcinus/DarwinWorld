@@ -5,7 +5,10 @@ import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
 import agh.ics.darwinworld.Presenter.MapStatistics.StatisticsToFile;
-import agh.ics.darwinworld.View.AnimalView;
+import agh.ics.darwinworld.View.Animal.AnimalStatLabel;
+import agh.ics.darwinworld.View.Animal.AnimalTitleLabel;
+import agh.ics.darwinworld.View.Animal.AnimalView;
+import agh.ics.darwinworld.View.Animal.HighlightedAnimalView;
 import agh.ics.darwinworld.View.EmptyTileView;
 import agh.ics.darwinworld.View.PlantView;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.MapChangeListener;
@@ -13,7 +16,10 @@ import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -24,6 +30,10 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import java.util.ArrayList;
+import java.util.Set;
+
 
 public class SimulationPresenter implements MapChangeListener {
     private WorldParameters worldParameters;
@@ -31,6 +41,8 @@ public class SimulationPresenter implements MapChangeListener {
     private Simulation simulation;
     private boolean simulationRunning;
     private MapStatistics mapStatistics;
+    private boolean animalHighlighted;
+    private Animal higlightedAnimal;
 
     @FXML
     private Label day;
@@ -56,6 +68,9 @@ public class SimulationPresenter implements MapChangeListener {
     private Label thirdPopularGenome;
     @FXML
     private Button startStopSimulation;
+    @FXML
+    private StackPane left_stack_pane;
+
 
     public void setWorldParameters(WorldParameters worldParameters){
         this.worldParameters = worldParameters;
@@ -110,53 +125,48 @@ public class SimulationPresenter implements MapChangeListener {
     public synchronized void drawMap(){
         Platform.runLater(()->{
             mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
+            System.out.println(worldMap.getAnimals().size());
             //tutaj renderuje mape na nowo
 
-            HashSet<Vector2d> animalsPositions = new HashSet<>();
-            HashSet<Vector2d> plantsPositions = new HashSet<>();
+            HashSet<Vector2d> usedPositions = new HashSet<>();
             List<Animal> animals = worldMap.getAnimals().values().stream().toList();
             List<Plant> plants = worldMap.getPlants().values().stream().toList();
             for (Animal currentAnimal : animals) {
-                if (!animalsPositions.contains(currentAnimal.getPosition())) {
-                    animalsPositions.add(currentAnimal.getPosition());
+                if (!usedPositions.contains(currentAnimal.getPosition())) {
+                    if(currentAnimal.isHighlighted()){
+                        mapGrid.add(new HighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                    }else{
+                        mapGrid.add(new AnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                    }
+                    addTileConstraintsToMapGrid();
+                    usedPositions.add(currentAnimal.getPosition());
                 }
             }
             for (Plant currentPlant : plants) {
-                if (!plantsPositions.contains(currentPlant.getPosition())) {
-                    plantsPositions.add(currentPlant.getPosition());
+                if (!usedPositions.contains(currentPlant.getPosition())) {
+                    mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                    addTileConstraintsToMapGrid();
+                    usedPositions.add(currentPlant.getPosition());
                 }
             }
-
-            for(int x = 0; x<worldMap.getWidth(); x++){
-                for (int y = 0; y<worldMap.getHeight(); y++){
-                    mapGrid.add(new EmptyTileView(),x,y);
-                    ColumnConstraints columnConstraints = new ColumnConstraints();
-                    columnConstraints.setHgrow(Priority.ALWAYS);
-                    RowConstraints rowConstraints = new RowConstraints();
-                    rowConstraints.setVgrow(Priority.ALWAYS);
-                    mapGrid.getColumnConstraints().add(columnConstraints);
-                    mapGrid.getRowConstraints().add(rowConstraints);
-                }
-            }
-
-            for (int x = 0; x < worldMap.getWidth(); x++) {
-                for (int y = 0; y < worldMap.getHeight(); y++) {
-                    StackPane cell = new StackPane();
-
-                    cell.getChildren().add(new EmptyTileView());
-
-                    Vector2d position = new Vector2d(x, y);
-
-                    if (animalsPositions.contains(position)) {
-                        cell.getChildren().add(new AnimalView());
+            for(int x = 0; x<worldMap.getHeight(); x++){
+                for (int y = 0; y<worldMap.getWidth(); y++){
+                    if(!usedPositions.contains(new Vector2d(x,y))){
+                        mapGrid.add(new EmptyTileView(),x,y);
+                        addTileConstraintsToMapGrid();
                     }
-                    else if (plantsPositions.contains(position)){
-                        cell.getChildren().add(new PlantView());
-                    }
-                    mapGrid.add(cell, x, y);
                 }
             }
         });
+    }
+
+    private void addTileConstraintsToMapGrid(){
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        mapGrid.getColumnConstraints().add(columnConstraints);
+        mapGrid.getRowConstraints().add(rowConstraints);
     }
 
     public void startStopSimulation() {
@@ -178,6 +188,7 @@ public class SimulationPresenter implements MapChangeListener {
         }
     }
 
+
     public void exportStatisticsToCsv(WorldMap worldMap, MapStatistics mapStatistics){
         String projectPath = System.getProperty("user.dir");
         String filename = "World_Statistics_" + worldMap.getMapID() + ".csv";
@@ -198,9 +209,91 @@ public class SimulationPresenter implements MapChangeListener {
         }
     }
 
+    public synchronized void drawAnimalStats(Animal animal){
+        Platform.runLater(()->{
+            Button returnButton = new Button();
+            returnButton.setText("Return");
+            returnButton.setStyle("-fx-padding: 0 40 0 40; -fx-background-color: green;");
+            AnimalTitleLabel titleLabel = new AnimalTitleLabel();
+            titleLabel.setText("ANIMAL STATS");
+            AnimalStatLabel ageLabel = new AnimalStatLabel();
+            ageLabel.setText("Animal age: " + animal.getAge());
+            AnimalStatLabel childrenLabel = new AnimalStatLabel();
+            childrenLabel.setText("Children number: " + animal.getKidsNumber());
+            AnimalStatLabel energyLabel = new AnimalStatLabel();
+            energyLabel.setText("Energy: " + animal.getEnergyLevel());
+            AnimalStatLabel genomeLabel = new AnimalStatLabel();
+            genomeLabel.setText("Genome: " + animal.getGenome().getGenes());
+            AnimalStatLabel currentGeneLabel = new AnimalStatLabel();
+            currentGeneLabel.setText("Current gene: " + animal.getCurrentGene());
+
+            VBox animalStatsVBox = new VBox();
+            animalStatsVBox.getChildren().addAll(returnButton, titleLabel, ageLabel, childrenLabel, energyLabel, genomeLabel);
+            animalStatsVBox.setStyle("-fx-background-color: #c5d9d0; -fx-alignment: center; -fx-min-height: 400");
+
+            left_stack_pane.setAlignment(Pos.CENTER);
+
+            left_stack_pane.getChildren().add(animalStatsVBox);
+
+            returnButton.setOnAction(event -> {
+                Platform.runLater(()->{
+                    left_stack_pane.getChildren().remove(animalStatsVBox);
+                    unhighlightAnimal(animal);
+                });
+            });
+        });
+    }
+
+    public synchronized void fillAnimalStats(Animal animal){
+        Platform.runLater(()->{
+            Button returnButton = new Button();
+            returnButton.setText("Return");
+            returnButton.setStyle("-fx-padding: 0 40 0 40; -fx-background-color: green;");
+            AnimalTitleLabel titleLabel = new AnimalTitleLabel();
+            titleLabel.setText("ANIMAL STATS");
+            AnimalStatLabel ageLabel = new AnimalStatLabel();
+            ageLabel.setText("Animal age: " + animal.getAge());
+            AnimalStatLabel childrenLabel = new AnimalStatLabel();
+            childrenLabel.setText("Children number: " + animal.getKidsNumber());
+            AnimalStatLabel energyLabel = new AnimalStatLabel();
+            energyLabel.setText("Energy: " + animal.getEnergyLevel());
+            AnimalStatLabel genomeLabel = new AnimalStatLabel();
+            genomeLabel.setText("Genome: " + animal.getGenome().getGenes());
+            AnimalStatLabel currentGeneLabel = new AnimalStatLabel();
+            currentGeneLabel.setText("Current gene: " + animal.getCurrentGene());
+
+            ObservableList<Node> leftStackPaneChildren = left_stack_pane.getChildren();
+            VBox animalStatsVBoxAux = (VBox) leftStackPaneChildren.getLast();
+            animalStatsVBoxAux.getChildren().setAll(returnButton, titleLabel, ageLabel, childrenLabel, energyLabel, genomeLabel);
+
+            returnButton.setOnAction(event -> {
+                Platform.runLater(()->{
+                    left_stack_pane.getChildren().remove(animalStatsVBoxAux);
+                    unhighlightAnimal(animal);
+                });
+            });
+        });
+    }
+
+    public void highlightAnimal(Animal animal){
+        animal.highlight();
+        higlightedAnimal = animal;
+        animalHighlighted=true;
+        drawAnimalStats(animal);
+    }
+
+    public void unhighlightAnimal(Animal animal){
+        animal.unhighlight();
+        animalHighlighted=false;
+    }
+
     @Override
-    public void mapChanged(Simulation simulation, MapStatistics mapStatistics) {
-        fillLabels(mapStatistics);
+    public void mapChanged(MapStatistics statistics) {
+        if(animalHighlighted){
+            fillAnimalStats(higlightedAnimal);
+        }else{
+            fillLabels(statistics);
+        }
         drawMap();
         try{
             Thread.sleep(500);

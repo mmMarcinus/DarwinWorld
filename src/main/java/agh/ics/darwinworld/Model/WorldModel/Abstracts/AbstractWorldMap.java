@@ -284,7 +284,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     @Override
     public void notifyListeners(Simulation simulation, MapStatistics mapStatistics) {
         for (MapChangeListener listener : listeners) {
-            listener.mapChanged(simulation, mapStatistics);
+            listener.mapChanged(mapStatistics);
         }
     }
 }
