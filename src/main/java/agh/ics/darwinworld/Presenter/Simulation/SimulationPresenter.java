@@ -3,11 +3,11 @@ package agh.ics.darwinworld.Presenter.Simulation;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
+import agh.ics.darwinworld.Presenter.Statistics.MapStatistics;
 import agh.ics.darwinworld.View.AnimalView;
 import agh.ics.darwinworld.View.EmptyTileView;
 import agh.ics.darwinworld.View.PlantView;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.MapChangeListener;
-import agh.ics.darwinworld.Model.WorldModel.NormalWorldMap;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
@@ -15,10 +15,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,37 +25,30 @@ public class SimulationPresenter implements MapChangeListener {
     private WorldMap worldMap;
     private Simulation simulation;
     private boolean simulationRunning;
+    private MapStatistics mapStatistics;
 
+    @FXML
+    private Label day;
     @FXML
     private GridPane mapGrid;
     @FXML
-    private Label is_polar_label;
+    private Label animalNumber;
     @FXML
-    private Label is_change_label;
+    public Label plantNumber;
     @FXML
-    public Label height_label;
+    private Label emptyTiles;
     @FXML
-    private Label width_label;
+    private Label averageEnergyLevel;
     @FXML
-    private Label start_number_of_animals_label;
+    private Label averageLifeLength;
     @FXML
-    private Label start_animal_energy_label;
+    private Label averageKidsNumber;
     @FXML
-    private Label energy_required_to_reproduce_label;
+    private Label firstPopularGenome;
     @FXML
-    private Label energy_taken_each_day_label;
+    private Label secondPopularGenome;
     @FXML
-    private Label genome_length_label;
-    @FXML
-    private Label min_mutation_number_label;
-    @FXML
-    private Label max_mutation_number_label;
-    @FXML
-    private Label plants_grown_each_day_label;
-    @FXML
-    private Label number_of_plants_label;
-    @FXML
-    private Label energy_from_plant_label;
+    private Label thirdPopularGenome;
     @FXML
     private Button startStopSimulation;
 
@@ -70,6 +60,10 @@ public class SimulationPresenter implements MapChangeListener {
         this.worldMap = worldMap;
     }
 
+    public void setMapStatistics(MapStatistics mapStatistics){
+        this.mapStatistics = mapStatistics;
+    }
+
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
     }
@@ -78,29 +72,34 @@ public class SimulationPresenter implements MapChangeListener {
         this.simulationRunning = simulationRunning;
     }
 
-    public void fillLabels(){
-        width_label.setText("Width: "+worldParameters.width());
-        height_label.setText("Height: "+worldParameters.height());
-        start_number_of_animals_label.setText("Animals start number: "+worldParameters.startAnimalsNumber());
-        start_animal_energy_label.setText("Animal start energy: "+worldParameters.startEnergyLevel());
-        energy_required_to_reproduce_label.setText("Min energy to reproduce: "+worldParameters.startEnergyLevel());
-        energy_from_plant_label.setText("Energy from plant: "+worldParameters.energyFromPlant());
-        energy_taken_each_day_label.setText("Energy taken per day: "+worldParameters.energyTakenEachDay());
-        plants_grown_each_day_label.setText("Plants grown each day: "+worldParameters.dayPlantNumber());
-        genome_length_label.setText("Genome length: " + worldParameters.genomesLength());
-        max_mutation_number_label.setText("Max mutation number: " + worldParameters.maxMutation());
-        min_mutation_number_label.setText("Min mutation number: " + worldParameters.minMutation());
-        number_of_plants_label.setText("Plants start number: " + worldParameters.startPlantNumber());
-        if(worldParameters.changeGenome()){
-            is_change_label.setText("PRZEMIANKA");
-        }else{
-            is_change_label.setText("BEZ PRZEMIANKI");
-        }
-        if (worldParameters.polarMap()){
-            is_polar_label.setText("BIEGUNY");
-        }else{
-            is_polar_label.setText("BEZ BIEGUNÓW");
-        }
+    public void fillLabels(MapStatistics mapStatistics){
+        Platform.runLater(() -> {
+            day.setText("Day " + mapStatistics.getDayCount());
+            animalNumber.setText("Animals number: " + mapStatistics.getAnimalNumber());
+            plantNumber.setText("Plants number: " + mapStatistics.getPlantNumber());
+            emptyTiles.setText("Empty tiles number: " + mapStatistics.getEmptyTile());
+            if (mapStatistics.getFirstPopularGenomeCount() != 0) {
+                firstPopularGenome.setText(mapStatistics.getFirstPopularGenome() + ": " + mapStatistics.getFirstPopularGenomeCount() + " appearance");
+            }
+            else{
+                firstPopularGenome.setText(mapStatistics.getFirstPopularGenome());
+            }
+            if (mapStatistics.getSecondPopularGenomeCount() != 0) {
+                secondPopularGenome.setText(mapStatistics.getSecondPopularGenome() + ": " + mapStatistics.getSecondPopularGenomeCount() + " appearance");
+            }
+            else{
+                secondPopularGenome.setText(mapStatistics.getSecondPopularGenome());
+            }
+            if (mapStatistics.getThirdPopularGenomeCount() != 0) {
+                thirdPopularGenome.setText(mapStatistics.getThirdPopularGenome() + ": " + mapStatistics.getThirdPopularGenomeCount() + " appearance");
+            }
+            else{
+                thirdPopularGenome.setText(mapStatistics.getThirdPopularGenome());
+            }
+            averageEnergyLevel.setText("Average energy level: " + mapStatistics.getAverageEnergyLevel());
+            averageLifeLength.setText("Average life length of dead animals: " + mapStatistics.getAverageLifeLength());
+            averageKidsNumber.setText("Average kids number: " + mapStatistics.getAverageKidsNumber());
+        });
     }
 
     public synchronized void drawMap(){
@@ -108,46 +107,48 @@ public class SimulationPresenter implements MapChangeListener {
             mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
             //tutaj renderuje mape na nowo
 
-            HashSet<Vector2d> usedPositions = new HashSet<>();
+            HashSet<Vector2d> animalsPositions = new HashSet<>();
+            HashSet<Vector2d> plantsPositions = new HashSet<>();
             List<Animal> animals = worldMap.getAnimals().values().stream().toList();
             List<Plant> plants = worldMap.getPlants().values().stream().toList();
             for (Animal currentAnimal : animals) {
-                if (!usedPositions.contains(currentAnimal.getPosition())) {
-                    mapGrid.add(new AnimalView(), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
-                    ColumnConstraints columnConstraints = new ColumnConstraints();
-                    columnConstraints.setHgrow(Priority.ALWAYS);
-                    RowConstraints rowConstraints = new RowConstraints();
-                    rowConstraints.setVgrow(Priority.ALWAYS);
-                    mapGrid.getColumnConstraints().add(columnConstraints);
-                    mapGrid.getRowConstraints().add(rowConstraints);
-
-                    usedPositions.add(currentAnimal.getPosition());
+                if (!animalsPositions.contains(currentAnimal.getPosition())) {
+                    animalsPositions.add(currentAnimal.getPosition());
                 }
             }
             for (Plant currentPlant : plants) {
-                if (!usedPositions.contains(currentPlant.getPosition())) {
-                    mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                if (!plantsPositions.contains(currentPlant.getPosition())) {
+                    plantsPositions.add(currentPlant.getPosition());
+                }
+            }
+
+            for(int x = 0; x<worldMap.getWidth(); x++){
+                for (int y = 0; y<worldMap.getHeight(); y++){
+                    mapGrid.add(new EmptyTileView(),x,y);
                     ColumnConstraints columnConstraints = new ColumnConstraints();
                     columnConstraints.setHgrow(Priority.ALWAYS);
                     RowConstraints rowConstraints = new RowConstraints();
                     rowConstraints.setVgrow(Priority.ALWAYS);
                     mapGrid.getColumnConstraints().add(columnConstraints);
                     mapGrid.getRowConstraints().add(rowConstraints);
-
-                    usedPositions.add(currentPlant.getPosition());
                 }
             }
-            for(int x = 0; x<worldMap.getWidth(); x++){
-                for (int y = 0; y<worldMap.getHeight(); y++){
-                    if(!usedPositions.contains(new Vector2d(x,y))){
-                        mapGrid.add(new EmptyTileView(),x,y);
-                        ColumnConstraints columnConstraints = new ColumnConstraints();
-                        columnConstraints.setHgrow(Priority.ALWAYS);
-                        RowConstraints rowConstraints = new RowConstraints();
-                        rowConstraints.setVgrow(Priority.ALWAYS);
-                        mapGrid.getColumnConstraints().add(columnConstraints);
-                        mapGrid.getRowConstraints().add(rowConstraints);
+
+            for (int x = 0; x < worldMap.getWidth(); x++) {
+                for (int y = 0; y < worldMap.getHeight(); y++) {
+                    StackPane cell = new StackPane();
+
+                    cell.getChildren().add(new EmptyTileView());
+
+                    Vector2d position = new Vector2d(x, y);
+
+                    if (animalsPositions.contains(position)) {
+                        cell.getChildren().add(new AnimalView());
                     }
+                    else if (plantsPositions.contains(position)){
+                        cell.getChildren().add(new PlantView());
+                    }
+                    mapGrid.add(cell, x, y);
                 }
             }
         });
@@ -172,12 +173,12 @@ public class SimulationPresenter implements MapChangeListener {
         }
     }
 
-
     @Override
-    public void mapChanged(Simulation simulation) {
+    public void mapChanged(Simulation simulation, MapStatistics mapStatistics) {
+        fillLabels(mapStatistics);
         drawMap();
         try{
-            Thread.sleep(200);
+            Thread.sleep(500);
         }catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }
