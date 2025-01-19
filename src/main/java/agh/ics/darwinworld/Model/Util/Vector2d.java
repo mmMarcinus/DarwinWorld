@@ -48,11 +48,12 @@ public class    Vector2d {
         return new Vector2d(Math.min(this.x,other.x),Math.min(this.y,other.y));
     }
 
-    public boolean equals(Object other){
-        if(this==other){return true;}
-        else if(!(other instanceof Vector2d)){return false;}
-        Vector2d that = (Vector2d)other;
-        return this.x==that.x && this.y==that.y;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector2d vector2d = (Vector2d) o;
+        return x == vector2d.x && y == vector2d.y;
     }
 
     public Vector2d opposite(){

@@ -64,7 +64,6 @@ public class Simulation implements Runnable {
             i+=1;
         }
 
-
         //dodawanie startowych roślinek na losowe pozycje
 
         HashSet<Vector2d> plantPositionsTaken = new HashSet<>();

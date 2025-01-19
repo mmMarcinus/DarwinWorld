@@ -22,9 +22,10 @@ public class PolarWorldMap extends AbstractWorldMap {
     public void move(Animal animal, String move, int energyTakenEachDay) {
         Vector2d oldPosition = animal.getPosition();
         animal.move(move, this);
-        this.animals.remove(oldPosition, animal);
         Vector2d newPosition = animal.getPosition();
-        this.animals.put(newPosition, animal);
+
+        animals.get(oldPosition).remove(animal);
+        animals.get(newPosition).add(animal);
 
         //usuwamy energię zgodnie z odległością od bieguna
         int poleHeight = (int) (height * 2 / 10);
