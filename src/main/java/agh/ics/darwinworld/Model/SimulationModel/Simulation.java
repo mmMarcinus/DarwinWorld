@@ -107,8 +107,6 @@ public class Simulation implements Runnable {
             if (running) {
                 System.out.println("Dzien " + dayCount);
 
-                worldMap.updateStatistics(mapStatistics, dayCount);
-
                 worldMap.removeDeadAnimals();
 
                 worldMap.moveAllAnimals(worldParameters.energyTakenEachDay());
@@ -119,6 +117,8 @@ public class Simulation implements Runnable {
                         worldParameters.minMutation(), worldParameters.maxMutation());
 
                 worldMap.placeNewPlants(worldParameters.dayPlantNumber(), worldParameters.energyFromPlant());
+
+                worldMap.updateStatistics(mapStatistics, dayCount);
 
                 worldMap.notifyListeners(this, mapStatistics);
 
