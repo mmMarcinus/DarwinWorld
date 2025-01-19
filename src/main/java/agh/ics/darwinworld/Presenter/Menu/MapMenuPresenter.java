@@ -153,7 +153,7 @@ public class MapMenuPresenter {
             throw new EnergyTakenEachDayException();
         }
 
-        if (worldParameters.reproduceEnergyRequired() < worldParameters.startEnergyLevel() / 2) {
+        if (worldParameters.reproduceEnergyRequired() <= 0) {
             throw new ReproduceEnergyRequiredException();
         }
 

@@ -412,7 +412,7 @@ public class SimulationPresenter implements MapChangeListener {
             System.out.println(e.getMessage());
         }
         if (worldParameters.exportStatistics()){
-            exportStatisticsToCsv(worldMap, mapStatistics);
+            exportStatisticsToCsv(worldMap, statistics);
         }
     }
 
