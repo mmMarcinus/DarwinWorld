@@ -380,6 +380,7 @@ public class SimulationPresenter implements MapChangeListener {
     public void unhighlightAnimal(Animal animal){
         animal.unhighlight();
         animalHighlighted=false;
+        drawMap();
     }
 
     @Override
