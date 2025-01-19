@@ -3,9 +3,13 @@ package agh.ics.darwinworld.Model.WorldModel;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.AbstractWorldMap;
 
+import java.util.UUID;
+
 
 public class PolarWorldMap extends AbstractWorldMap {
-    public PolarWorldMap(int width, int height) {
+    public PolarWorldMap(int width, int height, UUID mapID) {
+        this.mapID = mapID;
+
         this.width = width;
         this.height = height;
 

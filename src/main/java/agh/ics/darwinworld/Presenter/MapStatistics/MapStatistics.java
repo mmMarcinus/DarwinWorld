@@ -1,4 +1,4 @@
-package agh.ics.darwinworld.Presenter.Statistics;
+package agh.ics.darwinworld.Presenter.MapStatistics;
 
 public class MapStatistics {
     private int dayCount = 0;

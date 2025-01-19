@@ -6,12 +6,13 @@ import agh.ics.darwinworld.Model.AnimalModel.Reproduce;
 import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
-import agh.ics.darwinworld.Presenter.Statistics.MapStatistics;
+import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbstractWorldMap implements WorldMap {
+    protected UUID mapID;
     protected int width;
     protected int height;
     protected int jungleTop;
@@ -255,6 +256,8 @@ public abstract class AbstractWorldMap implements WorldMap {
         Vector2d position = plant.getPosition();
         plants.remove(position, plant);
     }
+
+    public UUID getMapID() { return mapID; }
 
     public int getWidth() { return width; }
 
