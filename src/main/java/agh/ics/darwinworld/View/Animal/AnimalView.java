@@ -1,10 +1,14 @@
 package agh.ics.darwinworld.View.Animal;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 
 public class AnimalView extends StackPane{

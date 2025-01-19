@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class SimulationPresenter implements MapChangeListener {
@@ -136,30 +137,50 @@ public class SimulationPresenter implements MapChangeListener {
             System.out.println(worldMap.getAnimals().size());
             //tutaj renderuje mape na nowo
 
-            HashSet<Vector2d> usedPositions = new HashSet<>();
-            List<Animal> animals = worldMap.getAnimals().values().stream().toList();
+            Map<Vector2d, ArrayList<Animal>> animals = worldMap.getAnimals();
             List<Plant> plants = worldMap.getPlants().values().stream().toList();
+
             //Najpopularniejsze genotypy
             Map<String, Integer> genomesWithCount = new HashMap<>();
             List<Animal> mostPopularAnimals = new ArrayList<>();
+
+            HashSet<Vector2d> usedPositions = new HashSet<>();
             if (showMostPopularGenotypes){
-                for(Animal currentAnimal : animals){
-                    addOrUpdateGenome(genomesWithCount, currentAnimal.getGenome().getGenes());
+                for(ArrayList<Animal> animalsOnPosition : animals.values()){
+                    for(Animal currentAnimal : animalsOnPosition){
+                        addOrUpdateGenome(genomesWithCount, currentAnimal.getGenome().getGenes());
+                    }
                 }
             }
             Optional<Map.Entry<String, Integer>> maxEntry = genomesWithCount.entrySet()
                     .stream()
                     .max(Map.Entry.comparingByValue());
             maxEntry.ifPresent(entry -> {
-                for (Animal currentAnimal : animals){
-                    if (currentAnimal.getGenome().getGenes().equals(maxEntry.get().getKey())){
-                        mostPopularAnimals.add(currentAnimal);
+                for(ArrayList<Animal> animalsOnPosition : animals.values()){
+                    for(Animal currentAnimal : animalsOnPosition){
+                        if (currentAnimal.getGenome().getGenes().equals(maxEntry.get().getKey())){
+                            mostPopularAnimals.add(currentAnimal);
+                        }
                     }
                 }
             });
 
             int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
-            for (Animal currentAnimal : animals) {
+
+            ArrayList<Animal> animalsToPut = new ArrayList<>();
+            for (ArrayList<Animal> animalsOnPosition : animals.values()) {
+                if (animalsOnPosition.isEmpty() || animalsOnPosition == null) {
+                    continue;
+                }
+                Animal currentMaxEnergyAnimal = animalsOnPosition.getFirst();
+                for (Animal currentAnimal : animalsOnPosition) {
+                    if (currentAnimal.getEnergyLevel()>currentMaxEnergyAnimal.getEnergyLevel()){
+                        currentMaxEnergyAnimal = currentAnimal;
+                    }
+                }
+                animalsToPut.add(currentMaxEnergyAnimal);
+            }
+            for (Animal currentAnimal : animalsToPut) {
                 if (!usedPositions.contains(currentAnimal.getPosition())) {
                     if(worldParameters.polarMap() && (currentAnimal.getPosition().getY() <= poleHeight - 1 || worldMap.getHeight() - poleHeight < currentAnimal.getPosition().getY() + 1)){
                         if(currentAnimal.isHighlighted()){
@@ -387,6 +408,9 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void highlightAnimal(Animal animal){
+        if(animalHighlighted){
+            return;
+        }
         animal.highlight();
         higlightedAnimal = animal;
         animalHighlighted=true;
@@ -400,6 +424,8 @@ public class SimulationPresenter implements MapChangeListener {
         drawMap();
     }
 
+    public boolean isAnimalHighlighted(){return animalHighlighted;}
+
     @Override
     public void mapChanged(MapStatistics statistics) {
         fillLabels(statistics);
@@ -408,12 +434,12 @@ public class SimulationPresenter implements MapChangeListener {
         }
         drawMap();
         try{
-            Thread.sleep(1000);
+            Thread.sleep(500);
         }catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }
         if (worldParameters.exportStatistics()){
-            exportStatisticsToCsv(worldMap, statistics);
+            exportStatisticsToCsv(worldMap, mapStatistics);
         }
     }
 

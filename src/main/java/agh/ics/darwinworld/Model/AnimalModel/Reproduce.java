@@ -7,7 +7,6 @@ public class Reproduce {
 
     public static Animal reproduce(Animal parent1, Animal parent2, int startEnergyLevel, int minMutation, int maxMutation){
         Random rand = new Random();
-
         //tworzenie genomu młodego
         Genome youngGenome;
         boolean side = rand.nextBoolean();
@@ -32,8 +31,8 @@ public class Reproduce {
 
         int startGene = rand.nextInt(youngGenome.getLength())-1;
 
-        parent1.updateEnergyLevel(parent1.getEnergyLevel()-(startEnergyLevel/2));
-        parent2.updateEnergyLevel(parent2.getEnergyLevel()-(startEnergyLevel/2));
+//        parent1.updateEnergyLevel(parent1.getEnergyLevel()-(startEnergyLevel/2));
+//        parent2.updateEnergyLevel(parent2.getEnergyLevel()-(startEnergyLevel/2));
 
         parent1.updateKidsNumber(parent1.getKidsNumber()+1);
         parent2.updateKidsNumber(parent2.getKidsNumber()+1);

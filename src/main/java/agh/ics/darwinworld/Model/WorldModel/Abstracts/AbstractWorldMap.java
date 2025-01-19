@@ -9,6 +9,7 @@ import agh.ics.darwinworld.Model.WorldModel.Plant;
 import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public abstract class AbstractWorldMap implements WorldMap {
@@ -17,7 +18,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected int height;
     protected int jungleTop;
     protected int jungleBottom;
-    protected Map<Vector2d, Animal> animals = new HashMap<Vector2d,Animal>();
+    protected ConcurrentHashMap<Vector2d, ArrayList<Animal>> animals = new ConcurrentHashMap<>();
     protected Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
     protected List<MapChangeListener> listeners = new ArrayList<>();
     protected Simulation simulation;
@@ -27,15 +28,17 @@ public abstract class AbstractWorldMap implements WorldMap {
     public abstract void move(Animal animal, String move, int energyTakenEachDay);
 
     @Override
-    public void removeDeadAnimals() {
+    public synchronized void removeDeadAnimals() {
         ArrayList<Animal> animalsToDelete;
         animalsToDelete = new ArrayList<>();
-        for (Animal animal : animals.values()) {
-            if (animal.getEnergyLevel() <= 0){
-                animalsToDelete.add(animal);
-            }
-            else{
-                animal.updateAge(animal.getAge()+1);
+        for (ArrayList<Animal> animalsOnPosition : animals.values()) {
+            for(Animal animal : animalsOnPosition) {
+                if (animal.getEnergyLevel() <= 0){
+                    animalsToDelete.add(animal);
+                }
+                else{
+                    animal.updateAge(animal.getAge()+1);
+                }
             }
         }
         for (Animal animal : animalsToDelete) {
@@ -46,10 +49,14 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public void moveAllAnimals(int energyTakenEachDay) {
-        for (Animal animal : animals.values()){
-            Genome genome = animal.getGenome();
-            String move = genome.getGenes().substring((animal.getCurrentGene()));
-            move(animal, move, energyTakenEachDay);
+        for (ArrayList<Animal> animalsOnPosition : animals.values()){
+            ArrayList<Animal> animalsToMove = new ArrayList<>();
+            animalsToMove.addAll(animalsOnPosition);
+            for(Animal animal : animalsToMove){
+                Genome genome = animal.getGenome();
+                String move = genome.getGenes().substring((animal.getCurrentGene()));
+                move(animal, move, energyTakenEachDay);
+            }
         }
     }
 
@@ -65,7 +72,15 @@ public abstract class AbstractWorldMap implements WorldMap {
             if (plantsToDelete.contains(plant)){
                 continue;
             }
-            for (Animal animal : animals.values()){
+
+            Vector2d plantPosition = plant.getPosition();
+
+            //jeśli nie ma zwierząt na pozycji to pomijamy
+            if (animals.get(plantPosition) == null){
+                continue;
+            }
+
+            for(Animal animal : animals.get(plantPosition)){//TU MOŻE BYĆ BŁĄD JEŚLI TO SIĘ WYWALA JAK LISTA JEST PUSTA
                 if (plant.getPosition().equals(animal.getPosition())){
                     if (consumer.getEnergyLevel() < animal.getEnergyLevel()){
                         consumer = animal;
@@ -104,29 +119,30 @@ public abstract class AbstractWorldMap implements WorldMap {
         ArrayList<Animal> reproduceCandidates;
         HashSet<Animal> reproducedAnimals = new HashSet<>();
 
-        for (Animal positionAnimal : animals.values()){
-            if (!reproducedAnimals.contains(positionAnimal) && positionAnimal.getEnergyLevel() >= reproduceEnergyRequired) {
-                reproduceCandidates = new ArrayList<>();
-                boolean isCandidate = false;
-                for (Animal animal : animals.values()) {
-                    if (positionAnimal.getPosition() == animal.getPosition() && animal.getEnergyLevel() >= reproduceEnergyRequired) {
-                        isCandidate = true;
-                        reproduceCandidates.add(animal);
-                        reproducedAnimals.add(animal);
-                    }
-                }
-                if (isCandidate) {
+        for(ArrayList<Animal> animalsOnPosition : animals.values()){
+            for(Animal positionAnimal : animalsOnPosition){
+                if (!reproducedAnimals.contains(positionAnimal) && positionAnimal.getEnergyLevel() >= reproduceEnergyRequired) {
+                    reproduceCandidates = new ArrayList<>();
                     reproduceCandidates.add(positionAnimal);
-                    reproducedAnimals.add(positionAnimal);
-                }
-                reproduceCandidates.sort(Comparator.comparing(Animal::getEnergyLevel)
-                        .thenComparing(Animal::getAge)
-                        .thenComparing(Animal::getKidsNumber));
-                for (int i = 1; i < reproduceCandidates.size(); i+=2){
-                    Reproduce.reproduce(reproduceCandidates.get(i-1),reproduceCandidates.get(i), startEnergyLevel, minMutation, maxMutation);
+
+                    for (Animal animal : animals.get(positionAnimal.getPosition())) {
+                        if (animal==positionAnimal){continue;}
+                        if (animal.getEnergyLevel() >= reproduceEnergyRequired) {
+                            reproduceCandidates.add(animal);
+                            reproducedAnimals.add(animal);
+                        }
+                    }
+
+                    reproduceCandidates.sort(Comparator.comparing(Animal::getEnergyLevel)
+                            .thenComparing(Animal::getAge)
+                            .thenComparing(Animal::getKidsNumber));
+                    if(reproduceCandidates.size()>1){
+                        Reproduce.reproduce(reproduceCandidates.getLast(),reproduceCandidates.get(reproduceCandidates.size()-2), startEnergyLevel, minMutation, maxMutation);
+                    }
                 }
             }
         }
+
     }
 
     @Override
@@ -178,15 +194,18 @@ public abstract class AbstractWorldMap implements WorldMap {
         Map<Vector2d, Animal> animalPlaces = new HashMap<>();
         Map<String, Integer> genomesWithCount = new HashMap<>();
 
-        for (Animal animal : animals.values()) {
-            averageKidsNumber += animal.getKidsNumber();
-            averageEnergyLevel += animal.getEnergyLevel();
-            addOrUpdateGenome(genomesWithCount, animal.getGenome().getGenes());
-            Vector2d position = animal.getPosition();
-            if (!animalPlaces.containsKey(position)){
-                animalPlaces.put(position, animal);
+        for(ArrayList<Animal> animalsOnPosition : animals.values()){
+            for(Animal animal : animalsOnPosition){
+                averageKidsNumber += animal.getKidsNumber();
+                averageEnergyLevel += animal.getEnergyLevel();
+                addOrUpdateGenome(genomesWithCount, animal.getGenome().getGenes());
+                Vector2d position = animal.getPosition();
+                if (!animalPlaces.containsKey(position)){
+                    animalPlaces.put(position, animal);
+                }
             }
         }
+
 
         averageKidsNumber /= animals.size();
         averageEnergyLevel /= animals.size();
@@ -234,9 +253,17 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void place(Animal animal){
+    public synchronized void place(Animal animal){
         Vector2d position = animal.getPosition();
-        animals.put(position, animal);
+        ArrayList<Animal> listToPut = animals.get(position);
+        if (listToPut == null){
+            listToPut = new ArrayList<>();
+            listToPut.add(animal);
+            animals.put(position, listToPut);
+        }else{
+            listToPut.add(animal);
+        }
+
     }
 
     @Override
@@ -246,9 +273,10 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void remove(Animal animal){
+    public synchronized void remove(Animal animal){
         Vector2d position = animal.getPosition();
-        animals.remove(position, animal);
+        List<Animal> listToRemove = animals.get(position);
+        listToRemove.remove(animal);
     }
 
     @Override
@@ -269,7 +297,7 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     public Map<Vector2d, Plant> getPlants() {return plants;}
 
-    public Map<Vector2d, Animal> getAnimals() {return animals;}
+    public Map<Vector2d, ArrayList<Animal>> getAnimals() {return animals;}
 
     @Override
     public void attachListener(MapChangeListener listener){

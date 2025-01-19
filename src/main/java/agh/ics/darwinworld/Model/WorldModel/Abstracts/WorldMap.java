@@ -6,6 +6,7 @@ import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
 import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,7 +43,7 @@ public interface WorldMap{
 
     Map<Vector2d, Plant> getPlants();
 
-    Map<Vector2d, Animal> getAnimals();
+    Map<Vector2d, ArrayList<Animal>> getAnimals();
 
     void attachListener(MapChangeListener observer);
 

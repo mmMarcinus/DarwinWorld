@@ -1,9 +1,12 @@
 package agh.ics.darwinworld.Model.WorldModel;
 
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
+import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.AbstractWorldMap;
 
+import java.util.ArrayList;
 import java.util.UUID;
+import java.util.Vector;
 
 
 public class NormalWorldMap extends AbstractWorldMap {
@@ -18,9 +21,21 @@ public class NormalWorldMap extends AbstractWorldMap {
     }
 
     @Override
-    public void move(Animal animal, String move, int energyTakenEachDay) {
-        //tutaj ruszanie na mapie musi byc zawarte
+    public synchronized void move(Animal animal, String move, int energyTakenEachDay) {
+        Vector2d oldPosition = animal.getPosition();
         animal.move(move, this);
+        Vector2d newPosition = animal.getPosition();
+
+        animals.get(oldPosition).remove(animal);
+        if (animals.get(newPosition)==null){
+            ArrayList<Animal> listToPut = new ArrayList<>();
+            listToPut.add(animal);
+            animals.put(newPosition, listToPut);
+        }else{
+            animals.get(newPosition).add(animal);
+        }
+
+
         animal.updateEnergyLevel(animal.getEnergyLevel() - energyTakenEachDay);
 
         int updatedGene=animal.getCurrentGene();
