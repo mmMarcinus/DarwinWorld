@@ -229,9 +229,11 @@ public class SimulationPresenter implements MapChangeListener {
             childrenLabel.setText("Children number: " + animal.getKidsNumber());
             AnimalStatLabel energyLabel = new AnimalStatLabel();
             energyLabel.setText("Energy: " + animal.getEnergyLevel());
+            AnimalStatLabel plantsEatenLabel = new AnimalStatLabel();
+            plantsEatenLabel.setText("Plants eaten: " + animal.getPlantsEaten());
 
             VBox animalStatsVBox = new VBox();
-            animalStatsVBox.getChildren().addAll(returnButton, titleLabel, genomeLabel, currentGeneLabel, ageLabel, childrenLabel, energyLabel);
+            animalStatsVBox.getChildren().addAll(returnButton, titleLabel, genomeLabel, currentGeneLabel, ageLabel, childrenLabel, energyLabel, plantsEatenLabel);
             animalStatsVBox.setStyle("-fx-background-color: #c5d9d0; -fx-alignment: center; -fx-min-height: 400");
 
             left_stack_pane.setAlignment(Pos.CENTER);
@@ -259,18 +261,21 @@ public class SimulationPresenter implements MapChangeListener {
             genomeLabel.setText("Genome: " + animal.getGenome().getGenes());
             AnimalStatLabel currentGeneLabel = new AnimalStatLabel();
             currentGeneLabel.setText("Current gene: " + animal.getCurrentGene());
+            AnimalStatLabel energyLabel = new AnimalStatLabel();
+            energyLabel.setText("Energy: " + animal.getEnergyLevel());
             AnimalStatLabel ageLabel = new AnimalStatLabel();
             ageLabel.setText("Animal age: " + animal.getAge());
             AnimalStatLabel childrenLabel = new AnimalStatLabel();
             childrenLabel.setText("Children number: " + animal.getKidsNumber());
-            AnimalStatLabel energyLabel = new AnimalStatLabel();
-            energyLabel.setText("Energy: " + animal.getEnergyLevel());
-
+            AnimalStatLabel allDescendantsNumberLabel = new AnimalStatLabel();
+            allDescendantsNumberLabel.setText("All descendants number: " + animal.getFamilyNumber());
+            AnimalStatLabel plantsEatenLabel = new AnimalStatLabel();
+            plantsEatenLabel.setText("Plants eaten: " + animal.getPlantsEaten());
 
             ObservableList<Node> leftStackPaneChildren = left_stack_pane.getChildren();
             VBox animalStatsVBoxAux = (VBox) leftStackPaneChildren.getLast();
             animalStatsVBoxAux.getChildren().clear();
-            animalStatsVBoxAux.getChildren().addAll(returnButton, titleLabel, genomeLabel, currentGeneLabel, ageLabel, childrenLabel, energyLabel);
+            animalStatsVBoxAux.getChildren().addAll(returnButton, titleLabel, genomeLabel, currentGeneLabel, energyLabel,ageLabel, childrenLabel, allDescendantsNumberLabel, plantsEatenLabel);
 
             returnButton.setOnAction(event -> {
                 Platform.runLater(()->{

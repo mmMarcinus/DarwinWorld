@@ -13,8 +13,8 @@ public class NormalWorldMap extends AbstractWorldMap {
         this.width = width;
         this.height = height;
 
-        this.jungleTop = (int) ( height/2 + height * 0.1);
-        this.jungleBottom = (int) (height/2 - height * 0.1);
+        this.jungleTop = (int) ((double) height/2 + height * 0.1);
+        this.jungleBottom = (int) ((double) height/2 - height * 0.1);
     }
 
     @Override

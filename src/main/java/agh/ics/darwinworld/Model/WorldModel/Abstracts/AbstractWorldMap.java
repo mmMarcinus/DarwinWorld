@@ -89,7 +89,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 }
             }
             if (consumer.getEnergyLevel() != -1){
-                consumer.updateEnergyLevel(consumer.getEnergyLevel()+energyFromPlant);
+                consumer.eatPlant(energyFromPlant);
                 plantsToDelete.add(plant);
             }
         }
