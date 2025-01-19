@@ -158,28 +158,44 @@ public class SimulationPresenter implements MapChangeListener {
                 }
             });
 
-
+            int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
             for (Animal currentAnimal : animals) {
                 if (!usedPositions.contains(currentAnimal.getPosition())) {
-                    if(currentAnimal.isHighlighted()){
-                        if (!mostPopularAnimals.contains(currentAnimal)) {
-                            mapGrid.add(new HighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                    if(worldParameters.polarMap() && (currentAnimal.getPosition().getY() <= poleHeight - 1 || worldMap.getHeight() - poleHeight < currentAnimal.getPosition().getY() + 1)){
+                        if(currentAnimal.isHighlighted()){
+                            if (!mostPopularAnimals.contains(currentAnimal)) {
+                                mapGrid.add(new PoleHighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                            }else{
+                                mapGrid.add(new PoleHighlightedMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                            }
                         }else{
-                            mapGrid.add(new HighlightedMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                            if (!mostPopularAnimals.contains(currentAnimal)){
+                                mapGrid.add(new PoleAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                            }
+                            else{
+                                mapGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                            }
                         }
-                    }else{
-                        if (!mostPopularAnimals.contains(currentAnimal)){
-                            mapGrid.add(new AnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
-                        }
-                        else{
-                            mapGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                    }
+                    else {
+                        if (currentAnimal.isHighlighted()) {
+                            if (!mostPopularAnimals.contains(currentAnimal)) {
+                                mapGrid.add(new HighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                            } else {
+                                mapGrid.add(new HighlightedMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                            }
+                        } else {
+                            if (!mostPopularAnimals.contains(currentAnimal)) {
+                                mapGrid.add(new AnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                            } else {
+                                mapGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                            }
                         }
                     }
                     addTileConstraintsToMapGrid();
                     usedPositions.add(currentAnimal.getPosition());
                 }
             }
-            int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
             for (Plant currentPlant : plants) {
                 if (!usedPositions.contains(currentPlant.getPosition())) {
                     if (worldParameters.polarMap()){
