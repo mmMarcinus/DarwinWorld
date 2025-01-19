@@ -5,11 +5,9 @@ import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
 import agh.ics.darwinworld.Presenter.MapStatistics.StatisticsToFile;
-import agh.ics.darwinworld.View.Animal.AnimalStatLabel;
-import agh.ics.darwinworld.View.Animal.AnimalTitleLabel;
-import agh.ics.darwinworld.View.Animal.AnimalView;
-import agh.ics.darwinworld.View.Animal.HighlightedAnimalView;
-import agh.ics.darwinworld.View.EmptyTileView;
+import agh.ics.darwinworld.View.Animal.*;
+import agh.ics.darwinworld.View.EmptyTile.EmptyTileView;
+import agh.ics.darwinworld.View.EmptyTile.HighlightedEmptyTileView;
 import agh.ics.darwinworld.View.PlantView;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.MapChangeListener;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
@@ -28,12 +26,8 @@ import javafx.scene.layout.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class SimulationPresenter implements MapChangeListener {
@@ -44,6 +38,8 @@ public class SimulationPresenter implements MapChangeListener {
     private MapStatistics mapStatistics;
     private boolean animalHighlighted;
     private Animal higlightedAnimal;
+    private boolean showPreferredAreas;
+    private boolean showMostPopularGenotypes;
 
     @FXML
     private Label day;
@@ -71,6 +67,10 @@ public class SimulationPresenter implements MapChangeListener {
     private Button startStopSimulation;
     @FXML
     private StackPane left_stack_pane;
+    @FXML
+    private Button areasPreferredByPlants;
+    @FXML
+    private Button mostPopularGenotypes;
 
 
     public void setWorldParameters(WorldParameters worldParameters){
@@ -125,6 +125,10 @@ public class SimulationPresenter implements MapChangeListener {
         });
     }
 
+    private void addOrUpdateGenome(Map<String, Integer> map, String genome) {
+        map.put(genome, map.getOrDefault(genome, 0) + 1);
+    }
+
     public synchronized void drawMap(){
         Platform.runLater(()->{
             mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
@@ -134,12 +138,41 @@ public class SimulationPresenter implements MapChangeListener {
             HashSet<Vector2d> usedPositions = new HashSet<>();
             List<Animal> animals = worldMap.getAnimals().values().stream().toList();
             List<Plant> plants = worldMap.getPlants().values().stream().toList();
+            //Najpopularniejsze genotypy
+            Map<String, Integer> genomesWithCount = new HashMap<>();
+            List<Animal> mostPopularAnimals = new ArrayList<>();
+            if (showMostPopularGenotypes){
+                for(Animal currentAnimal : animals){
+                    addOrUpdateGenome(genomesWithCount, currentAnimal.getGenome().getGenes());
+                }
+            }
+            Optional<Map.Entry<String, Integer>> maxEntry = genomesWithCount.entrySet()
+                    .stream()
+                    .max(Map.Entry.comparingByValue());
+            maxEntry.ifPresent(entry -> {
+                for (Animal currentAnimal : animals){
+                    if (currentAnimal.getGenome().getGenes().equals(maxEntry.get().getKey())){
+                        mostPopularAnimals.add(currentAnimal);
+                    }
+                }
+            });
+
+
             for (Animal currentAnimal : animals) {
                 if (!usedPositions.contains(currentAnimal.getPosition())) {
                     if(currentAnimal.isHighlighted()){
-                        mapGrid.add(new HighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                        if (!mostPopularAnimals.contains(currentAnimal)) {
+                            mapGrid.add(new HighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                        }else{
+                            mapGrid.add(new HighlightedMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                        }
                     }else{
-                        mapGrid.add(new AnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                        if (!mostPopularAnimals.contains(currentAnimal)){
+                            mapGrid.add(new AnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                        }
+                        else{
+                            mapGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                        }
                     }
                     addTileConstraintsToMapGrid();
                     usedPositions.add(currentAnimal.getPosition());
@@ -155,7 +188,12 @@ public class SimulationPresenter implements MapChangeListener {
             for(int x = 0; x<worldMap.getHeight(); x++){
                 for (int y = 0; y<worldMap.getWidth(); y++){
                     if(!usedPositions.contains(new Vector2d(x,y))){
-                        mapGrid.add(new EmptyTileView(),x,y);
+                        if (showPreferredAreas && worldMap.getJungleTop() > y && worldMap.getJungleBottom() <= y) {
+                            mapGrid.add(new HighlightedEmptyTileView(), x, y);
+                        }
+                        else{
+                            mapGrid.add(new EmptyTileView(), x, y);
+                        }
                         addTileConstraintsToMapGrid();
                     }
                 }
@@ -174,7 +212,7 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void startStopSimulation() {
         if (simulationRunning) {
-            startStopSimulation.setText("Start simulation");
+            startStopSimulation.setText("Resume simulation");
             startStopSimulation.getStyleClass().removeAll("stop-button");
             startStopSimulation.getStyleClass().add("bottom-button");
             System.out.println("Stopping simulation...");
@@ -182,15 +220,42 @@ public class SimulationPresenter implements MapChangeListener {
             simulationRunning = false;
         }
         else{
-            startStopSimulation.setText("Resume simulation");
+            startStopSimulation.setText("Stop simulation");
             startStopSimulation.getStyleClass().removeAll("bottom-button");
             startStopSimulation.getStyleClass().add("stop-button");
             System.out.println("Resuming simulation...");
             simulation.start();
             simulationRunning = true;
+            areasPreferredByPlants.setText("Show areas preferred by plants");
+            showPreferredAreas = false;
         }
     }
 
+    public void preferredAreas(){
+        if (!simulationRunning && areasPreferredByPlants.getText().equals("Show areas preferred by plants")){
+            areasPreferredByPlants.setText("Hide areas preferred by plants");
+            showPreferredAreas = true;
+            drawMap();
+        }
+        else{
+            areasPreferredByPlants.setText("Show areas preferred by plants");
+            showPreferredAreas = false;
+            drawMap();
+        }
+    }
+
+    public void popularGenotypes(){
+        if (!simulationRunning && mostPopularGenotypes.getText().equals("Show animals with most popular genomes")){
+            mostPopularGenotypes.setText("Hide animals with most popular genomes");
+            showMostPopularGenotypes = true;
+            drawMap();
+        }
+        else{
+            mostPopularGenotypes.setText("Show animals with most popular genomes");
+            showMostPopularGenotypes = false;
+            drawMap();
+        }
+    }
 
     public void exportStatisticsToCsv(WorldMap worldMap, MapStatistics mapStatistics){
         String projectPath = System.getProperty("user.dir");
@@ -294,10 +359,9 @@ public class SimulationPresenter implements MapChangeListener {
 
     @Override
     public void mapChanged(MapStatistics statistics) {
+        fillLabels(statistics);
         if(animalHighlighted){
             fillAnimalStats(higlightedAnimal);
-        }else{
-            fillLabels(statistics);
         }
         drawMap();
         try{
