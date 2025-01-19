@@ -161,7 +161,7 @@ public class SimulationPresenter implements MapChangeListener {
             int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
             for (Animal currentAnimal : animals) {
                 if (!usedPositions.contains(currentAnimal.getPosition())) {
-                    if(worldParameters.polarMap() && currentAnimal.getPosition().getY() <= poleHeight - 1|| worldMap.getHeight() - poleHeight < currentAnimal.getPosition().getY() + 1){
+                    if(worldParameters.polarMap() && (currentAnimal.getPosition().getY() <= poleHeight - 1 || worldMap.getHeight() - poleHeight < currentAnimal.getPosition().getY() + 1)){
                         if(currentAnimal.isHighlighted()){
                             if (!mostPopularAnimals.contains(currentAnimal)) {
                                 mapGrid.add(new PoleHighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
