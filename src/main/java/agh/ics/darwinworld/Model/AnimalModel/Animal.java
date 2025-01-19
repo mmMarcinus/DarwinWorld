@@ -19,6 +19,7 @@ public class Animal implements WorldElement {
     private Animal parent2;
     private int currentGene;
     boolean highlighted;
+    int plantsEaten;
 
     public Animal(Vector2d initialPosition, Genome genome, int basicEnergyLevel, int age, Animal parent1, Animal parent2, int currentGene) {
         Random rand = new Random();
@@ -37,6 +38,7 @@ public class Animal implements WorldElement {
             this.direction = direction.next();
         }
         this.highlighted = false;
+        this.plantsEaten = 0;
     }
 
     public Vector2d getPosition() {
@@ -99,6 +101,13 @@ public class Animal implements WorldElement {
         this.currentGene = currentGene;
     }
 
+    public int getPlantsEaten(){return plantsEaten;}
+
+    public void eatPlant(int energyFromPlant){
+        this.updateEnergyLevel(this.getEnergyLevel() + energyFromPlant);
+        this.plantsEaten++;
+    }
+
     public boolean isHighlighted(){
         return highlighted;
     }
@@ -123,7 +132,6 @@ public class Animal implements WorldElement {
     public void move(String movement, WorldMap map){
         //movement jest juz charem ktory zawiera informacje o ilosci obrotu w danym dniu
         Vector2d newposition;
-
         for(int i = 0; i < Integer.valueOf(movement); i++){
             this.direction = direction.next();
         }

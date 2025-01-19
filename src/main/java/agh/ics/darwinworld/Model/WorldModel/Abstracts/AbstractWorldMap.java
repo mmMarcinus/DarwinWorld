@@ -89,7 +89,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 }
             }
             if (consumer.getEnergyLevel() != -1){
-                consumer.updateEnergyLevel(consumer.getEnergyLevel()+energyFromPlant);
+                consumer.eatPlant(energyFromPlant);
                 plantsToDelete.add(plant);
             }
         }
@@ -194,11 +194,11 @@ public abstract class AbstractWorldMap implements WorldMap {
         List<Map.Entry<String, Integer>> top3 = genomesWithCount.entrySet().stream()
                 .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
                 .limit(3)
-                .collect(Collectors.toList());
+                .toList();
 
         if (top3.size() > 0) {
-            firstPopularGenome = top3.get(0).getKey();
-            firstPopularGenomeCount = top3.get(0).getValue();
+            firstPopularGenome = top3.getFirst().getKey();
+            firstPopularGenomeCount = top3.getFirst().getValue();
         } else {
             firstPopularGenome = "Too little different genomes";
             firstPopularGenomeCount = 0;

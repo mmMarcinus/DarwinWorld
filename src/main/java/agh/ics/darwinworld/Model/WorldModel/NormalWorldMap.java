@@ -13,8 +13,8 @@ public class NormalWorldMap extends AbstractWorldMap {
         this.width = width;
         this.height = height;
 
-        this.jungleTop = (int) ( height/2 + height * 0.1);
-        this.jungleBottom = (int) (height/2 - height * 0.1);
+        this.jungleTop = (int) ((double) height/2 + height * 0.1);
+        this.jungleBottom = (int) ((double) height/2 - height * 0.1);
     }
 
     @Override
@@ -22,6 +22,14 @@ public class NormalWorldMap extends AbstractWorldMap {
         //tutaj ruszanie na mapie musi byc zawarte
         animal.move(move, this);
         animal.updateEnergyLevel(animal.getEnergyLevel() - energyTakenEachDay);
+
+        int updatedGene=animal.getCurrentGene();
+        if(animal.getCurrentGene()>=animal.getGenome().getLength()-1){
+            updatedGene=0;
+        }else{
+            updatedGene++;
+        }
+        animal.updateCurrentGene(updatedGene);
     }
 
 }
