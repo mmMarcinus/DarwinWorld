@@ -1,7 +1,11 @@
 package agh.ics.darwinworld.View.Animal;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -20,6 +24,13 @@ public class AnimalView extends StackPane{
         animalImage.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         this.getChildren().add(animalImage);
 
+        ProgressBar energyBar = new ProgressBar((double) animal.getEnergyLevel()/simulationPresenter.getWorldParameters().reproduceEnergyRequired());
+        energyBar.setMaxHeight(10);
+        energyBar.setStyle("-fx-accent: lightgreen");
+        this.getChildren().add(energyBar);
+
+        this.setAlignment(Pos.TOP_CENTER);
+
         setOnMouseClicked(event -> {
             if(!animal.isHighlighted()){
                 Circle greenCircle = new Circle();
@@ -30,7 +41,6 @@ public class AnimalView extends StackPane{
                 this.getChildren().add(greenCircle);
                 simulationPresenter.highlightAnimal(animal);
             }
-            //simulationPresenter.drawAnimalStats(animal);
         });
     }
 }
