@@ -49,7 +49,6 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public void moveAllAnimals(int energyTakenEachDay) {
-        System.out.println(animals);
         for (ArrayList<Animal> animalsOnPosition : animals.values()){
             ArrayList<Animal> animalsToMove = new ArrayList<>();
             animalsToMove.addAll(animalsOnPosition);
@@ -124,23 +123,21 @@ public abstract class AbstractWorldMap implements WorldMap {
             for(Animal positionAnimal : animalsOnPosition){
                 if (!reproducedAnimals.contains(positionAnimal) && positionAnimal.getEnergyLevel() >= reproduceEnergyRequired) {
                     reproduceCandidates = new ArrayList<>();
-                    boolean isCandidate = false;
+                    reproduceCandidates.add(positionAnimal);
+
                     for (Animal animal : animals.get(positionAnimal.getPosition())) {
+                        if (animal==positionAnimal){continue;}
                         if (animal.getEnergyLevel() >= reproduceEnergyRequired) {
-                            isCandidate = true;
                             reproduceCandidates.add(animal);
                             reproducedAnimals.add(animal);
                         }
                     }
-                    if (isCandidate) {
-                        reproduceCandidates.add(positionAnimal);
-                        reproducedAnimals.add(positionAnimal);
-                    }
+
                     reproduceCandidates.sort(Comparator.comparing(Animal::getEnergyLevel)
                             .thenComparing(Animal::getAge)
                             .thenComparing(Animal::getKidsNumber));
-                    for (int i = 1; i < reproduceCandidates.size(); i+=2){
-                        Reproduce.reproduce(reproduceCandidates.get(i-1),reproduceCandidates.get(i), startEnergyLevel, minMutation, maxMutation);
+                    if(reproduceCandidates.size()>1){
+                        Reproduce.reproduce(reproduceCandidates.getLast(),reproduceCandidates.get(reproduceCandidates.size()-2), startEnergyLevel, minMutation, maxMutation);
                     }
                 }
             }

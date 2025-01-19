@@ -433,7 +433,7 @@ public class SimulationPresenter implements MapChangeListener {
         }
         drawMap();
         try{
-            Thread.sleep(500);
+            Thread.sleep(1500);
         }catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }
