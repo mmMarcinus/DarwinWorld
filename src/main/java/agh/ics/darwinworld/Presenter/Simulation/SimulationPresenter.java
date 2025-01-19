@@ -216,7 +216,7 @@ public class SimulationPresenter implements MapChangeListener {
         Platform.runLater(()->{
             Button returnButton = new Button();
             returnButton.setText("Return");
-            returnButton.setStyle("-fx-padding: 0 40 0 40; -fx-background-color: green;");
+            returnButton.setStyle("-fx-padding: 0 40 0 40; -fx-background-color: green; -fx-font-size: 25");
             AnimalTitleLabel titleLabel = new AnimalTitleLabel();
             titleLabel.setText("ANIMAL STATS");
             AnimalStatLabel genomeLabel = new AnimalStatLabel();
@@ -236,7 +236,6 @@ public class SimulationPresenter implements MapChangeListener {
             animalStatsVBox.getChildren().addAll(returnButton, titleLabel, genomeLabel, currentGeneLabel, ageLabel, childrenLabel, energyLabel, plantsEatenLabel);
             animalStatsVBox.setStyle("-fx-background-color: #c5d9d0; -fx-alignment: center; -fx-min-height: 400");
 
-            left_stack_pane.setAlignment(Pos.CENTER);
             if(!left_stack_pane.getChildren().contains(animalStatsVBox)){
                 left_stack_pane.getChildren().add(animalStatsVBox);
             }
@@ -254,7 +253,7 @@ public class SimulationPresenter implements MapChangeListener {
         Platform.runLater(()->{
             Button returnButton = new Button();
             returnButton.setText("Return");
-            returnButton.setStyle("-fx-padding: 0 40 0 40; -fx-background-color: green;");
+            returnButton.setStyle("-fx-padding: 0 40 0 40; -fx-background-color: green; -fx-font-size: 25");
             AnimalTitleLabel titleLabel = new AnimalTitleLabel();
             titleLabel.setText("ANIMAL STATS");
             AnimalStatLabel genomeLabel = new AnimalStatLabel();
