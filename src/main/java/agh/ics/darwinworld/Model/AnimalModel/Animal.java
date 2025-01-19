@@ -123,7 +123,7 @@ public class Animal implements WorldElement {
     public void move(String movement, WorldMap map){
         //movement jest juz charem ktory zawiera informacje o ilosci obrotu w danym dniu
         Vector2d newposition;
-
+        System.out.println(this.getCurrentGene());
         for(int i = 0; i < Integer.valueOf(movement); i++){
             this.direction = direction.next();
         }
