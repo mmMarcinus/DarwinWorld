@@ -8,11 +8,13 @@ import agh.ics.darwinworld.Presenter.MapStatistics.StatisticsToFile;
 import agh.ics.darwinworld.View.Animal.*;
 import agh.ics.darwinworld.View.EmptyTile.EmptyTileView;
 import agh.ics.darwinworld.View.EmptyTile.HighlightedEmptyTileView;
-import agh.ics.darwinworld.View.PlantView;
+import agh.ics.darwinworld.View.EmptyTile.PoleEmptyTileView;
+import agh.ics.darwinworld.View.Plant.PlantView;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.MapChangeListener;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.WorldMap;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
+import agh.ics.darwinworld.View.Plant.PolePlantView;
 import agh.ics.darwinworld.WorldGUI;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -27,7 +29,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class SimulationPresenter implements MapChangeListener {
@@ -178,9 +179,20 @@ public class SimulationPresenter implements MapChangeListener {
                     usedPositions.add(currentAnimal.getPosition());
                 }
             }
+            int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
             for (Plant currentPlant : plants) {
                 if (!usedPositions.contains(currentPlant.getPosition())) {
-                    mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                    if (worldParameters.polarMap()){
+                        if (currentPlant.getPosition().getY() <= poleHeight - 1|| worldMap.getHeight() - poleHeight < currentPlant.getPosition().getY() + 1){
+                            mapGrid.add(new PolePlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                        }
+                        else{
+                            mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                        }
+                    }
+                    else {
+                        mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                    }
                     addTileConstraintsToMapGrid();
                     usedPositions.add(currentPlant.getPosition());
                 }
@@ -190,6 +202,14 @@ public class SimulationPresenter implements MapChangeListener {
                     if(!usedPositions.contains(new Vector2d(x,y))){
                         if (showPreferredAreas && worldMap.getJungleTop() > y && worldMap.getJungleBottom() <= y) {
                             mapGrid.add(new HighlightedEmptyTileView(), x, y);
+                        }
+                        else if (worldParameters.polarMap()){
+                            if (y <= poleHeight - 1|| worldMap.getHeight() - poleHeight < y + 1){
+                                mapGrid.add(new PoleEmptyTileView(), x, y);
+                            }
+                            else{
+                                mapGrid.add(new EmptyTileView(), x, y);
+                            }
                         }
                         else{
                             mapGrid.add(new EmptyTileView(), x, y);

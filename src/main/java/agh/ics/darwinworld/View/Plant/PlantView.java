@@ -1,7 +1,4 @@
-package agh.ics.darwinworld.View;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+package agh.ics.darwinworld.View.Plant;
 import javafx.scene.layout.StackPane;
 
 public class PlantView extends StackPane {
