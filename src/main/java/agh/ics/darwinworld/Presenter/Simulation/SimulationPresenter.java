@@ -3,7 +3,8 @@ package agh.ics.darwinworld.Presenter.Simulation;
 import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
-import agh.ics.darwinworld.Presenter.Statistics.MapStatistics;
+import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
+import agh.ics.darwinworld.Presenter.MapStatistics.StatisticsToFile;
 import agh.ics.darwinworld.View.Animal.AnimalStatLabel;
 import agh.ics.darwinworld.View.Animal.AnimalTitleLabel;
 import agh.ics.darwinworld.View.Animal.AnimalView;
@@ -23,11 +24,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
-import javax.swing.plaf.basic.BasicSplitPaneUI;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import java.util.ArrayList;
 import java.util.Set;
+
 
 public class SimulationPresenter implements MapChangeListener {
     private WorldParameters worldParameters;
@@ -182,6 +188,27 @@ public class SimulationPresenter implements MapChangeListener {
         }
     }
 
+
+    public void exportStatisticsToCsv(WorldMap worldMap, MapStatistics mapStatistics){
+        String projectPath = System.getProperty("user.dir");
+        String filename = "World_Statistics_" + worldMap.getMapID() + ".csv";
+        String filePath = projectPath + "/src/main/resources/statistics/" + filename;
+
+        File csvFile = new File(filePath);
+        boolean fileExist = csvFile.exists();
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
+            if (!fileExist) {
+                StatisticsToFile.setHeader(writer);
+            }
+
+            StatisticsToFile.fillStatisticsDay(writer, worldMap.getMapID(), mapStatistics);
+
+        } catch (Exception e) {
+            System.out.println("Saving statistics to csv file error");
+        }
+    }
+
     public synchronized void drawAnimalStats(Animal animal){
         Platform.runLater(()->{
             Button returnButton = new Button();
@@ -272,6 +299,9 @@ public class SimulationPresenter implements MapChangeListener {
             Thread.sleep(500);
         }catch(InterruptedException e) {
             System.out.println(e.getMessage());
+        }
+        if (worldParameters.exportStatistics()){
+            exportStatisticsToCsv(worldMap, mapStatistics);
         }
     }
 

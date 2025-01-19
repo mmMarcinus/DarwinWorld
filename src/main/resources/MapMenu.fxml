@@ -30,7 +30,7 @@
         <Label text="Width:" styleClass="label-default"/>
         <TextField fx:id="parameterMapWidth" text="10" styleClass="text-field" maxWidth="100"/>
         <Label text="Polar map variant:" styleClass="label-default"/>
-        <CheckBox fx:id="parameterPolarMap" prefWidth="100"/>
+        <CheckBox fx:id="parameterPolarMap" prefWidth="100" selected="false"/>
     </HBox>
 
 
@@ -58,7 +58,7 @@
         <Label text="Max mutation number:" styleClass="label-default"/>
         <TextField fx:id="parameterMaxMutation" text="5" styleClass="text-field" maxWidth="100"/>
         <Label text="Switch genomes variant:" styleClass="label-default"/>
-        <CheckBox fx:id="parameterChangeGenome" prefWidth="100"/>
+        <CheckBox fx:id="parameterChangeGenome" prefWidth="100" selected="false"/>
     </HBox>
 
 
@@ -76,9 +76,16 @@
         <TextField fx:id="parameterEnergyFromPlant" text="15" styleClass="text-field" maxWidth="100"/>
     </HBox>
 
-    <!-- Buttons -->
-    <HBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.columnSpan="6">
+    <!-- Files -->
+    <HBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="10" GridPane.columnSpan="6">
+        <Label text="Export statistics to .csv file: " styleClass="label-default"/>
+        <CheckBox fx:id="exportStatistics" prefWidth="50" selected="false"/>
         <Button text="Start simulation" fx:id="startSimulation" styleClass="button" maxWidth="1.7976931348623157E308"/>
+    </HBox>
+
+    <HBox alignment="CENTER" spacing = "55" GridPane.columnIndex="0" GridPane.rowIndex="11" GridPane.columnSpan="6">
+        <Button text="Import parameters" fx:id="importParameters" styleClass="button" maxWidth="1.7976931348623157E308"/>
+        <Button text="Export parameters" fx:id="exportParameters" styleClass="button" maxWidth="1.7976931348623157E308"/>
     </HBox>
 
 </GridPane>

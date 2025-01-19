@@ -9,7 +9,7 @@ import agh.ics.darwinworld.Model.WorldModel.Plant;
 import agh.ics.darwinworld.Model.WorldModel.NormalWorldMap;
 import agh.ics.darwinworld.Model.WorldModel.PolarWorldMap;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
-import agh.ics.darwinworld.Presenter.Statistics.MapStatistics;
+import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
 
 import java.util.*;
 
@@ -31,10 +31,12 @@ public class Simulation implements Runnable {
 
         this.worldParameters = worldParameters;
 
+        UUID uuid = UUID.randomUUID();
+
         if(!worldParameters.polarMap()){
-            this.worldMap = new NormalWorldMap(worldParameters.width(), worldParameters.height());
+            this.worldMap = new NormalWorldMap(worldParameters.width(), worldParameters.height(), uuid);
         } else{
-            this.worldMap = new PolarWorldMap(worldParameters.width(), worldParameters.height());
+            this.worldMap = new PolarWorldMap(worldParameters.width(), worldParameters.height(), uuid);
         }
 
         //dodawanie startowych zwierzakow na losowe pozycje z losowymi genomami
@@ -100,7 +102,7 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-
+        System.out.println(worldMap.getMapID());
         simulationRunning = true;
         running = true;
         while(simulationRunning && dayCount <= 50) {

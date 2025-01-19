@@ -1,0 +1,15 @@
+MapHeight:10
+MapWidth:10
+StartAnimalsNumber:10
+StartEnergyLevel:40
+EnergyTakenEachDay:5
+EnergyRequiredToReproduce:80
+GenomesLength:5
+MinMutations:0
+MaxMutations:5
+StartPlantsNumber:10
+DayPlantNumber:2
+EnergyFromPlant:15
+PolarMap:false
+ChangeGenome:false
+ExportStatistics:false

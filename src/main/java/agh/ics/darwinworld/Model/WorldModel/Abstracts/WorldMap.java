@@ -4,9 +4,10 @@ import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.SimulationModel.Simulation;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Plant;
-import agh.ics.darwinworld.Presenter.Statistics.MapStatistics;
+import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
 
 import java.util.Map;
+import java.util.UUID;
 
 public interface WorldMap{
     void place(Animal animal);
@@ -28,6 +29,8 @@ public interface WorldMap{
     void reproduceAnimals(int startEnergyLevel, int reproduceEnergyRequired, int minMutations, int maxMutations);
 
     void placeNewPlants(int dayPlantNumber, int energyFromPlant);
+
+    UUID getMapID();
 
     int getWidth();
 
