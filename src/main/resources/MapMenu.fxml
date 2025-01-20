@@ -41,13 +41,13 @@
 
     <HBox alignment="CENTER" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="6">
         <Label text="Number of animals:" styleClass="label-default"/>
-        <TextField fx:id="parameterStartAnimalsNumber" text="10" styleClass="text-field" maxWidth="100"/>
+        <TextField fx:id="parameterStartAnimalsNumber" text="20" styleClass="text-field" maxWidth="100"/>
         <Label text="Start animal energy:" styleClass="label-default"/>
         <TextField fx:id="parameterStartEnergyLevel" text="40" styleClass="text-field" maxWidth="100"/>
         <Label text="Energy taken each day:" styleClass="label-default"/>
         <TextField fx:id="parameterEnergyTakenEachDay" text="5" styleClass="text-field" maxWidth="100"/>
         <Label text="Energy required to reproduce:" styleClass="label-default"/>
-        <TextField fx:id="parameterReproduceRequiredEnergy" text="80" styleClass="text-field" maxWidth="100"/>
+        <TextField fx:id="parameterReproduceRequiredEnergy" text="50" styleClass="text-field" maxWidth="100"/>
     </HBox>
 
     <HBox alignment="CENTER" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="6">
@@ -71,9 +71,9 @@
         <Label text="Number of plants:" styleClass="label-default"/>
         <TextField fx:id="parameterStartPlantsNumber" text="10" styleClass="text-field" maxWidth="100"/>
         <Label text="Plants grown each day:" styleClass="label-default"/>
-        <TextField fx:id="parameterDayPlantNumber" text="2" styleClass="text-field" maxWidth="100"/>
+        <TextField fx:id="parameterDayPlantNumber" text="3" styleClass="text-field" maxWidth="100"/>
         <Label text="Energy from plant:" styleClass="label-default"/>
-        <TextField fx:id="parameterEnergyFromPlant" text="15" styleClass="text-field" maxWidth="100"/>
+        <TextField fx:id="parameterEnergyFromPlant" text="30" styleClass="text-field" maxWidth="100"/>
     </HBox>
 
     <!-- Files -->

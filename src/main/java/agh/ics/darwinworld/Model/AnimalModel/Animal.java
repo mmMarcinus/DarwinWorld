@@ -143,7 +143,7 @@ public class Animal implements WorldElement {
         if (x < 0){
             newposition = new Vector2d(map.getWidth()-1, y);
         }
-        else if (x >= map.getWidth()){
+        else if (x > map.getWidth()){
             newposition = new Vector2d(0, y);
         }
 
