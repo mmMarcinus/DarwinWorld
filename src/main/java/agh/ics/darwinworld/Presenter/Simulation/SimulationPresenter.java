@@ -144,7 +144,6 @@ public class SimulationPresenter implements MapChangeListener {
         isRendering = true;
         Platform.runLater(()->{
             mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
-            System.out.println(worldMap.getAnimals().size());
             //tutaj renderuje mape na nowo
 
             Map<Vector2d, ArrayList<Animal>> animals = worldMap.getAnimals();
