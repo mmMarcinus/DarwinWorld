@@ -37,10 +37,10 @@ public class PolarWorldMap extends AbstractWorldMap {
         //usuwamy energię zgodnie z odległością od bieguna
         int poleHeight = (int) (height * 2 / 10);
         int increasedEnergyDrop = 0;
-        if (animal.getPosition().getY() <= poleHeight){
+        if (animal.getPosition().getY() <= poleHeight - 1){
             increasedEnergyDrop = animal.getPosition().getY();
         }
-        else if (animal.getPosition().getY() + poleHeight > height){
+        else if (animal.getPosition().getY() + 1 > height - poleHeight){
             increasedEnergyDrop = height - animal.getPosition().getY() + 1;
         }
         increasedEnergyDrop = (int) Math.ceil(increasedEnergyDrop*13/10*energyTakenEachDay);
