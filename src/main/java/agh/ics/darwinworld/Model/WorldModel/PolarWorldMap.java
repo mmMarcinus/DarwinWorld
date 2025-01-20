@@ -4,6 +4,7 @@ import agh.ics.darwinworld.Model.AnimalModel.Animal;
 import agh.ics.darwinworld.Model.Util.Vector2d;
 import agh.ics.darwinworld.Model.WorldModel.Abstracts.AbstractWorldMap;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -25,7 +26,13 @@ public class PolarWorldMap extends AbstractWorldMap {
         Vector2d newPosition = animal.getPosition();
 
         animals.get(oldPosition).remove(animal);
-        animals.get(newPosition).add(animal);
+        if (animals.get(newPosition)==null){
+            ArrayList<Animal> listToPut = new ArrayList<>();
+            listToPut.add(animal);
+            animals.put(newPosition, listToPut);
+        }else{
+            animals.get(newPosition).add(animal);
+        }
 
         //usuwamy energię zgodnie z odległością od bieguna
         int poleHeight = (int) (height * 2 / 10);

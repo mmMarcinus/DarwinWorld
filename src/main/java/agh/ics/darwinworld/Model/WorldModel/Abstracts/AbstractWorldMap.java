@@ -194,8 +194,10 @@ public abstract class AbstractWorldMap implements WorldMap {
         Map<Vector2d, Animal> animalPlaces = new HashMap<>();
         Map<String, Integer> genomesWithCount = new HashMap<>();
 
+        int animalsNumber = 0;
         for(ArrayList<Animal> animalsOnPosition : animals.values()){
             for(Animal animal : animalsOnPosition){
+                animalsNumber+=1;
                 averageKidsNumber += animal.getKidsNumber();
                 averageEnergyLevel += animal.getEnergyLevel();
                 addOrUpdateGenome(genomesWithCount, animal.getGenome().getGenes());
@@ -207,8 +209,8 @@ public abstract class AbstractWorldMap implements WorldMap {
         }
 
 
-        averageKidsNumber /= animals.size();
-        averageEnergyLevel /= animals.size();
+        averageKidsNumber /= animalsNumber;
+        averageEnergyLevel /= animalsNumber;
 
         List<Map.Entry<String, Integer>> top3 = genomesWithCount.entrySet().stream()
                 .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
@@ -247,7 +249,7 @@ public abstract class AbstractWorldMap implements WorldMap {
 
         averageLifeLength /= deadAnimals.size();
 
-        statistics.setStatistics(dayCount, animals.size(), plants.size(), height * width - plants.size() - animalPlaces.size(),
+        statistics.setStatistics(dayCount, animalsNumber, plants.size(), height * width - plants.size() - animalPlaces.size(),
                 firstPopularGenome, firstPopularGenomeCount, secondPopularGenome, secondPopularGenomeCount, thirdPopularGenome,
                 thirdPopularGenomeCount, averageEnergyLevel, averageLifeLength, averageKidsNumber);
     }
