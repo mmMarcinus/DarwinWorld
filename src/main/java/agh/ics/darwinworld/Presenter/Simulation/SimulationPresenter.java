@@ -172,6 +172,14 @@ public class SimulationPresenter implements MapChangeListener {
                 if (animalsOnPosition.isEmpty() || animalsOnPosition == null) {
                     continue;
                 }
+
+                if (higlightedAnimal!=null){
+                    if (higlightedAnimal.getPosition().equals(animalsOnPosition.getFirst().getPosition())){
+                        animalsToPut.add(higlightedAnimal);
+                        continue;
+                    }
+                }
+
                 Animal currentMaxEnergyAnimal = animalsOnPosition.getFirst();
                 for (Animal currentAnimal : animalsOnPosition) {
                     if (currentAnimal.getEnergyLevel()>currentMaxEnergyAnimal.getEnergyLevel()){
