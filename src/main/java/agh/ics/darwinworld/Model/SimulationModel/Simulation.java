@@ -16,7 +16,7 @@ import java.util.*;
 public class Simulation implements Runnable {
     private final WorldParameters worldParameters;
 
-    private WorldMap worldMap;
+    private final WorldMap worldMap;
 
     private int dayCount = 1;
 

@@ -33,10 +33,6 @@ public class Animal implements WorldElement {
         this.parent1 = parent1;
         this.parent2 = parent2;
         this.currentGene = currentGene;
-        int random = rand.nextInt(8);
-        for(int i = 0; i < random; i++){
-            this.direction = direction.next();
-        }
         this.highlighted = false;
         this.plantsEaten = 0;
     }
@@ -131,13 +127,12 @@ public class Animal implements WorldElement {
 
     public void move(String movement, WorldMap map){
         //movement jest juz charem ktory zawiera informacje o ilosci obrotu w danym dniu
-        System.out.println("przed: " + getPosition());
         Vector2d newposition;
         for(int i = 0; i < Integer.valueOf(movement); i++){
-            this.direction = direction.next();
+            this.direction = this.direction.next();
         }
-
         newposition = this.position.add(this.direction.toUnitVector());
+
         int x = newposition.getX();
         int y = newposition.getY();
 
@@ -154,7 +149,6 @@ public class Animal implements WorldElement {
             this.direction = direction.opposite();
         }
 
-        System.out.println("po: " + newposition);
         this.position = newposition;
     }
 
