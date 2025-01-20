@@ -345,12 +345,12 @@ public class SimulationPresenter implements MapChangeListener {
             genomeLabel.setText("Genome: " + animal.getGenome().getGenes());
             AnimalStatLabel currentGeneLabel = new AnimalStatLabel();
             currentGeneLabel.setText("Current gene: " + animal.getCurrentGene());
+            AnimalStatLabel energyLabel = new AnimalStatLabel();
+            energyLabel.setText("Energy: " + animal.getEnergyLevel());
             AnimalStatLabel ageLabel = new AnimalStatLabel();
             ageLabel.setText("Animal age: " + animal.getAge());
             AnimalStatLabel childrenLabel = new AnimalStatLabel();
             childrenLabel.setText("Children number: " + animal.getKidsNumber());
-            AnimalStatLabel energyLabel = new AnimalStatLabel();
-            energyLabel.setText("Energy: " + animal.getEnergyLevel());
             AnimalStatLabel plantsEatenLabel = new AnimalStatLabel();
             plantsEatenLabel.setText("Plants eaten: " + animal.getPlantsEaten());
 
@@ -385,7 +385,12 @@ public class SimulationPresenter implements MapChangeListener {
             AnimalStatLabel energyLabel = new AnimalStatLabel();
             energyLabel.setText("Energy: " + animal.getEnergyLevel());
             AnimalStatLabel ageLabel = new AnimalStatLabel();
-            ageLabel.setText("Animal age: " + animal.getAge());
+            if (animal.getEnergyLevel()<=0){
+                ageLabel.setText("Died at age: " + animal.getAge());
+            }
+            else {
+                ageLabel.setText("Animal age: " + animal.getAge());
+            }
             AnimalStatLabel childrenLabel = new AnimalStatLabel();
             childrenLabel.setText("Children number: " + animal.getKidsNumber());
             AnimalStatLabel allDescendantsNumberLabel = new AnimalStatLabel();
