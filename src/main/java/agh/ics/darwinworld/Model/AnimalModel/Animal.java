@@ -140,16 +140,21 @@ public class Animal implements WorldElement {
         int x = newposition.getX();
         int y = newposition.getY();
 
+//        System.out.println("najpierw: " + newposition);
         if (x < 0){
             newposition = new Vector2d(map.getWidth()-1, y);
+//            System.out.println("potem: " + newposition);
         }
         else if (x >= map.getWidth()){
             newposition = new Vector2d(0, y);
+//            System.out.println("potem: " + newposition);
         }
 
-        if (!(y > 0 && y < map.getHeight())){
-            newposition = this.position.subtract(this.direction.toUnitVector());
+        System.out.println("najpierw: " + newposition);
+        if (y < 0 || y >= map.getHeight()){
+            newposition = this.position;
             this.direction = direction.opposite();
+            System.out.println("potem: " + newposition);
         }
 
         this.position = newposition;
