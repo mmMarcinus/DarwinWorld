@@ -42,6 +42,7 @@ public class SimulationPresenter implements MapChangeListener {
     private Animal higlightedAnimal;
     private boolean showPreferredAreas;
     private boolean showMostPopularGenotypes;
+    private boolean isRendering = false;
 
     @FXML
     private Label day;
@@ -98,6 +99,10 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void fillLabels(MapStatistics mapStatistics){
+        if (isRendering) {
+            return; // Ignoruj, jeśli poprzednie renderowanie jeszcze trwa
+        }
+        isRendering = true;
         Platform.runLater(() -> {
             day.setText("Day " + mapStatistics.getDayCount());
             animalNumber.setText("Animals number: " + mapStatistics.getAnimalNumber());
@@ -125,6 +130,7 @@ public class SimulationPresenter implements MapChangeListener {
             averageLifeLength.setText("Average life length of dead animals: " + mapStatistics.getAverageLifeLength());
             averageKidsNumber.setText("Average kids number: " + mapStatistics.getAverageKidsNumber());
         });
+        isRendering=false;
     }
 
     private void addOrUpdateGenome(Map<String, Integer> map, String genome) {
@@ -132,6 +138,10 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public synchronized void drawMap(){
+        if (isRendering) {
+            return; // Ignoruj, jeśli poprzednie renderowanie jeszcze trwa
+        }
+        isRendering = true;
         Platform.runLater(()->{
             mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
             System.out.println(worldMap.getAnimals().size());
@@ -264,7 +274,10 @@ public class SimulationPresenter implements MapChangeListener {
                 }
             }
         });
+        isRendering = false;
     }
+
+
 
     private void addTileConstraintsToMapGrid(){
         ColumnConstraints columnConstraints = new ColumnConstraints();

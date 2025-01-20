@@ -12,6 +12,7 @@ import javafx.scene.shape.Circle;
 
 
 public class AnimalView extends StackPane{
+
     public AnimalView(SimulationPresenter simulationPresenter, Animal animal) {
         super();
         setStyle("-fx-background-image: url('/images/EmptyTile/EmptyTileImage.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
