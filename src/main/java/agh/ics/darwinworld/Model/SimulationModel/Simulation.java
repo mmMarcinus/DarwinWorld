@@ -101,7 +101,6 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        System.out.println(worldMap.getMapID());
         simulationRunning = true;
         running = true;
         while(simulationRunning && dayCount <= 100) {
