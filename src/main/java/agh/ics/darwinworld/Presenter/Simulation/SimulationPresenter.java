@@ -275,9 +275,7 @@ public class SimulationPresenter implements MapChangeListener {
         });
         isRendering = false;
     }
-
-
-
+    
     private void addTileConstraintsToMapGrid(){
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
@@ -335,6 +333,7 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void exportStatisticsToCsv(WorldMap worldMap, MapStatistics mapStatistics){
+        System.out.println();
         String projectPath = System.getProperty("user.dir");
         String filename = "World_Statistics_" + worldMap.getMapID() + ".csv";
         String filePath = projectPath + "/src/main/resources/statistics/" + filename;
