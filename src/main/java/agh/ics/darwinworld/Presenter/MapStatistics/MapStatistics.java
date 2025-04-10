@@ -45,8 +45,6 @@ public class MapStatistics {
         this.dayCount = dayCount;
     }
 
-    public
-
     public int getDayCount() {
         return dayCount;
     }

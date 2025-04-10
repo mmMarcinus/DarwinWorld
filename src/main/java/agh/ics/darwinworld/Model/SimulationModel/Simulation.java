@@ -112,8 +112,6 @@ public class Simulation implements Runnable {
         running = true;
         while(simulationRunning && dayCount <= 100) {
             if (running) {
-                System.out.println("Dzien " + dayCount);
-
                 worldMap.removeDeadAnimals();
 
                 worldMap.moveAllAnimals(worldParameters.energyTakenEachDay());

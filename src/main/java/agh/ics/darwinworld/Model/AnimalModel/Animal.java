@@ -136,7 +136,7 @@ public class Animal implements WorldElement {
             this.direction = this.direction.next();
         }
         newposition = this.position.add(this.direction.toUnitVector());
-        System.out.println("From" + position.toString() + "Moving at " + newposition.toString());
+
         int x = newposition.getX();
         int y = newposition.getY();
 
