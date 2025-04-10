@@ -44,7 +44,6 @@ public class Simulation implements Runnable {
         Vector2d position;
 
         for (int i = 0; i < worldParameters.startAnimalsNumber(); i++){
-            System.out.println("Starting animal " + i);
             int x = rand.nextInt(0, worldParameters.width()) ;
             int y = rand.nextInt(0, worldParameters.height());
             position = new Vector2d(x,y);

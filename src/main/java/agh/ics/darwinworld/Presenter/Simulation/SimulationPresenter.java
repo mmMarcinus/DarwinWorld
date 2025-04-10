@@ -49,6 +49,8 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private GridPane mapGrid;
     @FXML
+    private GridPane elementsGrid;
+    @FXML
     private Label animalNumber;
     @FXML
     public Label plantNumber;
@@ -138,12 +140,36 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public synchronized void drawMap(){
-        if (isRendering) {
-            return; // Ignoruj, jeśli poprzednie renderowanie jeszcze trwa
-        }
-        isRendering = true;
+        Platform.runLater(() -> {
+            mapGrid.getChildren().clear();
+
+            int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
+
+            for(int x = 0; x<worldMap.getHeight(); x++){
+                for (int y = 0; y<worldMap.getWidth(); y++){
+                    if (showPreferredAreas && worldMap.getJungleTop() > y && worldMap.getJungleBottom() <= y) {
+                        mapGrid.add(new HighlightedEmptyTileView(), x, y);
+                    }
+                    else if (worldParameters.polarMap()){
+                        if (y <= poleHeight - 1|| worldMap.getHeight() - poleHeight < y + 1){
+                            mapGrid.add(new PoleEmptyTileView(), x, y);
+                        }
+                        else{
+                            mapGrid.add(new EmptyTileView(), x, y);
+                        }
+                    }
+                    else{
+                        mapGrid.add(new EmptyTileView(), x, y);
+                    }
+                    addTileConstraintsToMapGrid();
+                }
+            }
+        });
+    }
+
+    public synchronized void drawElements(){
         Platform.runLater(()->{
-            mapGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
+            elementsGrid.getChildren().clear(); // Usuwanie starych elementów z siatki
             //tutaj renderuje mape na nowo
 
             Map<Vector2d, ArrayList<Animal>> animals = worldMap.getAnimals();
@@ -178,7 +204,7 @@ public class SimulationPresenter implements MapChangeListener {
 
             ArrayList<Animal> animalsToPut = new ArrayList<>();
             for (ArrayList<Animal> animalsOnPosition : animals.values()) {
-                if (animalsOnPosition.isEmpty() || animalsOnPosition == null) {
+                if (animalsOnPosition.isEmpty()) {
                     continue;
                 }
 
@@ -202,35 +228,35 @@ public class SimulationPresenter implements MapChangeListener {
                     if(worldParameters.polarMap() && (currentAnimal.getPosition().getY() <= poleHeight - 1 || worldMap.getHeight() - poleHeight < currentAnimal.getPosition().getY() + 1)){
                         if(currentAnimal.isHighlighted()){
                             if (!mostPopularAnimals.contains(currentAnimal)) {
-                                mapGrid.add(new PoleHighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                elementsGrid.add(new PoleHighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }else{
-                                mapGrid.add(new PoleMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                elementsGrid.add(new PoleMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }
                         }else{
                             if (!mostPopularAnimals.contains(currentAnimal)){
-                                mapGrid.add(new PoleAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                elementsGrid.add(new PoleAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }
                             else{
-                                mapGrid.add(new PoleMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                elementsGrid.add(new PoleMostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }
                         }
                     }
                     else {
                         if (currentAnimal.isHighlighted()) {
                             if (!mostPopularAnimals.contains(currentAnimal)) {
-                                mapGrid.add(new HighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                elementsGrid.add(new HighlightedAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             } else {
-                                mapGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                elementsGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }
                         } else {
                             if (!mostPopularAnimals.contains(currentAnimal)) {
-                                mapGrid.add(new AnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                elementsGrid.add(new AnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             } else {
-                                mapGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
+                                elementsGrid.add(new MostPopularGenomeAnimalView(this, currentAnimal), currentAnimal.getPosition().getX(), currentAnimal.getPosition().getY());
                             }
                         }
                     }
-                    addTileConstraintsToMapGrid();
+                    addTileConstraintsToElementsGrid();
                     usedPositions.add(currentAnimal.getPosition());
                 }
             }
@@ -238,42 +264,28 @@ public class SimulationPresenter implements MapChangeListener {
                 if (!usedPositions.contains(currentPlant.getPosition())) {
                     if (worldParameters.polarMap()){
                         if (currentPlant.getPosition().getY() <= poleHeight - 1|| worldMap.getHeight() - poleHeight < currentPlant.getPosition().getY() + 1){
-                            mapGrid.add(new PolePlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                            elementsGrid.add(new PolePlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
                         }
                         else{
-                            mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                            elementsGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
                         }
                     }
                     else {
-                        mapGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
+                        elementsGrid.add(new PlantView(), currentPlant.getPosition().getX(), currentPlant.getPosition().getY());
                     }
-                    addTileConstraintsToMapGrid();
+                    addTileConstraintsToElementsGrid();
                     usedPositions.add(currentPlant.getPosition());
                 }
             }
             for(int x = 0; x<worldMap.getHeight(); x++){
                 for (int y = 0; y<worldMap.getWidth(); y++){
                     if(!usedPositions.contains(new Vector2d(x,y))){
-                        if (showPreferredAreas && worldMap.getJungleTop() > y && worldMap.getJungleBottom() <= y) {
-                            mapGrid.add(new HighlightedEmptyTileView(), x, y);
-                        }
-                        else if (worldParameters.polarMap()){
-                            if (y <= poleHeight - 1|| worldMap.getHeight() - poleHeight < y + 1){
-                                mapGrid.add(new PoleEmptyTileView(), x, y);
-                            }
-                            else{
-                                mapGrid.add(new EmptyTileView(), x, y);
-                            }
-                        }
-                        else{
-                            mapGrid.add(new EmptyTileView(), x, y);
-                        }
-                        addTileConstraintsToMapGrid();
+                        elementsGrid.add(new EmptyElementView(), x,y);
+                        addTileConstraintsToElementsGrid();
                     }
                 }
             }
         });
-        isRendering = false;
     }
     
     private void addTileConstraintsToMapGrid(){
@@ -284,6 +296,16 @@ public class SimulationPresenter implements MapChangeListener {
         mapGrid.getColumnConstraints().add(columnConstraints);
         mapGrid.getRowConstraints().add(rowConstraints);
     }
+
+    private void addTileConstraintsToElementsGrid(){
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        elementsGrid.getColumnConstraints().add(columnConstraints);
+        elementsGrid.getRowConstraints().add(rowConstraints);
+    }
+
 
     public void startStopSimulation() {
         if (simulationRunning) {
@@ -456,7 +478,7 @@ public class SimulationPresenter implements MapChangeListener {
         if(animalHighlighted){
             fillAnimalStats(higlightedAnimal);
         }
-        drawMap();
+        drawElements();
         if (worldParameters.exportStatistics()){
             exportStatisticsToCsv(worldMap, mapStatistics);
         }
