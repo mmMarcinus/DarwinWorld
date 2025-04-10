@@ -94,6 +94,7 @@ public class Simulation implements Runnable {
             i+=1;
         }
 
+        this.worldMap.attachSimulation(this);
     }
 
     public WorldMap getWorldMap(){
@@ -103,7 +104,7 @@ public class Simulation implements Runnable {
     public void run() {
         simulationRunning = true;
         running = true;
-        while(simulationRunning && dayCount <= 100) {
+        while(simulationRunning && dayCount <= 500) {
             if (running) {
                 System.out.println("Dzien " + dayCount);
 
@@ -123,6 +124,11 @@ public class Simulation implements Runnable {
                 worldMap.notifyListeners(this, mapStatistics);
 
                 dayCount++;
+                try{
+                    Thread.sleep(1000);
+                }catch(InterruptedException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -138,4 +144,6 @@ public class Simulation implements Runnable {
     public void start(){
         running=true;
     }
+
+    public int getDayCount() {return dayCount;}
 }

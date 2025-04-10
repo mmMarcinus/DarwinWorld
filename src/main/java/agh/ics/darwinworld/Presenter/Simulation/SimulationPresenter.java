@@ -138,6 +138,30 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public synchronized void drawMap(){
+        System.out.println("Drawing Map");
+        Platform.runLater(() -> {
+            int poleHeight = (int) (worldMap.getHeight() * 2 / 10);
+            mapGrid.getChildren().clear();
+            for(int x = 0; x<worldMap.getHeight(); x++){
+                for (int y = 0; y<worldMap.getWidth(); y++){
+                    if (worldParameters.polarMap()){
+                        if (y <= poleHeight - 1|| worldMap.getHeight() - poleHeight < y + 1){
+                            mapGrid.add(new PoleEmptyTileView(), x, y);
+                        }
+                        else{
+                            mapGrid.add(new EmptyTileView(), x, y);
+                        }
+                    }
+                    else{
+                        mapGrid.add(new EmptyTileView(), x, y);
+                    }
+                    addTileConstraintsToMapGrid();
+                }
+            }
+        });
+    }
+
+    private void drawElements(){
         if (isRendering) {
             return; // Ignoruj, jeśli poprzednie renderowanie jeszcze trwa
         }
@@ -275,8 +299,6 @@ public class SimulationPresenter implements MapChangeListener {
         });
         isRendering = false;
     }
-
-
 
     private void addTileConstraintsToMapGrid(){
         ColumnConstraints columnConstraints = new ColumnConstraints();
@@ -457,12 +479,7 @@ public class SimulationPresenter implements MapChangeListener {
         if(animalHighlighted){
             fillAnimalStats(higlightedAnimal);
         }
-        drawMap();
-        try{
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
+        drawElements();
         if (worldParameters.exportStatistics()){
             exportStatisticsToCsv(worldMap, mapStatistics);
         }

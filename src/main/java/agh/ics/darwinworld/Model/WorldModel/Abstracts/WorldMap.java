@@ -52,4 +52,8 @@ public interface WorldMap{
     void notifyListeners(Simulation simulation, MapStatistics statistics);
 
     void updateStatistics(MapStatistics statistics, int dayCount);
+
+    int getCurrentDay();
+
+    void attachSimulation(Simulation simulation);
 }

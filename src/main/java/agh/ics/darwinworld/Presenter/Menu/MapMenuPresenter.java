@@ -3,7 +3,6 @@ package agh.ics.darwinworld.Presenter.Menu;
 import agh.ics.darwinworld.Model.Exceptions.*;
 import agh.ics.darwinworld.Model.Records.WorldParameters;
 import agh.ics.darwinworld.Model.SimulationModel.Simulation;
-import agh.ics.darwinworld.Presenter.MapStatistics.StatisticsToFile;
 import agh.ics.darwinworld.Presenter.Simulation.SimulationPresenter;
 import agh.ics.darwinworld.Presenter.MapStatistics.MapStatistics;
 import javafx.fxml.FXML;
@@ -18,9 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.security.InvalidKeyException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class MapMenuPresenter {
@@ -183,7 +180,7 @@ public class MapMenuPresenter {
     private void startNewSimulation(WorldParameters worldParameters) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
         Stage stage = new Stage();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
+        fxmlLoader.setLocation(getClass().getClassLoader().getResource("Simulation.fxml"));
         BorderPane viewRoot = fxmlLoader.load();
         var scene = new Scene(viewRoot);
 

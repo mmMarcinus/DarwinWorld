@@ -33,6 +33,7 @@ public class AnimalView extends StackPane{
         this.setAlignment(Pos.TOP_CENTER);
 
         setOnMouseClicked(event -> {
+            System.out.println("mouse clicked");
             if(!animal.isHighlighted() && !simulationPresenter.isAnimalHighlighted()){
                 animalImage.setStyle("-fx-background-image: url('/images/Animal/ClickedAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
                 simulationPresenter.highlightAnimal(animal);
