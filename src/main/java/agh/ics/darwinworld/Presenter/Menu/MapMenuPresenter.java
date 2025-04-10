@@ -127,7 +127,7 @@ public class MapMenuPresenter {
 
     private void checkParameters(WorldParameters worldParameters) throws Exception {
 
-        //Mapa
+        //Map
         if (worldParameters.width() <= 0 || worldParameters.width() > 100) {
             throw new MapWidthException();
         }

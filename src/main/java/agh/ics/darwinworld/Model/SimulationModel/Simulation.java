@@ -44,13 +44,10 @@ public class Simulation implements Runnable {
         HashSet<Vector2d> animalPositionsTaken = new HashSet<>();
         Vector2d position;
 
-        int i = 0;
-        while (i < worldParameters.startAnimalsNumber()) {
-            do{
-                int x = rand.nextInt(0, worldParameters.width()) ;
-                int y = rand.nextInt(0, worldParameters.height());
-                position = new Vector2d(x,y);
-            }while(animalPositionsTaken.contains(position));
+        for (int i = 0; i < worldParameters.startAnimalsNumber(); i++){
+            int x = rand.nextInt(0, worldParameters.width()) ;
+            int y = rand.nextInt(0, worldParameters.height());
+            position = new Vector2d(x,y);
             animalPositionsTaken.add(position);
             Genome newGenome;
             if (!worldParameters.changeGenome()){
@@ -64,32 +61,41 @@ public class Simulation implements Runnable {
             i+=1;
         }
 
-        //dodawanie startowych roślinek na losowe pozycje
+        //adding plants to random positions
 
-        HashSet<Vector2d> plantPositionsTaken = new HashSet<>();
+        List<Vector2d> availableJunglePositions = new ArrayList<>();
+        List<Vector2d> availableOutsidePositions = new ArrayList<>();
 
-        i = 0;
-        while (i < worldParameters.startPlantNumber()) {
-            do{
-                //najpierw wybieramy czy w jungli czy nie
-                double isJungle = rand.nextDouble();
-                int x = rand.nextInt(0, worldParameters.width());
-                int y = 0;
-                if (isJungle<=0.8){//w dzungli
-                    y = rand.nextInt(worldMap.getJungleBottom(), worldMap.getJungleTop()+1);
-                }else{//poza dzungla
-                    double isBottom = rand.nextDouble();
-                    if(isBottom<=0.5){//poludnie
-                        y = rand.nextInt(0, worldMap.getJungleBottom());
-                    }else{//polnoc
-                        y = rand.nextInt(worldMap.getJungleTop(), worldMap.getHeight());
-                    }
-                }
-                position = new Vector2d(x,y);
-            }while(plantPositionsTaken.contains(position));
-            plantPositionsTaken.add(position);
-            Plant addedPlant = new Plant(position, worldParameters.energyFromPlant());
+        for (int x = 0; x < worldParameters.width(); x++) {
+            // Jungle positions
+            for (int y = worldMap.getJungleBottom(); y <= worldMap.getJungleTop(); y++) {
+                availableJunglePositions.add(new Vector2d(x, y));
+            }
 
+            // Outside positions
+            for (int y = 0; y < worldMap.getJungleBottom(); y++) {
+                availableOutsidePositions.add(new Vector2d(x, y));
+            }
+            for (int y = worldMap.getJungleTop() + 1; y < worldMap.getHeight(); y++) {
+                availableOutsidePositions.add(new Vector2d(x, y));
+            }
+        }
+
+        Collections.shuffle(availableJunglePositions);
+        Collections.shuffle(availableOutsidePositions);
+
+        int jungleCount = Math.min((int) (worldParameters.startPlantNumber() * 0.8), availableJunglePositions.size());
+        int outsideCount = Math.min(worldParameters.startPlantNumber() - jungleCount, availableOutsidePositions.size());
+
+        for (int i = 0; i < jungleCount; i++) {
+            Vector2d plantPosition = availableJunglePositions.get(i);
+            Plant addedPlant = new Plant(plantPosition, worldParameters.energyFromPlant());
+            worldMap.place(addedPlant);
+        }
+
+        for (int i = 0; i < outsideCount; i++) {
+            Vector2d plantPosition = availableOutsidePositions.get(i);
+            Plant addedPlant = new Plant(plantPosition, worldParameters.energyFromPlant());
             worldMap.place(addedPlant);
             i+=1;
         }
@@ -104,7 +110,7 @@ public class Simulation implements Runnable {
     public void run() {
         simulationRunning = true;
         running = true;
-        while(simulationRunning && dayCount <= 500) {
+        while(simulationRunning && dayCount <= 100) {
             if (running) {
                 System.out.println("Dzien " + dayCount);
 
