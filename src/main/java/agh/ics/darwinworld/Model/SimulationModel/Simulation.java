@@ -41,14 +41,12 @@ public class Simulation implements Runnable {
 
         //dodawanie startowych zwierzakow na losowe pozycje z losowymi genomami
 
-        HashSet<Vector2d> animalPositionsTaken = new HashSet<>();
         Vector2d position;
 
         for (int i = 0; i < worldParameters.startAnimalsNumber(); i++){
             int x = rand.nextInt(0, worldParameters.width()) ;
             int y = rand.nextInt(0, worldParameters.height());
             position = new Vector2d(x,y);
-            animalPositionsTaken.add(position);
             Genome newGenome;
             if (!worldParameters.changeGenome()){
                 newGenome = new Genome(worldParameters.genomesLength());
@@ -58,7 +56,6 @@ public class Simulation implements Runnable {
             Animal addedAnimal = new Animal(position, newGenome, worldParameters.startEnergyLevel(), 0, null, null, 0);
 
             worldMap.place(addedAnimal);
-            i+=1;
         }
 
         //adding plants to random positions

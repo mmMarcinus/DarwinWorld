@@ -11,15 +11,9 @@ public class PoleAnimalView extends AnimalView{
         super(simulationPresenter, animal);
         this.getChildren().clear();
 
-        setStyle("-fx-background-image: url('/images/EmptyTile/Pole.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
+        setStyle("-fx-background-image: url('/images/Animal/PoleAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
         setPrefSize(999,999);
         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-        StackPane animalImage = new StackPane();
-        animalImage.setStyle("-fx-background-image: url('/images/Animal/PoleAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
-        animalImage.setPrefSize(999, 999);
-        animalImage.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        this.getChildren().add(animalImage);
 
         ProgressBar energyBar = new ProgressBar((double) animal.getEnergyLevel()/simulationPresenter.getWorldParameters().reproduceEnergyRequired());
         energyBar.setMaxHeight(10);
@@ -30,7 +24,7 @@ public class PoleAnimalView extends AnimalView{
 
         setOnMouseClicked(event -> {
             if(!animal.isHighlighted() && !simulationPresenter.isAnimalHighlighted()){
-                animalImage.setStyle("-fx-background-image: url('/images/Animal/ClickedPoleAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
+                setStyle("-fx-background-image: url('/images/Animal/ClickedPoleAnimal.png'); -fx-background-size: 100% 100%; -fx-background-color: transparent;");
                 simulationPresenter.highlightAnimal(animal);
             }
         });
