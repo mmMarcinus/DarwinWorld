@@ -329,7 +329,7 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void preferredAreas(){
-        if (!simulationRunning && areasPreferredByPlants.getText().equals("Show areas preferred by plants")){
+        if (areasPreferredByPlants.getText().equals("Show areas preferred by plants")){
             areasPreferredByPlants.setText("Hide areas preferred by plants");
             showPreferredAreas = true;
             drawMap();
@@ -342,15 +342,15 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void popularGenotypes(){
-        if (!simulationRunning && mostPopularGenotypes.getText().equals("Show animals with most popular genomes")){
+        if (mostPopularGenotypes.getText().equals("Show animals with most popular genomes")){
             mostPopularGenotypes.setText("Hide animals with most popular genomes");
             showMostPopularGenotypes = true;
-            drawMap();
+            drawElements();
         }
         else{
             mostPopularGenotypes.setText("Show animals with most popular genomes");
             showMostPopularGenotypes = false;
-            drawMap();
+            drawElements();
         }
     }
 
