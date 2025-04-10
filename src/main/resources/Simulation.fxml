@@ -34,7 +34,10 @@
     </left>
 
     <center>
-        <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" styleClass="grid-pane"/>
+        <StackPane>
+            <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" styleClass="grid-pane"/>
+            <GridPane fx:id="elementsGrid" gridLinesVisible="false" alignment="CENTER" styleClass="grid-pane"/>
+        </StackPane>
     </center>
 
     <bottom>

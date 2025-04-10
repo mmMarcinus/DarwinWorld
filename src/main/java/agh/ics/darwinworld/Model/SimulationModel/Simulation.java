@@ -58,6 +58,7 @@ public class Simulation implements Runnable {
             Animal addedAnimal = new Animal(position, newGenome, worldParameters.startEnergyLevel(), 0, null, null, 0);
 
             worldMap.place(addedAnimal);
+            i+=1;
         }
 
         //adding plants to random positions
@@ -96,7 +97,10 @@ public class Simulation implements Runnable {
             Vector2d plantPosition = availableOutsidePositions.get(i);
             Plant addedPlant = new Plant(plantPosition, worldParameters.energyFromPlant());
             worldMap.place(addedPlant);
+            i+=1;
         }
+
+        this.worldMap.attachSimulation(this);
     }
 
     public WorldMap getWorldMap(){
@@ -108,8 +112,6 @@ public class Simulation implements Runnable {
         running = true;
         while(simulationRunning && dayCount <= 100) {
             if (running) {
-                System.out.println("Dzien " + dayCount);
-
                 worldMap.removeDeadAnimals();
 
                 worldMap.moveAllAnimals(worldParameters.energyTakenEachDay());
@@ -126,6 +128,11 @@ public class Simulation implements Runnable {
                 worldMap.notifyListeners(this, mapStatistics);
 
                 dayCount++;
+                try{
+                    Thread.sleep(1000);
+                }catch(InterruptedException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -141,4 +148,6 @@ public class Simulation implements Runnable {
     public void start(){
         running=true;
     }
+
+    public int getDayCount() {return dayCount;}
 }

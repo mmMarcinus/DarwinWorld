@@ -457,11 +457,6 @@ public class SimulationPresenter implements MapChangeListener {
             fillAnimalStats(higlightedAnimal);
         }
         drawMap();
-        try{
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
         if (worldParameters.exportStatistics()){
             exportStatisticsToCsv(worldMap, mapStatistics);
         }
