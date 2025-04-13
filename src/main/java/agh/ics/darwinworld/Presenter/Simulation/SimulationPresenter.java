@@ -333,10 +333,10 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void exportStatisticsToCsv(WorldMap worldMap, MapStatistics mapStatistics){
-        System.out.println();
         String projectPath = System.getProperty("user.dir");
         String filename = "World_Statistics_" + worldMap.getMapID() + ".csv";
         String filePath = projectPath + "/src/main/resources/statistics/" + filename;
+
 
         File csvFile = new File(filePath);
         boolean fileExist = csvFile.exists();
@@ -463,7 +463,7 @@ public class SimulationPresenter implements MapChangeListener {
             System.out.println(e.getMessage());
         }
         if (worldParameters.exportStatistics()){
-            exportStatisticsToCsv(worldMap, mapStatistics);
+            exportStatisticsToCsv(worldMap, statistics);
         }
     }
 
