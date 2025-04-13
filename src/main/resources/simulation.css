@@ -4,6 +4,7 @@
 
 .grid-pane {
     align-content: center;
+    background-color: transparent;
 }
 
 .left-scrollpane{

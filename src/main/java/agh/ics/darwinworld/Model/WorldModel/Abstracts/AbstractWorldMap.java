@@ -25,7 +25,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected List<Animal> deadAnimals = new ArrayList<>();
 
     @Override
-    public abstract void move(Animal animal, String move, int energyTakenEachDay);
+    public abstract void move(Animal animal, String animalMove, int energyTakenEachDay);
 
     @Override
     public synchronized void removeDeadAnimals() {
@@ -49,10 +49,10 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public void moveAllAnimals(int energyTakenEachDay) {
-        for (ArrayList<Animal> animalsOnPosition : animals.values()){
+        for (ArrayList<Animal> animalsOnPosition : animals.values()) {
             ArrayList<Animal> animalsToMove = new ArrayList<>();
-            animalsToMove.addAll(animalsOnPosition);
-            for(Animal animal : animalsToMove){
+            animalsToMove.addAll(animalsOnPosition.stream().filter(animal -> animal.getLastMoveDay() < this.getCurrentDay()).collect(Collectors.toList()));
+            for (Animal animal : animalsToMove) {
                 Genome genome = animal.getGenome();
                 String move = genome.getGenes().substring((animal.getCurrentGene()));
                 move(animal, move, energyTakenEachDay);
@@ -301,6 +301,8 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     public Map<Vector2d, ArrayList<Animal>> getAnimals() {return animals;}
 
+    public int getCurrentDay(){return simulation.getDayCount();}
+
     @Override
     public void attachListener(MapChangeListener listener){
         listeners.add(listener);
@@ -309,6 +311,11 @@ public abstract class AbstractWorldMap implements WorldMap {
     @Override
     public void detachListener(MapChangeListener listener){
         listeners.remove(listener);
+    }
+
+    @Override
+    public void attachSimulation(Simulation simulation) {
+        this.simulation = simulation;
     }
 
     @Override

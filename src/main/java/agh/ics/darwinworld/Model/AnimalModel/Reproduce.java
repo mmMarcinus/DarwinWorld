@@ -31,8 +31,8 @@ public class Reproduce {
 
         int startGene = rand.nextInt(youngGenome.getLength())-1;
 
-//        parent1.updateEnergyLevel(parent1.getEnergyLevel()-(startEnergyLevel/2));
-//        parent2.updateEnergyLevel(parent2.getEnergyLevel()-(startEnergyLevel/2));
+        parent1.updateEnergyLevel(parent1.getEnergyLevel()-(startEnergyLevel/3));
+        parent2.updateEnergyLevel(parent2.getEnergyLevel()-(startEnergyLevel/3));
 
         parent1.updateKidsNumber(parent1.getKidsNumber()+1);
         parent2.updateKidsNumber(parent2.getKidsNumber()+1);
