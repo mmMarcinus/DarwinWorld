@@ -38,8 +38,6 @@ Darwin World to symulacja świata, w którym ewoluujące zwierzęta przemierzaj�
 
 ## 📸 Galeria
 
-> Wstaw tutaj zrzuty ekranu lub animacje (GIFy), pokazujące działanie symulacji:
-
 ![Menu](./assets/menu.png)
 ![Symulacja](./assets/symulacja.gif)
 
