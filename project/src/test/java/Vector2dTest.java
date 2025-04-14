@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class Vector2dTest {
+        @Test
         void testToString() {
             Vector2d vector = new Vector2d(3, 4);
             assertEquals("(3,4)", vector.toString());
