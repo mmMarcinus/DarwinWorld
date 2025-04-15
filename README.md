@@ -1,50 +1,51 @@
-# 🌱 Darwin World - Wariant A2
+# 🌱 Darwin World - Variant A2
 
-**Autorzy**: Iwo Zowada [IwoZ](https://github.com/Iwo-Z) i Marcin Szulc [mmMarcinus](https://github.com/mmMarcinus)
+**Authors**: Iwo Zowada [IwoZ](https://github.com/Iwo-Z) i Marcin Szulc [mmMarcinus](https://github.com/mmMarcinus)
 
-**Wersja zadania**: A2  
+**Task variant**: A2  
 
-Darwin World to symulacja świata, w którym ewoluujące zwierzęta przemierzają mapę w poszukiwaniu jedzenia, rozmnażają się, a ich zachowanie zmienia się w czasie w zależności od genotypu oraz wybranych parametrów środowiska.
-
----
-
-## 🧠 Kluczowe funkcjonalności
-
-- Interaktywna symulacja oparta na parametrach środowiska i ewolucji.
-- Możliwość uruchomienia wielu symulacji jednocześnie.
-- Dynamiczne GUI z wizualizacją świata, roślin i zwierząt.
-- Obsługa wielu wariantów:
-  - **Mapa**: kula ziemska, bieguny (wariant A)
-  - **Zachowanie zwierząt**: pełna predestynacja, starość nie radość (wariant 4)
-  - **Mutacje**: pełna losowość
-  - **Wzrost roślin**: zalesione równiki
-- Statystyki w czasie rzeczywistym:
-  - liczba zwierząt i roślin
-  - liczba wolnych pól
-  - najpopularniejsze genotypy
-  - średnia energia i długość życia
-  - średnia liczba dzieci
+Darwin World is a simulation of a world in which evolving animals traverse the map in search of food, reproduce, and their behavior changes over time depending on their genotype and selected environmental parameters.
 
 ---
 
-## 🧰 Technologie
+## 🧠 Key functionalities
+
+- Interactive simulation based on environmental and evolutionary parameters.
+- Ability to run multiple simulations simultaneously.
+- Dynamic GUI with visualization of the world, plants and animals.
+- Support for multiple variants:
+  - **Map**: globe, poles (variant A).
+  - **Animal behavior**: full predestination, old age no joy (variant 4).
+  - **Mutations**: full randomness.
+  - **Plant growth**: forested equators.
+- Real-time statistics:
+  - number of animals and plants
+  - number of free fields
+  - most popular genotypes
+  - average energy and life expectancy
+  - average number of children
+
+---
+
+## 🧰 Technologies
 
 - **Java 23**
-- **JavaFX** – interfejs graficzny
-- **Gradle** – zarządzanie projektem
-- **FXML** – struktura GUI
+- **JavaFX** - graphical interface
+- **Gradle** - project management
+- **FXML** - GUI structure
 
 ---
 
-## 📸 Galeria
+## 📸 Gallery
 
 ![Menu](./assets/menu.png)
-![Symulacja](./assets/symulacja.gif)
+![Simulation](./assets/symulacja.gif)
 
 ---
 
-## 🚀 Jak uruchomić
+## 🚀 How to run
 
-1. Sklonuj repozytorium:
+1. Clone the repository:
    ```bash
    git clone https://github.com/twoj-login/darwin-world.git
+2. Run the file with the path 
