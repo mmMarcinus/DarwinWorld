@@ -1,8 +1,6 @@
-# 🌱 Darwin World - Variant A2
+# 🌱 Darwin World
 
 **Authors**: Iwo Zowada [IwoZ](https://github.com/Iwo-Z) i Marcin Szulc [mmMarcinus](https://github.com/mmMarcinus)
-
-**Task variant**: A2  
 
 Darwin World is a simulation of a world in which evolving animals traverse the map in search of food, reproduce, and their behavior changes over time depending on their genotype and selected environmental parameters.
 
